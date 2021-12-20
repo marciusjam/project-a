@@ -499,7 +499,7 @@ class PostCard extends StatelessWidget {
                                 Container(
                                   padding: EdgeInsets.fromLTRB(10, 3, 0, 0),
                                   child: Text(
-                                    'Forever  ❤️',
+                                    'Forever ❤️',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.normal,
