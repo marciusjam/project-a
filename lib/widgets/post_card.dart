@@ -1,13 +1,45 @@
 import 'package:agilay/screens/chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:video_player/video_player.dart';
+import 'package:flutter/material.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   const PostCard(this.type, {Key? key}) : super(key: key);
   final String type;
 
+  @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  late VideoPlayerController _controller;
   final double _iconSize = 20;
+
   final double elavationVal = 2;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    return _mainContainer(context);
+  }
 
   Container _mainContainer(BuildContext context) {
     return Container(
@@ -59,13 +91,15 @@ class PostCard extends StatelessWidget {
   }
 
   Widget _buildChild(BuildContext context) {
-    debugPrint('postType: ' + type);
-    if (type == 'image-Horizontal') {
+    debugPrint('postType: ' + widget.type);
+    if (widget.type == 'image-Horizontal') {
       return _imageCardHoriz(context);
-    } else if (type == 'image-Vertical') {
+    } else if (widget.type == 'image-Vertical') {
       return _imageCardVert(context);
-    } else if (type == 'textPost') {
+    } else if (widget.type == 'textPost') {
       return _textPost(context);
+    } else if (widget.type == 'video-Horizontal') {
+      return _videoCardHoriz(context);
     } else {
       return _textPost(context);
     }
@@ -602,9 +636,323 @@ class PostCard extends StatelessWidget {
     );
   }
 
+  Card _videoCardHoriz(BuildContext context) {
+    return Card(
+      elevation: elavationVal,
+      shape: ContinuousRectangleBorder(
+        borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
+      ),
+      child: Column(children: [
+        Stack(
+          children: [
+            ClipRRect(
+                borderRadius: new BorderRadius.all(const Radius.circular(5.0)),
+                child: Column(children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Stack(children: <Widget>[
+                        _ButterFlyAssetVideo(),
+                        //Image.asset('assets/flutter-mark-square-64.png'),
+                      ]),
+                    ],
+                  ),
+                ])),
+          ],
+        ),
+      ]),
+    );
+  }
+}
+
+class _ButterFlyAssetVideo extends StatefulWidget {
+  @override
+  _ButterFlyAssetVideoState createState() => _ButterFlyAssetVideoState();
+}
+
+class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+      //'https://www.tiktok.com/@redbedonia_/video/7034010235475987739',
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    );
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.setLooping(true);
+    _controller.initialize().then((_) => setState(() {}));
+    _controller.play();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.of(context).size.height;
-    return _mainContainer(context);
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Container(
+            //padding: const EdgeInsets.all(20),
+            child: AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              /*Container(
+              height: 300,
+              width: double.infinity,*/
+              //aspectRatio: _controller.value.aspectRatio,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: <Widget>[
+                  VideoPlayer(_controller),
+                  _ControlsOverlay(controller: _controller),
+                  VideoProgressIndicator(_controller, allowScrubbing: true),
+                  Container(
+                      height: 100,
+                      width: 100,
+                      //color: Colors.black.withOpacity(0.5),
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      decoration: BoxDecoration(
+                        //color: Colors.black.withOpacity(0.3),
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(5.0),
+                          bottomLeft: Radius.circular(5.0),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            children: [
+                              /*subtitle: Text('location',
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal, color: Colors.black)),*/
+
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: InkWell(
+                                  onTap: () => {},
+                                  child: Container(
+                                    height: 35,
+                                    width: 35,
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      child: Container(
+                                        height: 30,
+                                        width: 30,
+                                        child: CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: AssetImage(
+                                              'assets/profile-jam.jpg'),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    child: Text('John Marcius Tolentino',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16)),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(10, 3, 0, 0),
+                                    child: Text(
+                                      'Fam ❤️💯',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(13.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                /*Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: IconButton(
+                          onPressed: () => {},
+                          icon: Icon(Icons.chat_bubble_outline),
+                          iconSize: _iconSize,
+                        ),
+                      ),*/
+                                Container(
+                                    child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                      child: Icon(
+                                        Icons.chat_bubble_outline,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 0, 12, 1),
+                                        child: Text('100',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 17))),
+                                  ],
+                                )),
+                                Spacer(),
+                                Container(
+                                    child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                      child: Icon(
+                                        Icons.favorite_outline,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 0, 12, 1),
+                                        child: Text('2.5k',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 17))),
+                                  ],
+                                )),
+                                Spacer(),
+                                /*IconButton(
+                        onPressed: () => {},
+                        icon: Icon(Icons.swap_horiz_outlined),
+                        iconSize: _iconSize,
+                      ),*/
+                                Container(
+                                    child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                      child: Icon(
+                                        Icons.swap_horiz_outlined,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 0, 12, 1),
+                                        child: Text('8',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 17))),
+                                  ],
+                                )),
+                              ],
+                            ),
+                          )
+                        ],
+                      ))
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ControlsOverlay extends StatelessWidget {
+  const _ControlsOverlay({Key? key, required this.controller})
+      : super(key: key);
+
+  static const _examplePlaybackRates = [
+    0.25,
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0,
+    5.0,
+    10.0,
+  ];
+
+  final VideoPlayerController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        AnimatedSwitcher(
+          duration: Duration(milliseconds: 50),
+          reverseDuration: Duration(milliseconds: 200),
+          child: controller.value.isPlaying
+              ? SizedBox.shrink()
+              : Container(
+                  color: Colors.black26,
+                  child: Center(
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                      size: 100.0,
+                      semanticLabel: 'Play',
+                    ),
+                  ),
+                ),
+        ),
+        GestureDetector(
+          onTap: () {
+            controller.value.isPlaying ? controller.pause() : controller.play();
+          },
+        ),
+        /*Align(
+          alignment: Alignment.topRight,
+          child: PopupMenuButton<double>(
+            initialValue: controller.value.playbackSpeed,
+            tooltip: 'Playback speed',
+            onSelected: (speed) {
+              controller.setPlaybackSpeed(speed);
+            },
+            itemBuilder: (context) {
+              return [
+                for (final speed in _examplePlaybackRates)
+                  PopupMenuItem(
+                    value: speed,
+                    child: Text('${speed}x'),
+                  )
+              ];
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                // Using less vertical padding as the text is also longer
+                // horizontally, so it feels like it would need more spacing
+                // horizontally (matching the aspect ratio of the video).
+                vertical: 12,
+                horizontal: 16,
+              ),
+              child: Text('${controller.value.playbackSpeed}x'),
+            ),
+          ),
+        ),*/
+      ],
+    );
   }
 }

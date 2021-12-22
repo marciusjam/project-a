@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> list = [
     PostCard('image-Horizontal'),
     PostCard('textPost'),
+    PostCard('video-Horizontal'),
     PostCard('image-Vertical'),
   ];
 
