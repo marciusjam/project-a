@@ -21,18 +21,6 @@ class _PostCardState extends State<PostCard> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
   }
 
   @override
@@ -651,7 +639,7 @@ class _PostCardState extends State<PostCard> {
                   Column(
                     children: <Widget>[
                       Stack(children: <Widget>[
-                        _ButterFlyAssetVideo(),
+                        _CreateVideoAsset(),
                         //Image.asset('assets/flutter-mark-square-64.png'),
                       ]),
                     ],
@@ -664,19 +652,20 @@ class _PostCardState extends State<PostCard> {
   }
 }
 
-class _ButterFlyAssetVideo extends StatefulWidget {
+class _CreateVideoAsset extends StatefulWidget {
   @override
-  _ButterFlyAssetVideoState createState() => _ButterFlyAssetVideoState();
+  _CreateVideoAssetState createState() => _CreateVideoAssetState();
 }
 
-class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
+class _CreateVideoAssetState extends State<_CreateVideoAsset> {
   late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+    _controller = VideoPlayerController.asset(
+      'assets/tarik.mp4',
+      //'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
       //'https://www.tiktok.com/@redbedonia_/video/7034010235475987739',
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
@@ -702,7 +691,7 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
           Container(
             //padding: const EdgeInsets.all(20),
             child: AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
+              aspectRatio: 16 / 10,
               /*Container(
               height: 300,
               width: double.infinity,*/
@@ -711,13 +700,10 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
                 alignment: Alignment.bottomCenter,
                 children: <Widget>[
                   VideoPlayer(_controller),
-                  _ControlsOverlay(controller: _controller),
-                  VideoProgressIndicator(_controller, allowScrubbing: true),
                   Container(
                       height: 100,
-                      width: 100,
                       //color: Colors.black.withOpacity(0.5),
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       decoration: BoxDecoration(
                         //color: Colors.black.withOpacity(0.3),
                         borderRadius: BorderRadius.only(
@@ -869,7 +855,9 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
                             ),
                           )
                         ],
-                      ))
+                      )),
+                  _ControlsOverlay(controller: _controller),
+                  VideoProgressIndicator(_controller, allowScrubbing: true),
                 ],
               ),
             ),
