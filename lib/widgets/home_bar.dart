@@ -17,7 +17,7 @@ class HomeBar extends StatelessWidget {
         statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
         statusBarBrightness: Brightness.light,
       ),
-      title: Text('Agilay',
+      title: Text('agila',
           style: GoogleFonts.lexendDeca(
               color: Colors.amber, fontSize: 25, fontWeight: FontWeight.bold)),
       actions: [
