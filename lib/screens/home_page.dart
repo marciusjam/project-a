@@ -16,10 +16,11 @@ class _HomePageState extends State<HomePage> {
   final double _selectedIndex = 1;
 
   List<Widget> list = [
-    PostCard('image-Horizontal'),
     PostCard('textPost'),
     PostCard('video-Horizontal'),
+    PostCard('video-Vertical'),
     PostCard('image-Vertical'),
+    PostCard('image-Horizontal'),
   ];
 
   SliverList _getSlivers(List myList, BuildContext context) {
