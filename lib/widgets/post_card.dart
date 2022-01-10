@@ -45,11 +45,11 @@ class _PostCardState extends State<PostCard> {
 
   Container _mainContainer(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(15, 10, 15, 15),
+      padding: EdgeInsets.fromLTRB(15, 15, 15, 5),
       //height: 250,
 
       width: double.maxFinite,
-      //color: Colors.white,
+      //color: Colors.black,
       child: Dismissible(
           confirmDismiss: (direction) async {
             if (direction == DismissDirection.startToEnd) {
@@ -231,7 +231,7 @@ class _PostCardState extends State<PostCard> {
                                                       0, 0, 0, 0),
                                                   child: Icon(
                                                     Icons.chat_bubble_outline,
-                                                    color: Colors.grey,
+                                                    color: Colors.black12,
                                                   ),
                                                 ),
                                                 Padding(
@@ -262,7 +262,7 @@ class _PostCardState extends State<PostCard> {
                                                       0, 0, 0, 0),
                                                   child: Icon(
                                                     Icons.favorite_outline,
-                                                    color: Colors.grey,
+                                                    color: Colors.black12,
                                                   ),
                                                 ),
                                                 Padding(
@@ -295,7 +295,7 @@ class _PostCardState extends State<PostCard> {
                                                       child: Icon(
                                                         Icons
                                                             .swap_horiz_outlined,
-                                                        color: Colors.grey,
+                                                        color: Colors.black12,
                                                       ),
                                                     ),
                                                     Padding(
@@ -514,7 +514,8 @@ class _PostCardState extends State<PostCard> {
                                                           child: Icon(
                                                             Icons
                                                                 .chat_bubble_outline,
-                                                            color: Colors.grey,
+                                                            color:
+                                                                Colors.black12,
                                                           ),
                                                         ),
                                                         Padding(
@@ -549,7 +550,8 @@ class _PostCardState extends State<PostCard> {
                                                           child: Icon(
                                                             Icons
                                                                 .favorite_outline,
-                                                            color: Colors.grey,
+                                                            color:
+                                                                Colors.black12,
                                                           ),
                                                         ),
                                                         Padding(
@@ -589,8 +591,8 @@ class _PostCardState extends State<PostCard> {
                                                               child: Icon(
                                                                 Icons
                                                                     .swap_horiz_outlined,
-                                                                color:
-                                                                    Colors.grey,
+                                                                color: Colors
+                                                                    .black12,
                                                               ),
                                                             ),
                                                             Padding(
@@ -820,7 +822,8 @@ class _PostCardState extends State<PostCard> {
                                                           child: Icon(
                                                             Icons
                                                                 .chat_bubble_outline,
-                                                            color: Colors.grey,
+                                                            color:
+                                                                Colors.black12,
                                                           ),
                                                         ),
                                                         Padding(
@@ -855,7 +858,8 @@ class _PostCardState extends State<PostCard> {
                                                           child: Icon(
                                                             Icons
                                                                 .favorite_outline,
-                                                            color: Colors.grey,
+                                                            color:
+                                                                Colors.black12,
                                                           ),
                                                         ),
                                                         Padding(
@@ -895,8 +899,8 @@ class _PostCardState extends State<PostCard> {
                                                               child: Icon(
                                                                 Icons
                                                                     .swap_horiz_outlined,
-                                                                color:
-                                                                    Colors.grey,
+                                                                color: Colors
+                                                                    .black12,
                                                               ),
                                                             ),
                                                             Padding(
@@ -1082,7 +1086,7 @@ class _PostCardState extends State<PostCard> {
                                                           child: Icon(
                                                             Icons
                                                                 .chat_bubble_outline,
-                                                            color: Colors.grey,
+                                                            color: Colors.black12,
                                                           ),
                                                         ),
                                                         Padding(
@@ -1117,7 +1121,7 @@ class _PostCardState extends State<PostCard> {
                                                           child: Icon(
                                                             Icons
                                                                 .favorite_outline,
-                                                            color: Colors.grey,
+                                                            color: Colors.black12,
                                                           ),
                                                         ),
                                                         Padding(
@@ -1158,7 +1162,7 @@ class _PostCardState extends State<PostCard> {
                                                                 Icons
                                                                     .swap_horiz_outlined,
                                                                 color:
-                                                                    Colors.grey,
+                                                                    Colors.black12,
                                                               ),
                                                             ),
                                                             Padding(
@@ -1346,7 +1350,8 @@ class _PostCardState extends State<PostCard> {
                                                           child: Icon(
                                                             Icons
                                                                 .chat_bubble_outline,
-                                                            color: Colors.grey,
+                                                            color:
+                                                                Colors.black12,
                                                           ),
                                                         ),
                                                         Padding(
@@ -1381,7 +1386,8 @@ class _PostCardState extends State<PostCard> {
                                                           child: Icon(
                                                             Icons
                                                                 .favorite_outline,
-                                                            color: Colors.grey,
+                                                            color:
+                                                                Colors.black12,
                                                           ),
                                                         ),
                                                         Padding(
@@ -1421,8 +1427,8 @@ class _PostCardState extends State<PostCard> {
                                                               child: Icon(
                                                                 Icons
                                                                     .swap_horiz_outlined,
-                                                                color:
-                                                                    Colors.grey,
+                                                                color: Colors
+                                                                    .black12,
                                                               ),
                                                             ),
                                                             Padding(

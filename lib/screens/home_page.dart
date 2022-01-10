@@ -1,9 +1,13 @@
+import 'package:agilay/screens/discover_page.dart';
+import 'package:agilay/screens/following_page.dart';
+import 'package:agilay/screens/trending_page.dart';
 import 'package:agilay/widgets/home_bar.dart';
 import 'package:agilay/widgets/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,16 +16,23 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   final double _selectedIndex = 1;
 
   List<Widget> list = [
     PostCard('textPost'),
+    PostCard('image-Horizontal'),
+    PostCard('image-Vertical'),
     PostCard('video-Horizontal'),
     PostCard('video-Vertical'),
-    PostCard('image-Vertical'),
-    PostCard('image-Horizontal'),
   ];
+
+  List<Widget> pages = [
+    FollowingPage(), DiscoverPage() //, TrendingPage()
+  ];
+
+  var _scrollController, _tabController;
 
   SliverList _getSlivers(List myList, BuildContext context) {
     return SliverList(
@@ -34,162 +45,48 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  buildRow(String title) {
+  /*buildRow(String title) {
     return Padding(
         padding: const EdgeInsets.all(15.0),
         child: Text(title,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)));
-  }
+  }*/
 
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        HomeBar(),
-        _getSlivers(list, context),
-        /*SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            if (_selectedIndex == 1) {
-              return articles;
-            }
-          }, childCount: 5),
-        )*/
-      ],
+  _pageView(List myList) {
+    return ListView.builder(
+      itemCount: 5,
+      padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
+      itemBuilder: (BuildContext context, int index) {
+        return myList[index];
+      },
     );
-
-    /*Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: Text('a'),
-          actions: [
-            /*MaterialButton(
-              onPressed: () {
-                Amplify.Auth.signOut().then((_) {
-                  Navigator.pushReplacementNamed(context, '/');
-                });
-              },
-              child: Icon(
-                Icons.logout,
-                color: Colors.purple,
-              ),
-            )*/
-            Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: Container(
-                width: 25,
-                height: 25,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white, //remove this when you add image.
-                ),
-                child: InkWell(
-                  onTap: () => {},
-                  child: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    radius: 30 / 2,
-                    backgroundImage: AssetImage('assets/profile-jam.jpg'),
-                  ),
-                ),
-              ),
-            ),
-
-            /*IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(
-                'assets/profile.svg',
-                height: 20,
-                width: 20,
-                fit: BoxFit.scaleDown,
-                //color: amber,
-              ),
-            )*/
-          ],
-        ),
-        body: Container(
-            color: Colors.white,
-            child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                /*if (_user == null)
-                  Text(
-                    'Loading....',
-                  )
-                else
-                  Text(
-                    'Hello 👋',
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                Text(_user.username),
-                SizedBox(height: 10),
-                Text(_user.userId),*/
-              ],
-            ))));*/
   }
-}
-
-/*class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  late AuthUser _user;
 
   @override
   void initState() {
-    // TODO: implement initState
+    _scrollController = ScrollController();
+    _tabController = TabController(vsync: this, length: 3);
     super.initState();
-    Amplify.Auth.getCurrentUser().then((user) {
-      setState(() {
-        _user = user;
-      });
-    }).catchError((error) {
-      debugPrint((error as AuthException).message);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Home'),
-          actions: [
-            MaterialButton(
-              onPressed: () {
-                Amplify.Auth.signOut().then((_) {
-                  Navigator.pushReplacementNamed(context, '/');
-                });
-              },
-              child: Icon(
-                Icons.logout,
-                color: Colors.white,
-              ),
-            )
-          ],
-        ),
-        body: Container(
-            color: Colors.amber,
-            child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (_user == null)
-                  Text(
-                    'Loading....',
-                  )
-                else
-                  Text(
-                    'Hello 👋',
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                Text(_user.username),
-                SizedBox(height: 10),
-                Text(_user.userId),
-              ],
-            ))));
+    return NestedScrollView(
+      controller: _scrollController,
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          HomeBar(_tabController),
+        ];
+      },
+      body: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: _tabController,
+        children: <Widget>[
+          _pageView(list),
+          _pageView(list),
+          _pageView(list),
+        ],
+      ),
+    );
   }
-}*/
+}
