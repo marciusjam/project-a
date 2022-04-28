@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NavigationBottomBar extends StatelessWidget {
   const NavigationBottomBar(
@@ -20,11 +21,25 @@ class NavigationBottomBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            /*GestureDetector(
+                onTap: () => {onIconTap(0)},
+                child: Column(
+                    //children: [SvgPicture.asset('assets/${isSelected ? iconName + '_filled' : iconName}'),],
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("agila",
+                          style: GoogleFonts.lexendDeca(
+                              color: Colors.amber,
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold)),
+                    ])),*/
             _bottomBarNavItem(0, 'Home', style, 'home'),
             //_bottomBarNavItem(1, 'Search', style, 'trending'),
             _bottomBarNavItem(1, 'NewPost', style, 'newpost'),
             _bottomBarNavItem(2, 'Chat', style, 'chat'),
-            GestureDetector(
+            /*GestureDetector(
                 onTap: () => {onIconTap(3)},
                 child: Column(
                     //children: [SvgPicture.asset('assets/${isSelected ? iconName + '_filled' : iconName}'),],
@@ -49,7 +64,7 @@ class NavigationBottomBar extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ]))
+                    ]))*/
             //_bottomBarNavItem(3, 'Profile', style, 'profile'),
           ],
         ),
@@ -60,7 +75,7 @@ class NavigationBottomBar extends StatelessWidget {
   _bottomBarNavItem(
       int index, String label, TextStyle textStyle, String iconName) {
     bool isSelected = selectedPageIndex == index;
-    Color iconAndTextColor = isSelected ? Colors.amber : Colors.black;
+    Color iconAndTextColor = isSelected ? Colors.amber : Colors.black12;
 
     double defaultHeight = 25;
     double defaultWidth = 25;

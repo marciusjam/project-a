@@ -365,7 +365,7 @@ class _PostCardState extends State<PostCard> {
                               topRight: Radius.circular(5),
                               topLeft: Radius.circular(5)),
                           child: Image.network(
-                              'https://scontent.fmnl17-2.fna.fbcdn.net/v/t1.6435-9/78563221_10215679511648949_4317568491948343296_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=e3f864&_nc_eui2=AeFMuKilzn9h3KO48fFTMlF1Z6PB8bneBn5no8Hxud4GfjnO3kFIT3Ki7ezD0lantms&_nc_ohc=ajS-PJd3eiUAX-bzl1z&_nc_ht=scontent.fmnl17-2.fna&oh=00_AT99csXJD5VzCOFSTDA8fMaALXkwwETIlo1Mx346pBDiaA&oe=61E48B41',
+                              'https://scontent.fmnl17-2.fna.fbcdn.net/v/t1.6435-9/78563221_10215679511648949_4317568491948343296_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=e3f864&_nc_eui2=AeFMuKilzn9h3KO48fFTMlF1Z6PB8bneBn5no8Hxud4GfjnO3kFIT3Ki7ezD0lantms&_nc_ohc=hywO2aI3KZwAX8JejyZ&_nc_ht=scontent.fmnl17-2.fna&oh=00_AT-x-wJHaaDnlnIYp6ImOxlG-g4Csofm6rmi_7Q0RqH0uQ&oe=628AA841',
                               height: double.infinity,
                               //height: 600,
                               width: double.infinity,
@@ -673,7 +673,7 @@ class _PostCardState extends State<PostCard> {
                               topRight: Radius.circular(5),
                               topLeft: Radius.circular(5)),
                           child: Image.network(
-                              'https://scontent.fmnl17-3.fna.fbcdn.net/v/t1.15752-9/263603893_436599031313032_8787735521029487826_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=ae9488&_nc_eui2=AeE_ZFwUcAT3W9RiB4eGRfECa8drJL9HW3prx2skv0dbetoWO3Bz7LWlerIr2lUngTo&_nc_ohc=B3Eyi6JWii4AX_cE6lh&_nc_ht=scontent.fmnl17-3.fna&oh=03_AVJ_uK2kWhzj0jvTbEyCIwhFIQrq8uTkMHBE1fGsuk54pA&oe=61E72AAF',
+                              'https://terrigen-cdn-dev.marvel.com/content/prod/1x/axejudgement2022001_cover.jpg',
                               height: double.infinity,
                               //height: 600,
                               width: double.infinity,
