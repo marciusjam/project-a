@@ -1,0 +1,93 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-agilay-staging-190336-authRole",
+      "UnauthRoleArn": "arn:aws:iam::306971405788:role/amplify-agilay-staging-190336-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::306971405788:role/amplify-agilay-staging-190336-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-agilay-staging-190336-deployment",
+      "UnauthRoleName": "amplify-agilay-staging-190336-unauthRole",
+      "StackName": "amplify-agilay-staging-190336",
+      "StackId": "arn:aws:cloudformation:us-east-1:306971405788:stack/amplify-agilay-staging-190336/bce063c0-4646-11ec-93b4-0aad277d2d75",
+      "AmplifyAppId": "d2og8emqw4guam"
+    }
+  },
+  "api": {
+    "Agilay": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "This is an api key"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "4wytu7khajhwbguesz6faqilum",
+        "GraphQLAPIEndpointOutput": "https://a4tzh6qpencwtjm5y6ayoghqku.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-fzcepsmibvfwlfw764bqid5fiu"
+      },
+      "lastPushTimeStamp": "2021-11-15T20:07:47.651Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agilay-staging-190336-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiAgilay"
+      }
+    }
+  },
+  "auth": {
+    "Agilay": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ]
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agilay-staging-190336-deployment/amplify-cfn-templates/auth/Agilay-cloudformation-template.json",
+        "logicalId": "authAgilay"
+      },
+      "lastPushTimeStamp": "2021-11-15T20:07:47.653Z",
+      "output": {
+        "UserPoolId": "us-east-1_shQuOTpPh",
+        "AppClientIDWeb": "7doft2mep4lsjder1jlg6rmind",
+        "AppClientID": "3h3img7gg3n35b0oquv83jr7d0",
+        "IdentityPoolId": "us-east-1:f5ed1527-41c5-4d6d-b596-0c3c0e20e0dc",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:306971405788:userpool/us-east-1_shQuOTpPh",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "Agilay"
+      },
+      "lastPushDirHash": "4ENKRtT2l9VJAAv2WBCX+jrQXj8="
+    }
+  }
+}

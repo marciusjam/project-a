@@ -1,0 +1,8 @@
+{
+    "CreateAPIKey": 1,
+    "AppSyncApiName": "Agilay",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-agilay-staging-190336-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/f01f11284b66b7d7ad20977e64e97add7761d762"
+}

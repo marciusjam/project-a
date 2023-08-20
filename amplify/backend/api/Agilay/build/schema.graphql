@@ -1,0 +1,282 @@
+type Blog @aws_iam @aws_api_key {
+  id: ID!
+  name: String!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  posts(filter: ModelPostFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_api_key
+}
+
+type Post @aws_iam @aws_api_key {
+  id: ID!
+  title: String!
+  blogID: ID!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_api_key
+}
+
+type Comment @aws_iam @aws_api_key {
+  id: ID!
+  postID: ID!
+  content: String!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelBlogConnection @aws_api_key @aws_iam {
+  items: [Blog!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelBlogFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  and: [ModelBlogFilterInput]
+  or: [ModelBlogFilterInput]
+  not: ModelBlogFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  getBlog(id: ID!): Blog @aws_api_key @aws_iam
+  listBlogs(filter: ModelBlogFilterInput, limit: Int, nextToken: String): ModelBlogConnection @aws_api_key @aws_iam
+  syncBlogs(filter: ModelBlogFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelBlogConnection @aws_api_key @aws_iam
+  getPost(id: ID!): Post @aws_api_key @aws_iam
+  listPosts(filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_api_key @aws_iam
+  syncPosts(filter: ModelPostFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPostConnection @aws_api_key @aws_iam
+  getComment(id: ID!): Comment @aws_api_key @aws_iam
+  listComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_api_key @aws_iam
+  syncComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelCommentConnection @aws_api_key @aws_iam
+}
+
+input CreateBlogInput {
+  id: ID
+  name: String!
+  _version: Int
+}
+
+input UpdateBlogInput {
+  id: ID!
+  name: String
+  _version: Int
+}
+
+input DeleteBlogInput {
+  id: ID!
+  _version: Int
+}
+
+type Mutation {
+  createBlog(input: CreateBlogInput!, condition: ModelBlogConditionInput): Blog @aws_api_key @aws_iam
+  updateBlog(input: UpdateBlogInput!, condition: ModelBlogConditionInput): Blog @aws_api_key @aws_iam
+  deleteBlog(input: DeleteBlogInput!, condition: ModelBlogConditionInput): Blog @aws_api_key @aws_iam
+  createPost(input: CreatePostInput!, condition: ModelPostConditionInput): Post @aws_api_key @aws_iam
+  updatePost(input: UpdatePostInput!, condition: ModelPostConditionInput): Post @aws_api_key @aws_iam
+  deletePost(input: DeletePostInput!, condition: ModelPostConditionInput): Post @aws_api_key @aws_iam
+  createComment(input: CreateCommentInput!, condition: ModelCommentConditionInput): Comment @aws_api_key @aws_iam
+  updateComment(input: UpdateCommentInput!, condition: ModelCommentConditionInput): Comment @aws_api_key @aws_iam
+  deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment @aws_api_key @aws_iam
+}
+
+input ModelBlogConditionInput {
+  name: ModelStringInput
+  and: [ModelBlogConditionInput]
+  or: [ModelBlogConditionInput]
+  not: ModelBlogConditionInput
+}
+
+type Subscription {
+  onCreateBlog: Blog @aws_subscribe(mutations: ["createBlog"]) @aws_api_key @aws_iam
+  onUpdateBlog: Blog @aws_subscribe(mutations: ["updateBlog"]) @aws_api_key @aws_iam
+  onDeleteBlog: Blog @aws_subscribe(mutations: ["deleteBlog"]) @aws_api_key @aws_iam
+  onCreatePost: Post @aws_subscribe(mutations: ["createPost"]) @aws_api_key @aws_iam
+  onUpdatePost: Post @aws_subscribe(mutations: ["updatePost"]) @aws_api_key @aws_iam
+  onDeletePost: Post @aws_subscribe(mutations: ["deletePost"]) @aws_api_key @aws_iam
+  onCreateComment: Comment @aws_subscribe(mutations: ["createComment"]) @aws_api_key @aws_iam
+  onUpdateComment: Comment @aws_subscribe(mutations: ["updateComment"]) @aws_api_key @aws_iam
+  onDeleteComment: Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_api_key @aws_iam
+}
+
+type ModelPostConnection @aws_api_key @aws_iam {
+  items: [Post!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelPostFilterInput {
+  id: ModelIDInput
+  title: ModelStringInput
+  blogID: ModelIDInput
+  and: [ModelPostFilterInput]
+  or: [ModelPostFilterInput]
+  not: ModelPostFilterInput
+}
+
+input CreatePostInput {
+  id: ID
+  title: String!
+  blogID: ID!
+  _version: Int
+}
+
+input UpdatePostInput {
+  id: ID!
+  title: String
+  blogID: ID
+  _version: Int
+}
+
+input DeletePostInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelPostConditionInput {
+  title: ModelStringInput
+  blogID: ModelIDInput
+  and: [ModelPostConditionInput]
+  or: [ModelPostConditionInput]
+  not: ModelPostConditionInput
+}
+
+type ModelCommentConnection @aws_api_key @aws_iam {
+  items: [Comment!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelCommentFilterInput {
+  id: ModelIDInput
+  postID: ModelIDInput
+  content: ModelStringInput
+  and: [ModelCommentFilterInput]
+  or: [ModelCommentFilterInput]
+  not: ModelCommentFilterInput
+}
+
+input CreateCommentInput {
+  id: ID
+  postID: ID!
+  content: String!
+  _version: Int
+}
+
+input UpdateCommentInput {
+  id: ID!
+  postID: ID
+  content: String
+  _version: Int
+}
+
+input DeleteCommentInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelCommentConditionInput {
+  postID: ModelIDInput
+  content: ModelStringInput
+  and: [ModelCommentConditionInput]
+  or: [ModelCommentConditionInput]
+  not: ModelCommentConditionInput
+}

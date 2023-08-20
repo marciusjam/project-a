@@ -1,0 +1,54 @@
+[
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\mtrl_fab_hide_motion_spec.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\625e3a213160824f39bcfec550e6ffc4\\material-1.0.0\\res\\animator\\mtrl_fab_hide_motion_spec.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\nav_default_pop_enter_anim.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\7d570f8bb15569fb6f212dfde3b8b116\\navigation-ui-2.3.4\\res\\animator\\nav_default_pop_enter_anim.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\design_fab_hide_motion_spec.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\625e3a213160824f39bcfec550e6ffc4\\material-1.0.0\\res\\animator\\design_fab_hide_motion_spec.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\mtrl_btn_state_list_anim.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\625e3a213160824f39bcfec550e6ffc4\\material-1.0.0\\res\\animator\\mtrl_btn_state_list_anim.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\mtrl_fab_show_motion_spec.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\625e3a213160824f39bcfec550e6ffc4\\material-1.0.0\\res\\animator\\mtrl_fab_show_motion_spec.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\mtrl_chip_state_list_anim.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\625e3a213160824f39bcfec550e6ffc4\\material-1.0.0\\res\\animator\\mtrl_chip_state_list_anim.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\mtrl_fab_transformation_sheet_collapse_spec.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\625e3a213160824f39bcfec550e6ffc4\\material-1.0.0\\res\\animator\\mtrl_fab_transformation_sheet_collapse_spec.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\nav_default_exit_anim.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\7d570f8bb15569fb6f212dfde3b8b116\\navigation-ui-2.3.4\\res\\animator\\nav_default_exit_anim.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\design_fab_show_motion_spec.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\625e3a213160824f39bcfec550e6ffc4\\material-1.0.0\\res\\animator\\design_fab_show_motion_spec.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\mtrl_fab_transformation_sheet_expand_spec.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\625e3a213160824f39bcfec550e6ffc4\\material-1.0.0\\res\\animator\\mtrl_fab_transformation_sheet_expand_spec.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\nav_default_enter_anim.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\7d570f8bb15569fb6f212dfde3b8b116\\navigation-ui-2.3.4\\res\\animator\\nav_default_enter_anim.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\mtrl_btn_unelevated_state_list_anim.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\625e3a213160824f39bcfec550e6ffc4\\material-1.0.0\\res\\animator\\mtrl_btn_unelevated_state_list_anim.xml"
+    },
+    {
+        "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\animator\\nav_default_pop_exit_anim.xml",
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\7d570f8bb15569fb6f212dfde3b8b116\\navigation-ui-2.3.4\\res\\animator\\nav_default_pop_exit_anim.xml"
+    }
+]
