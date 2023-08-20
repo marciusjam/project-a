@@ -1,6 +1,7 @@
 import 'package:agilay/screens/discover_page.dart';
-import 'package:agilay/screens/following_page.dart';
-import 'package:agilay/screens/trending_page.dart';
+import 'package:agilay/screens/interests_page.dart';
+import 'package:agilay/screens/profile_page.dart';
+import 'package:agilay/screens/sidemenu_page.dart';
 import 'package:agilay/widgets/home_bar.dart';
 import 'package:agilay/widgets/post_card.dart';
 import 'package:flutter/material.dart';
@@ -18,18 +19,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  final double _selectedIndex = 1;
+  int _selectedPageIndex = 1;
 
-  List<Widget> list = [
-    PostCard('textPost'),
-    PostCard('image-Horizontal'),
-    PostCard('image-Vertical'),
-    PostCard('video-Horizontal'),
-    PostCard('video-Vertical'),
-  ];
-
-  List<Widget> pages = [
-    FollowingPage(), DiscoverPage() //, TrendingPage()
+  List<Widget> _pages = [
+    SideMenuPage(),
+    InterestsPage(),
+    DiscoverPage(),
+    ProfilePage(),
   ];
 
   var _scrollController, _tabController;
@@ -45,27 +41,16 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  /*buildRow(String title) {
-    return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Text(title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)));
-  }*/
-
-  _pageView(List myList) {
-    return ListView.builder(
-      itemCount: 5,
-      padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
-      itemBuilder: (BuildContext context, int index) {
-        return myList[index];
-      },
-    );
+  void onIconTap(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+    });
   }
 
   @override
   void initState() {
     _scrollController = ScrollController();
-    _tabController = TabController(vsync: this, length: 3);
+    _tabController = TabController(vsync: this, length: 4);
     super.initState();
   }
 
@@ -75,18 +60,14 @@ class _HomePageState extends State<HomePage>
       controller: _scrollController,
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
-          HomeBar(_tabController),
+          HomeBar(
+            _tabController,
+            onIconTap: onIconTap,
+            selectedPageIndex: _selectedPageIndex,
+          ),
         ];
       },
-      body: TabBarView(
-        physics: NeverScrollableScrollPhysics(),
-        controller: _tabController,
-        children: <Widget>[
-          _pageView(list),
-          _pageView(list),
-          _pageView(list),
-        ],
-      ),
+      body: _pages[_selectedPageIndex],
     );
   }
 }
