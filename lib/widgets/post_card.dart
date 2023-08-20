@@ -129,7 +129,7 @@ class _PostCardState extends State<PostCard> {
   _seriesContainer(BuildContext context, double heigtToUse, List seriesList) {
     return Container(
         color: Colors.black,
-        height: (heigtToUse / 1.47),
+        //height: (heigtToUse / 1.52),
         padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
         child: Card(
             elevation: elavationVal,
@@ -243,7 +243,7 @@ class _PostCardState extends State<PostCard> {
                     ]),
                 Container(
                   color: Colors.black,
-                  height: (heigtToUse / 1.76) + 0.123,
+                  height: (heigtToUse / 1.69) ,
                   padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                   child: ListView.builder(
                     itemCount: 5,

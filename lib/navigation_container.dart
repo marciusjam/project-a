@@ -5,10 +5,10 @@ import 'package:agilay/screens/profile_page.dart';
 import 'package:agilay/screens/search_page.dart';
 import 'package:agilay/widgets/navigation_bar.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
-import 'amplifyconfiguration.dart';
+//import 'amplifyconfiguration.dart';
 
 class NavigationContainer extends StatefulWidget {
   const NavigationContainer({Key? key}) : super(key: key);
@@ -47,7 +47,7 @@ class _NavigationContainerState extends State<NavigationContainer> {
     try {
       if (!Amplify.isConfigured) {
         await Amplify.addPlugins([_authPlugin]);
-        await Amplify.configure(amplifyconfig);
+        //await Amplify.configure(amplifyconfig);
       }
 
       /*Amplify.Auth.signOut().then((_) {

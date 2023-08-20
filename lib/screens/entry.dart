@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 // Amplify Flutter Packages
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import '../amplifyconfiguration.dart';
+//import '../amplifyconfiguration.dart';
 
 import '../widgets/login.dart';
 
@@ -30,7 +30,7 @@ class _EntryScreenState extends State<EntryScreen> {
     try {
       if (!Amplify.isConfigured) {
         await Amplify.addPlugins([_authPlugin]);
-        await Amplify.configure(amplifyconfig);
+        //await Amplify.configure(amplifyconfig);
       }
 
       /*Amplify.Auth.signOut().then((_) {

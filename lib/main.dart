@@ -4,7 +4,7 @@ import 'package:agilay/screens/entry.dart';
 import 'package:agilay/screens/home_page.dart';
 import 'package:flutter/material.dart';
 // Amplify Flutter Packages
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -14,7 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 // Generated in previous step
 import 'models/ModelProvider.dart';
-import 'amplifyconfiguration.dart';
+//import 'amplifyconfiguration.dart';
 
 import 'screens/entry.dart';
 import 'screens/confirm.dart';
@@ -99,8 +99,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool _amplifyConfigured = false;
-  final AmplifyDataStore _dataStorePlugin =
-      AmplifyDataStore(modelProvider: ModelProvider.instance);
+  //final AmplifyDataStore _dataStorePlugin =
+      //AmplifyDataStore(modelProvider: ModelProvider.instance);
   final AmplifyAPI _apiPlugin = AmplifyAPI();
   final AmplifyAuthCognito _authPlugin = AmplifyAuthCognito();
   @override
@@ -111,10 +111,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _configureAmplify() async {
     // await Amplify.addPlugin(AmplifyAPI()); // UNCOMMENT this line after backend is deployed
-    await Amplify.addPlugins([_dataStorePlugin, _apiPlugin, _authPlugin]);
+    
+    
+    //await Amplify.addPlugins([_dataStorePlugin, _apiPlugin, _authPlugin]);
 
     // Once Plugins are added, configure Amplify
-    await Amplify.configure(amplifyconfig);
+    //await Amplify.configure(amplifyconfig);
     try {
       setState(() {
         _amplifyConfigured = true;
@@ -125,21 +127,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _getBlog() async {
-    try {
+    /*try {
       List<Blog> Blogs = await Amplify.DataStore.query(Blog.classType);
       print(Blogs);
     } catch (e) {
       print("Could not query DataStore: ");
-    }
+    }*/
   }
 
   void _createBlog() async {
-    try {
+    /*try {
       final item = Blog(name: "blog 1");
       await Amplify.DataStore.save(item);
     } catch (e) {
       print("Could not query DataStore: ");
-    }
+    }*/
   }
 
   void _incrementCounter() {

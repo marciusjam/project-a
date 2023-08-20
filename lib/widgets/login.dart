@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_login/flutter_login.dart';
 
@@ -78,12 +78,12 @@ class _LoginState extends State<Login> {
   Future<String?> _signupUser(SignupData data) {
     return Future.delayed(loginTime).then((_) async {
       try {
-        await Amplify.Auth.signUp(
+        /*await Amplify.Auth.signUp(
             username: data.name.toString(),
             password: data.password,
             options: CognitoSignUpOptions(userAttributes: {
               'email': data.name.toString(),
-            }));
+            }));*/
 
         _signUpData = data;
         method = 'Signup';

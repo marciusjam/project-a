@@ -5,7 +5,7 @@ import 'package:agilay/widgets/post_widgets/imagecard_vert.dart';
 import 'package:agilay/widgets/post_widgets/videocard_horiz.dart';
 import 'package:agilay/widgets/post_widgets/videocard_vert.dart';
 import 'package:flutter/material.dart';
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
