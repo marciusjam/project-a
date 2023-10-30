@@ -1,10 +1,9 @@
 import 'package:agilay/widgets/home_bar.dart';
 import 'package:agilay/widgets/post_card.dart';
 import 'package:flutter/material.dart';
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Story {
   final String imageUrl;
@@ -125,12 +124,34 @@ class _InterestsPageState extends State<InterestsPage>
   @override
   void initState() {
     _scrollController = ScrollController();
-    _tabController = TabController(vsync: this, length: 4);
+    _tabController = TabController(vsync: this, length: 5);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.black, child: _pageView(list));
+    return Container(
+      child: Column(
+        children: [
+          /*Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 50, 0, 10),
+                child: GestureDetector(
+                    onTap: () {},
+                    child: const Text(
+                      "Interests",
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amber),
+                    )),
+              )
+            ],
+          ),*/
+          Expanded(child: _pageView(list))
+        ],
+      ),
+    );
   }
 }

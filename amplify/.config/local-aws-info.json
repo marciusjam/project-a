@@ -1,5 +1,7 @@
 {
-  "staging": {
-    "configLevel": "amplifyAdmin"
+  "dev": {
+    "configLevel": "project",
+    "useProfile": false,
+    "awsConfigFilePath": "C:\\Users\\Mac\\.amplify\\awscloudformation\\I2yT3gqo3O"
   }
 }

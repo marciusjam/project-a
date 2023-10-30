@@ -17,19 +17,25 @@
 // Generated files can be excluded from analysis in analysis_options.yaml
 // For more info, see: https://dart.dev/guides/language/analysis-options#excluding-code-from-analysis
 
-// ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
+// ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
-import 'package:flutter/foundation.dart';
+import 'ModelProvider.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
 
 /** This is an auto generated class representing the Comment type in your schema. */
-@immutable
-class Comment extends Model {
+class Comment extends amplify_core.Model {
   static const classType = const _CommentModelType();
   final String id;
-  final String? _postID;
   final String? _content;
+  final User? _user;
+  final String? _userId;
+  final Post? _post;
+  final String? _postId;
+  final amplify_core.TemporalDateTime? _createdOn;
+  final amplify_core.TemporalDateTime? _updatedOn;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -39,29 +45,63 @@ class Comment extends Model {
     return id;
   }
   
-  String get postID {
-    try {
-      return _postID!;
-    } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
-    }
-  }
-  
   String get content {
     try {
       return _content!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
-  const Comment._internal({required this.id, required postID, required content}): _postID = postID, _content = content;
+  User? get user {
+    return _user;
+  }
   
-  factory Comment({String? id, required String postID, required String content}) {
+  String? get userId {
+    return _userId;
+  }
+  
+  Post? get post {
+    return _post;
+  }
+  
+  String? get postId {
+    return _postId;
+  }
+  
+  amplify_core.TemporalDateTime? get createdOn {
+    return _createdOn;
+  }
+  
+  amplify_core.TemporalDateTime? get updatedOn {
+    return _updatedOn;
+  }
+  
+  amplify_core.TemporalDateTime? get createdAt {
+    return _createdAt;
+  }
+  
+  amplify_core.TemporalDateTime? get updatedAt {
+    return _updatedAt;
+  }
+  
+  const Comment._internal({required this.id, required content, user, userId, post, postId, createdOn, updatedOn, createdAt, updatedAt}): _content = content, _user = user, _userId = userId, _post = post, _postId = postId, _createdOn = createdOn, _updatedOn = updatedOn, _createdAt = createdAt, _updatedAt = updatedAt;
+  
+  factory Comment({String? id, required String content, User? user, String? userId, Post? post, String? postId, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
     return Comment._internal(
-      id: id == null ? UUID.getUUID() : id,
-      postID: postID,
-      content: content);
+      id: id == null ? amplify_core.UUID.getUUID() : id,
+      content: content,
+      user: user,
+      userId: userId,
+      post: post,
+      postId: postId,
+      createdOn: createdOn,
+      updatedOn: updatedOn);
   }
   
   bool equals(Object other) {
@@ -73,8 +113,13 @@ class Comment extends Model {
     if (identical(other, this)) return true;
     return other is Comment &&
       id == other.id &&
-      _postID == other._postID &&
-      _content == other._content;
+      _content == other._content &&
+      _user == other._user &&
+      _userId == other._userId &&
+      _post == other._post &&
+      _postId == other._postId &&
+      _createdOn == other._createdOn &&
+      _updatedOn == other._updatedOn;
   }
   
   @override
@@ -86,68 +131,177 @@ class Comment extends Model {
     
     buffer.write("Comment {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("postID=" + "$_postID" + ", ");
-    buffer.write("content=" + "$_content");
+    buffer.write("content=" + "$_content" + ", ");
+    buffer.write("userId=" + "$_userId" + ", ");
+    buffer.write("postId=" + "$_postId" + ", ");
+    buffer.write("createdOn=" + (_createdOn != null ? _createdOn!.format() : "null") + ", ");
+    buffer.write("updatedOn=" + (_updatedOn != null ? _updatedOn!.format() : "null") + ", ");
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Comment copyWith({String? id, String? postID, String? content}) {
-    return Comment(
+  Comment copyWith({String? id, String? content, User? user, String? userId, Post? post, String? postId, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
+    return Comment._internal(
       id: id ?? this.id,
-      postID: postID ?? this.postID,
-      content: content ?? this.content);
+      content: content ?? this.content,
+      user: user ?? this.user,
+      userId: userId ?? this.userId,
+      post: post ?? this.post,
+      postId: postId ?? this.postId,
+      createdOn: createdOn ?? this.createdOn,
+      updatedOn: updatedOn ?? this.updatedOn);
+  }
+  
+  Comment copyWithModelFieldValues({
+    ModelFieldValue<String>? id,
+    ModelFieldValue<String>? content,
+    ModelFieldValue<User?>? user,
+    ModelFieldValue<String?>? userId,
+    ModelFieldValue<Post?>? post,
+    ModelFieldValue<String?>? postId,
+    ModelFieldValue<amplify_core.TemporalDateTime?>? createdOn,
+    ModelFieldValue<amplify_core.TemporalDateTime?>? updatedOn
+  }) {
+    return Comment._internal(
+      id: id == null ? this.id : id.value,
+      content: content == null ? this.content : content.value,
+      user: user == null ? this.user : user.value,
+      userId: userId == null ? this.userId : userId.value,
+      post: post == null ? this.post : post.value,
+      postId: postId == null ? this.postId : postId.value,
+      createdOn: createdOn == null ? this.createdOn : createdOn.value,
+      updatedOn: updatedOn == null ? this.updatedOn : updatedOn.value
+    );
   }
   
   Comment.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _postID = json['postID'],
-      _content = json['content'];
+      _content = json['content'],
+      _user = json['user']?['serializedData'] != null
+        ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
+        : null,
+      _userId = json['userId'],
+      _post = json['post']?['serializedData'] != null
+        ? Post.fromJson(new Map<String, dynamic>.from(json['post']['serializedData']))
+        : null,
+      _postId = json['postId'],
+      _createdOn = json['createdOn'] != null ? amplify_core.TemporalDateTime.fromString(json['createdOn']) : null,
+      _updatedOn = json['updatedOn'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedOn']) : null,
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'postID': _postID, 'content': _content
+    'id': id, 'content': _content, 'user': _user?.toJson(), 'userId': _userId, 'post': _post?.toJson(), 'postId': _postId, 'createdOn': _createdOn?.format(), 'updatedOn': _updatedOn?.format(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+  };
+  
+  Map<String, Object?> toMap() => {
+    'id': id,
+    'content': _content,
+    'user': _user,
+    'userId': _userId,
+    'post': _post,
+    'postId': _postId,
+    'createdOn': _createdOn,
+    'updatedOn': _updatedOn,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt
   };
 
-  static final QueryField ID = QueryField(fieldName: "comment.id");
-  static final QueryField POSTID = QueryField(fieldName: "postID");
-  static final QueryField CONTENT = QueryField(fieldName: "content");
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final CONTENT = amplify_core.QueryField(fieldName: "content");
+  static final USER = amplify_core.QueryField(
+    fieldName: "user",
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'User'));
+  static final USERID = amplify_core.QueryField(fieldName: "userId");
+  static final POST = amplify_core.QueryField(
+    fieldName: "post",
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Post'));
+  static final POSTID = amplify_core.QueryField(fieldName: "postId");
+  static final CREATEDON = amplify_core.QueryField(fieldName: "createdOn");
+  static final UPDATEDON = amplify_core.QueryField(fieldName: "updatedOn");
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Comment";
     modelSchemaDefinition.pluralName = "Comments";
     
-    modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.PUBLIC,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
-        ])
+    modelSchemaDefinition.indexes = [
+      amplify_core.ModelIndex(fields: const ["postId", "createdOn"], name: "byPost")
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Comment.POSTID,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Comment.CONTENT,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
+      key: Comment.USER,
+      isRequired: false,
+      ofModelName: 'User',
+      associatedKey: User.ID
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Comment.USERID,
+      isRequired: false,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
+      key: Comment.POST,
+      isRequired: false,
+      ofModelName: 'Post',
+      associatedKey: Post.COMMENTS
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Comment.POSTID,
+      isRequired: false,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Comment.CREATEDON,
+      isRequired: false,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Comment.UPDATEDON,
+      isRequired: false,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
   });
 }
 
-class _CommentModelType extends ModelType<Comment> {
+class _CommentModelType extends amplify_core.ModelType<Comment> {
   const _CommentModelType();
   
   @override
   Comment fromJson(Map<String, dynamic> jsonData) {
     return Comment.fromJson(jsonData);
+  }
+  
+  @override
+  String modelName() {
+    return 'Comment';
   }
 }

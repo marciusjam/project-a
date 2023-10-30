@@ -1,10 +1,26 @@
+import 'package:agilay/main.dart';
 import 'package:agilay/widgets/home_bar.dart';
+import 'package:agilay/widgets/login.dart';
 import 'package:agilay/widgets/post_card.dart';
 import 'package:flutter/material.dart';
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+void _signOutAndNavigateToLogin(BuildContext context) async {
+  try {
+    await Amplify.Auth.signOut();
+    // Navigate to the login page
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MyApp(),
+      ),
+    );
+  } catch (e) {
+    print('Error during sign-out: $e');
+  }
+}
 
 class NotificationItem {
   final String title;
@@ -81,10 +97,24 @@ class _SideMenuPageState extends State<SideMenuPage>
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.fromLTRB(15, 15, 15, 5),
-        //height: 250,
-
-        width: double.maxFinite,
-        child: _notificationList(notifications));
+      height: 500,
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(15, 15, 15, 5),
+            height: 250,
+            width: double.maxFinite,
+            child: _notificationList(notifications),
+          ),
+          Container(
+            height: 30,
+            child: ElevatedButton(
+              onPressed: () => _signOutAndNavigateToLogin(context),
+              child: Text('Sign Out'),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

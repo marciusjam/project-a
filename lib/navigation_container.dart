@@ -5,7 +5,7 @@ import 'package:agilay/screens/profile_page.dart';
 import 'package:agilay/screens/search_page.dart';
 import 'package:agilay/widgets/navigation_bar.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'amplifyconfiguration.dart';
@@ -19,13 +19,12 @@ class NavigationContainer extends StatefulWidget {
 
 class _NavigationContainerState extends State<NavigationContainer> {
   int _selectedPageIndex = 0;
-  final amplify = Amplify;
   bool _amplifyConfigured = false;
 
   static const List<Widget> _pages = [
     HomePage(),
     SearchPage(),
-    NewPostPage(),
+    //NewPostPage(),
     ChatPage(),
     //ProfilePage(),
   ];
@@ -64,11 +63,9 @@ class _NavigationContainerState extends State<NavigationContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: _pages[_selectedPageIndex],
-        ),
-        bottomNavigationBar: NavigationBottomBar(
-            selectedPageIndex: _selectedPageIndex, onIconTap: _onIconTapped));
+      backgroundColor: Colors.white,
+      body: _pages[_selectedPageIndex],
+    );
+    //bottomNavigationBar: NavigationBottomBar( selectedPageIndex: _selectedPageIndex, onIconTap: _onIconTapped));
   }
 }

@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -29,11 +29,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_login: ^3.0.0
-  amplify_flutter: ^0.2.0
-  amplify_datastore: ^0.2.0
-  amplify_api: ^0.2.0
-  amplify_auth_cognito: ^0.2.0
+  flutter_login: ^4.2.1
+  amplify_flutter: ^1.4.1
+  amplify_datastore: ^1.4.0
+  amplify_api: ^1.4.0
+  amplify_auth_cognito: ^1.4.1
   # amplify_api: ^0.2.0 // UNCOMMENT this line after backend is deployed
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -41,16 +41,26 @@ dependencies:
 
   expandable_text: ^2.2.0
   marquee: ^2.2.0
-  video_player: ^2.2.9 
-  lottie: ^1.1.0
-  google_fonts: 2.2.0
-  flutter_svg: ^0.22.0
-  another_flushbar: 1.10.28
+  video_player: ^2.7.1 
+  lottie: ^2.6.0
+  flutter_svg: ^2.0.7
+  another_flushbar: ^1.12.30
 
-  flutter_slidable: ^1.1.0
+  flutter_slidable: ^3.0.0
+
+  camera: ^0.10.0
+  image_picker: ^1.0.4
+  multi_image_picker: ^4.8.01
+  photo_manager: ^2.6.0
+  oktoast: ^3.3.1
+  permission_handler: ^11.0.0
+  flutter_staggered_grid_view: ^0.7.0
+  mime: ^1.0.4
+  path_provider: ^2.1.1
+  flutter_native_image: ^0.0.6+1
 
 dependency_overrides:
-  url_launcher_web: 2.0.6
+  url_launcher_web: ^2.0.20
 
 dev_dependencies:
   flutter_test:
@@ -61,8 +71,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
-  flutter_launcher_icons: "^0.9.2"
+  flutter_lints: ^2.0.3
+  flutter_launcher_icons: ^0.13.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -79,7 +89,13 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  fonts:
+    - family: Gotham-Black     
+      fonts:
+        - asset: assets/Gotham-Black.otf
+    - family: GothamBold    
+      fonts:
+        - asset: assets/GothamBold.ttf
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/

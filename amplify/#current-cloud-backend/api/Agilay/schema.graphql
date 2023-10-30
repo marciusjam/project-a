@@ -1,18 +1,58 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+# FOR TESTING ONLY! input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } 
 
-    type Blog @model @auth(rules: [{allow: public}]) {
-        id: ID!
-        name: String!
-        posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
-      }
-      type Post @model @key(name: "byBlog", fields: ["blogID"]) @auth(rules: [{allow: public}]) {
-        id: ID!
-        title: String!
-        blogID: ID!
-        comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
-      }
-      type Comment @model @key(name: "byPost", fields: ["postID"]) @auth(rules: [{allow: public}]) {
-        id: ID!
-        postID: ID!
-        content: String!
-      }
-    
+type User @model {
+  id: ID!
+  username: String! 
+  email: String! 
+  phoneNumber: String! 
+  bio: String
+  followers: [User]
+  posts: [Post] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+type Post @model {
+  id: ID!
+  description: String!
+  image: String
+  video: String
+  comments: [Comment] @hasMany(indexName: "byPost", fields: ["id"])
+  likes: [Like]
+  upvotes: [Upvote]
+  user: User @hasOne(fields: ["userId"])
+  userId: ID @index(name: "byUser", sortKeyFields: ["createdOn"])
+  createdOn: AWSDateTime
+  updatedOn: AWSDateTime
+}
+
+type Comment @model {
+  id: ID!
+  likes: [Like]
+  content: String!
+  user: User @hasOne(fields: ["userId"])
+  userId: ID
+  post: Post @hasOne(fields: ["postId"])
+  postId: ID @index(name: "byPost", sortKeyFields: ["createdOn"])
+  createdOn: AWSDateTime
+  updatedOn: AWSDateTime
+}
+
+type Like @model {
+  id: ID!
+  user: User @hasOne(fields: ["userId"])
+  userId: ID
+  post: Post @hasOne(fields: ["postId"])
+  postId: ID
+  comment: Comment @hasOne(fields: ["commentId"])
+  commentId: ID
+}
+
+type Upvote @model {
+  id: ID!
+  user: User @hasOne(fields: ["userId"])
+  userId: ID
+  post: Post @hasOne(fields: ["postId"])
+  postId: ID
+}
+

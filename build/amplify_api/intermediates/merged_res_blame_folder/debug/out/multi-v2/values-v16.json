@@ -4,7 +4,7 @@
             "outputFile": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\res\\merged\\debug\\values-v16\\values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\464699ef3cd3e523030d96dfaeabe998\\core-1.3.2\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -38,7 +38,7 @@
             "outputFile": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v16\\values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\464699ef3cd3e523030d96dfaeabe998\\core-1.3.2\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

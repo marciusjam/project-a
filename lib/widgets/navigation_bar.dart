@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class NavigationBottomBar extends StatelessWidget {
   const NavigationBottomBar(
@@ -14,7 +13,7 @@ class NavigationBottomBar extends StatelessWidget {
     final barHeight = MediaQuery.of(context).size.height * 0.06;
     final style = Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 11);
     return BottomAppBar(
-      color: Colors.black,
+      color: Colors.white,
       elevation: 0,
       child: Container(
         height: barHeight,
@@ -77,7 +76,7 @@ class NavigationBottomBar extends StatelessWidget {
       int index, String label, TextStyle textStyle, String iconName) {
     bool isSelected = selectedPageIndex == index;
     //Color iconAndTextColor = isSelected ? Colors.amber : Colors.black12;
-    Color iconAndTextColor = isSelected ? Colors.amber : Colors.white;
+    Color iconAndTextColor = isSelected ? Colors.amber : Colors.black12;
 
     double defaultHeight = 25;
     double defaultWidth = 25;

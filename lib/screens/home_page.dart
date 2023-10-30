@@ -1,14 +1,40 @@
+import 'package:agilay/screens/chat_page.dart';
 import 'package:agilay/screens/discover_page.dart';
 import 'package:agilay/screens/interests_page.dart';
+import 'package:agilay/screens/new_post_page.dart';
 import 'package:agilay/screens/profile_page.dart';
 import 'package:agilay/screens/sidemenu_page.dart';
 import 'package:agilay/widgets/home_bar.dart';
 import 'package:agilay/widgets/post_card.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return new Container(
+      child: _tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
+  }
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,13 +45,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  int _selectedPageIndex = 1;
+  late List<CameraDescription> cameras;
+  int _selectedPageIndex = 0;
 
-  List<Widget> _pages = [
-    SideMenuPage(),
+  final List<Widget> _pages = [
+    //SideMenuPage(),
+    //ProfilePage(),
     InterestsPage(),
-    DiscoverPage(),
-    ProfilePage(),
+    ChatPage(),
+    //NewPostPage(cameras: cameras),
+    //DiscoverPage(),
+    //ProfilePage(),
   ];
 
   var _scrollController, _tabController;
@@ -42,6 +72,7 @@ class _HomePageState extends State<HomePage>
   }
 
   void onIconTap(int index) {
+    debugPrint('index ' + index.toString());
     setState(() {
       _selectedPageIndex = index;
     });
@@ -50,13 +81,20 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     _scrollController = ScrollController();
-    _tabController = TabController(vsync: this, length: 4);
+    _tabController = TabController(vsync: this, length: 2);
+    initializeCameras();
     super.initState();
+  }
+
+  Future<void> initializeCameras() async {
+    cameras = await availableCameras();
+    setState(() {}); // Trigger a rebuild to display camera descriptions
   }
 
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
+      floatHeaderSlivers: true,
       controller: _scrollController,
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
@@ -64,6 +102,7 @@ class _HomePageState extends State<HomePage>
             _tabController,
             onIconTap: onIconTap,
             selectedPageIndex: _selectedPageIndex,
+            cameras: cameras,
           ),
         ];
       },

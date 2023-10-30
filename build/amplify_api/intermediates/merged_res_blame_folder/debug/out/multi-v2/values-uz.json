@@ -21,23 +21,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\464699ef3cd3e523030d96dfaeabe998\\core-1.3.2\\res\\values-uz\\values-uz.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "38",
-                        "startColumns": "4",
-                        "startOffsets": "3593",
-                        "endColumns": "100",
-                        "endOffsets": "3689"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\7d570f8bb15569fb6f212dfde3b8b116\\navigation-ui-2.3.4\\res\\values-uz\\values-uz.xml",
                     "from": {
                         "startLines": "2,3",
@@ -69,6 +52,23 @@
                         "startOffsets": "105,210,305,405,487,587,704,789,867,958,1051,1146,1240,1334,1427,1522,1617,1708,1800,1884,1994,2100,2200,2308,2414,2516,2677,3509",
                         "endColumns": "104,94,99,81,99,116,84,77,90,92,94,93,93,92,94,94,90,91,83,109,105,99,107,105,101,160,98,83",
                         "endOffsets": "205,300,400,482,582,699,784,862,953,1046,1141,1235,1329,1422,1517,1612,1703,1795,1879,1989,2095,2195,2303,2409,2511,2672,2771,3588"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\values-uz\\values-uz.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "38",
+                        "startColumns": "4",
+                        "startOffsets": "3593",
+                        "endColumns": "100",
+                        "endOffsets": "3689"
                     }
                 }
             ]
@@ -94,23 +94,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\464699ef3cd3e523030d96dfaeabe998\\core-1.3.2\\res\\values-uz\\values-uz.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "38",
-                        "startColumns": "4",
-                        "startOffsets": "3593",
-                        "endColumns": "100",
-                        "endOffsets": "3689"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\7d570f8bb15569fb6f212dfde3b8b116\\navigation-ui-2.3.4\\res\\values-uz\\values-uz.xml",
                     "from": {
                         "startLines": "2,3",
@@ -142,6 +125,23 @@
                         "startOffsets": "105,210,305,405,487,587,704,789,867,958,1051,1146,1240,1334,1427,1522,1617,1708,1800,1884,1994,2100,2200,2308,2414,2516,2677,3509",
                         "endColumns": "104,94,99,81,99,116,84,77,90,92,94,93,93,92,94,94,90,91,83,109,105,99,107,105,101,160,98,83",
                         "endOffsets": "205,300,400,482,582,699,784,862,953,1046,1141,1235,1329,1422,1517,1612,1703,1795,1879,1989,2095,2195,2303,2409,2511,2672,2771,3588"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\values-uz\\values-uz.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "38",
+                        "startColumns": "4",
+                        "startOffsets": "3593",
+                        "endColumns": "100",
+                        "endOffsets": "3689"
                     }
                 }
             ]

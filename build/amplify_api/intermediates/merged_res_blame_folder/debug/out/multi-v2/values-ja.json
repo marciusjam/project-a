@@ -4,6 +4,23 @@
             "outputFile": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ja\\values-ja.xml",
             "map": [
                 {
+                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\values-ja\\values-ja.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "38",
+                        "startColumns": "4",
+                        "startOffsets": "3470",
+                        "endColumns": "100",
+                        "endOffsets": "3566"
+                    }
+                },
+                {
                     "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\7d570f8bb15569fb6f212dfde3b8b116\\navigation-ui-2.3.4\\res\\values-ja\\values-ja.xml",
                     "from": {
                         "startLines": "2,3",
@@ -18,23 +35,6 @@
                         "startOffsets": "2977,3076",
                         "endColumns": "98,109",
                         "endOffsets": "3071,3181"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\464699ef3cd3e523030d96dfaeabe998\\core-1.3.2\\res\\values-ja\\values-ja.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "38",
-                        "startColumns": "4",
-                        "startOffsets": "3470",
-                        "endColumns": "100",
-                        "endOffsets": "3566"
                     }
                 },
                 {
@@ -77,6 +77,23 @@
             "outputFile": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\res\\merged\\debug\\values-ja\\values-ja.xml",
             "map": [
                 {
+                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\values-ja\\values-ja.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "38",
+                        "startColumns": "4",
+                        "startOffsets": "3470",
+                        "endColumns": "100",
+                        "endOffsets": "3566"
+                    }
+                },
+                {
                     "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\7d570f8bb15569fb6f212dfde3b8b116\\navigation-ui-2.3.4\\res\\values-ja\\values-ja.xml",
                     "from": {
                         "startLines": "2,3",
@@ -91,23 +108,6 @@
                         "startOffsets": "2977,3076",
                         "endColumns": "98,109",
                         "endOffsets": "3071,3181"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\464699ef3cd3e523030d96dfaeabe998\\core-1.3.2\\res\\values-ja\\values-ja.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "38",
-                        "startColumns": "4",
-                        "startOffsets": "3470",
-                        "endColumns": "100",
-                        "endOffsets": "3566"
                     }
                 },
                 {

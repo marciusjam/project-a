@@ -4,23 +4,6 @@
             "outputFile": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\res\\merged\\debug\\values-mk\\values-mk.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\f2231dfb7ea06800eb5ba25e3170f983\\core-1.3.1\\res\\values-mk\\values-mk.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "42",
-                        "startColumns": "4",
-                        "startOffsets": "4103",
-                        "endColumns": "100",
-                        "endOffsets": "4199"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\a9fbc0a4f3822900d28de2b4f8b90f0d\\jetified-navigation-dynamic-features-fragment-2.3.4\\res\\values-mk\\values-mk.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
@@ -35,6 +18,23 @@
                         "startOffsets": "3253,3359,3460,3791,3859,3936",
                         "endColumns": "105,100,97,67,76,81",
                         "endOffsets": "3354,3455,3553,3854,3931,4013"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\values-mk\\values-mk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "42",
+                        "startColumns": "4",
+                        "startOffsets": "4103",
+                        "endColumns": "100",
+                        "endOffsets": "4199"
                     }
                 },
                 {
@@ -94,23 +94,6 @@
             "outputFile": "T:\\JAM\\agilay\\agilay\\build\\amplify_auth_cognito\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-mk\\values-mk.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\f2231dfb7ea06800eb5ba25e3170f983\\core-1.3.1\\res\\values-mk\\values-mk.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "42",
-                        "startColumns": "4",
-                        "startOffsets": "4103",
-                        "endColumns": "100",
-                        "endOffsets": "4199"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\a9fbc0a4f3822900d28de2b4f8b90f0d\\jetified-navigation-dynamic-features-fragment-2.3.4\\res\\values-mk\\values-mk.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
@@ -125,6 +108,23 @@
                         "startOffsets": "3253,3359,3460,3791,3859,3936",
                         "endColumns": "105,100,97,67,76,81",
                         "endOffsets": "3354,3455,3553,3854,3931,4013"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\values-mk\\values-mk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "42",
+                        "startColumns": "4",
+                        "startOffsets": "4103",
+                        "endColumns": "100",
+                        "endOffsets": "4199"
                     }
                 },
                 {

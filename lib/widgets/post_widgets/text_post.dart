@@ -12,7 +12,7 @@ class TextPost extends StatelessWidget {
     return Container(
         child: Column(children: [
       Card(
-          color: Colors.black, //Dark Mode
+          color: Colors.white, //Dark Mode
           elevation: elavationVal,
           shape: new RoundedRectangleBorder(
             side: new BorderSide(color: Colors.white, width: .3),
@@ -65,8 +65,8 @@ class TextPost extends StatelessWidget {
                                     Text(
                                       'Marcius',
                                       style: TextStyle(
-                                          //color: Colors.black,
-                                          color: Colors.white,
+                                          color: Colors.black,
+                                          //color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15),
                                     ),
@@ -79,8 +79,8 @@ class TextPost extends StatelessWidget {
                                             text:
                                                 'I know I got this. I just need to grind this son of a bitch. Lorem ipsum is the key to generate random sentences. 💯',
                                             style: TextStyle(
-                                                //color: Colors.black,
-                                                color: Colors.white,
+                                                color: Colors.black,
+                                                //color: Colors.white,
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 15),
                                           ),
@@ -93,8 +93,8 @@ class TextPost extends StatelessWidget {
                                       child: Text(
                                         '10 mins ago',
                                         style: TextStyle(
-                                            //color: Colors.grey,
-                                            color: Colors.white,
+                                            color: Colors.grey,
+                                            //color: Colors.white,
                                             fontWeight: FontWeight.normal,
                                             fontSize: 11),
                                       ),
@@ -134,8 +134,8 @@ class TextPost extends StatelessWidget {
                                                       0, 0, 0, 0),
                                                   child: Icon(
                                                     Icons.chat_bubble_outline,
-                                                    //color: Colors.black12,
-                                                    color: Colors.white,
+                                                    color: Colors.black12,
+                                                    //color: Colors.white,
                                                   ),
                                                 ),
                                                 Padding(
@@ -144,8 +144,8 @@ class TextPost extends StatelessWidget {
                                                             5, 0, 0, 0),
                                                     child: Text('300',
                                                         style: TextStyle(
-                                                            //color: Colors.grey,
-                                                            color: Colors.white,
+                                                            color: Colors.grey,
+                                                            //color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .normal,
@@ -167,8 +167,8 @@ class TextPost extends StatelessWidget {
                                                       0, 0, 0, 0),
                                                   child: Icon(
                                                     Icons.favorite_outline,
-                                                    //color: Colors.black12,
-                                                    color: Colors.white,
+                                                    color: Colors.black12,
+                                                    //color: Colors.white,
                                                   ),
                                                 ),
                                                 Padding(
@@ -177,8 +177,8 @@ class TextPost extends StatelessWidget {
                                                             5, 0, 0, 0),
                                                     child: Text('1.2m',
                                                         style: TextStyle(
-                                                            //color: Colors.grey,
-                                                            color: Colors.white,
+                                                            color: Colors.grey,
+                                                            //color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .normal,
@@ -202,8 +202,8 @@ class TextPost extends StatelessWidget {
                                                       child: Icon(
                                                         Icons
                                                             .swap_horiz_outlined,
-                                                        //color: Colors.black12,
-                                                        color: Colors.white,
+                                                        color: Colors.black12,
+                                                        //color: Colors.white,
                                                       ),
                                                     ),
                                                     Padding(
@@ -212,9 +212,9 @@ class TextPost extends StatelessWidget {
                                                                 5, 0, 0, 0),
                                                         child: Text('25',
                                                             style: TextStyle(
-                                                                //color: Colors.grey,
-                                                                color: Colors
-                                                                    .white,
+                                                                color:
+                                                                    Colors.grey,
+                                                                //color: Colors.white,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,

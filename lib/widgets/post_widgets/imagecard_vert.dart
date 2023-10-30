@@ -37,7 +37,7 @@ class ImageCardVert extends StatelessWidget {
             )),*/
         Card(
             elevation: elavationVal,
-            color: Colors.black, //Dark Mode
+            color: Colors.white, //Dark Mode
             shape: new RoundedRectangleBorder(
               side: new BorderSide(color: Colors.white, width: .3),
               borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
@@ -116,8 +116,8 @@ class ImageCardVert extends StatelessWidget {
                                             Text(
                                               'Marcius',
                                               style: TextStyle(
-                                                  //color: Colors.black,
-                                                  color: Colors.white,
+                                                  color: Colors.black,
+                                                  //color: Colors.white,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 15),
                                             ),
@@ -131,8 +131,8 @@ class ImageCardVert extends StatelessWidget {
                                                     text:
                                                         'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, but also the leap into electronic typesetting. ❤️💯',
                                                     style: TextStyle(
-                                                        //color: Colors.black,
-                                                        color: Colors.white,
+                                                        color: Colors.black,
+                                                        //color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                         fontSize: 15),
@@ -147,8 +147,8 @@ class ImageCardVert extends StatelessWidget {
                                               child: Text(
                                                 '3 hours ago',
                                                 style: TextStyle(
-                                                    //color: Colors.grey,
-                                                    color: Colors.white,
+                                                    color: Colors.grey,
+                                                    //color: Colors.white,
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     fontSize: 11),
@@ -207,8 +207,9 @@ class ImageCardVert extends StatelessWidget {
                                                           child: Icon(
                                                             Icons
                                                                 .chat_bubble_outline,
-                                                            //color: Colors.black12,
-                                                            color: Colors.white,
+                                                            color:
+                                                                Colors.black12,
+                                                            //color: Colors.white,
                                                           ),
                                                         ),
                                                         Padding(
@@ -217,8 +218,8 @@ class ImageCardVert extends StatelessWidget {
                                                                     5, 0, 0, 0),
                                                             child: Text('32',
                                                                 style: TextStyle(
-                                                                    //color: Colors.grey,
-                                                                    color: Colors.white,
+                                                                    color: Colors.grey,
+                                                                    //color: Colors.white,
                                                                     fontWeight: FontWeight.normal,
                                                                     fontSize: 15))),
                                                       ],
@@ -240,8 +241,9 @@ class ImageCardVert extends StatelessWidget {
                                                           child: Icon(
                                                             Icons
                                                                 .favorite_outline,
-                                                            //color: Colors.black12,
-                                                            color: Colors.white,
+                                                            color:
+                                                                Colors.black12,
+                                                            //color: Colors.white,
                                                           ),
                                                         ),
                                                         Padding(
@@ -250,8 +252,8 @@ class ImageCardVert extends StatelessWidget {
                                                                     5, 0, 0, 0),
                                                             child: Text('20',
                                                                 style: TextStyle(
-                                                                    //color: Colors.grey,
-                                                                    color: Colors.white,
+                                                                    color: Colors.grey,
+                                                                    //color: Colors.white,
                                                                     fontWeight: FontWeight.normal,
                                                                     fontSize: 15))),
                                                       ],
@@ -278,9 +280,9 @@ class ImageCardVert extends StatelessWidget {
                                                               child: Icon(
                                                                 Icons
                                                                     .swap_horiz_outlined,
-                                                                //color: Colors.black12,
                                                                 color: Colors
-                                                                    .white,
+                                                                    .black12,
+                                                                //color: Colors.white,
                                                               ),
                                                             ),
                                                             Padding(
@@ -294,8 +296,8 @@ class ImageCardVert extends StatelessWidget {
                                                                 child: Text(
                                                                     '1.2k',
                                                                     style: TextStyle(
-                                                                        //color: Colors.grey,
-                                                                        color: Colors.white,
+                                                                        color: Colors.grey,
+                                                                        //color: Colors.white,
                                                                         fontWeight: FontWeight.normal,
                                                                         fontSize: 15))),
                                                           ],

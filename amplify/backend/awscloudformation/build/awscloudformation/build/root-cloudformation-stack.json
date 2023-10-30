@@ -152,59 +152,40 @@
         }
       }
     },
-    "apiAgilay": {
+    "authagilay6a5aabdd": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-agilay-staging-190336-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/auth/agilay6a5aabdd-cloudformation-template.json",
         "Parameters": {
-          "CreateAPIKey": 1,
-          "AppSyncApiName": "Agilay",
-          "DynamoDBBillingMode": "PAY_PER_REQUEST",
-          "DynamoDBEnableServerSideEncryption": false,
-          "S3DeploymentBucket": "amplify-agilay-staging-190336-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/f01f11284b66b7d7ad20977e64e97add7761d762",
-          "env": "staging"
-        }
-      }
-    },
-    "authAgilay": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-agilay-staging-190336-deployment/amplify-cfn-templates/auth/Agilay-cloudformation-template.json",
-        "Parameters": {
-          "identityPoolName": "testAuthIdentityPool",
+          "identityPoolName": "agilay6a5aabdd_identitypool_6a5aabdd",
           "allowUnauthenticatedIdentities": false,
-          "resourceNameTruncated": "agilaydc466a39",
-          "userPoolName": "Agilay",
+          "resourceNameTruncated": "agilay6a5aabdd",
+          "userPoolName": "agilay6a5aabdd_userpool_6a5aabdd",
           "autoVerifiedAttributes": "email",
           "mfaConfiguration": "OFF",
           "mfaTypes": "SMS Text Message",
           "smsAuthenticationMessage": "Your authentication code is {####}",
           "smsVerificationMessage": "Your verification code is {####}",
-          "emailVerificationSubject": "Forgot password code: {####}",
-          "emailVerificationMessage": "Forgot password code: {####}",
+          "emailVerificationSubject": "Your verification code",
+          "emailVerificationMessage": "Your verification code is {####}",
           "defaultPasswordPolicy": false,
           "passwordPolicyMinLength": 8,
-          "passwordPolicyCharacters": "Requires Lowercase,Requires Numbers,Requires Symbols,Requires Uppercase",
+          "passwordPolicyCharacters": "",
           "requiredAttributes": "email",
           "aliasAttributes": "",
           "userpoolClientGenerateSecret": false,
           "userpoolClientRefreshTokenValidity": 30,
-          "userpoolClientWriteAttributes": "",
-          "userpoolClientReadAttributes": "",
-          "userpoolClientLambdaRole": "Agilaydc466a39_userpoolclient_lambda_role",
+          "userpoolClientWriteAttributes": "email",
+          "userpoolClientReadAttributes": "email",
+          "userpoolClientLambdaRole": "agilay6a5aabdd_userpoolclient_lambda_role",
           "userpoolClientSetAttributes": false,
-          "sharedId": "dc466a39",
-          "resourceName": "Agilay",
+          "sharedId": "6a5aabdd",
+          "resourceName": "agilay6a5aabdd",
           "authSelections": "identityPoolAndUserPool",
-          "serviceName": "Cognito",
-          "usernameAttributes": "email",
-          "useDefault": "manual",
-          "userPoolGroups": false,
+          "useDefault": "default",
+          "usernameAttributes": "email, phone_number",
           "userPoolGroupList": "",
-          "adminQueries": false,
-          "thirdPartyAuth": false,
-          "authProviders": "",
+          "serviceName": "Cognito",
           "usernameCaseSensitive": false,
           "useEnabledMfas": true,
           "authRoleArn": {
@@ -221,7 +202,60 @@
           },
           "breakCircularDependency": true,
           "dependsOn": "",
-          "env": "staging"
+          "env": "dev"
+        }
+      }
+    },
+    "storages328525ba1": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "Parameters": {
+          "bucketName": "agilay51cb75ea91264f98aea831d548621e09",
+          "selectedGuestPermissions": "",
+          "selectedAuthenticatedPermissions": "s3:PutObject,s3:GetObject,s3:ListBucket,s3:DeleteObject",
+          "unauthRoleName": {
+            "Ref": "UnauthRoleName"
+          },
+          "authRoleName": {
+            "Ref": "AuthRoleName"
+          },
+          "s3PrivatePolicy": "Private_policy_28525ba1",
+          "s3ProtectedPolicy": "Protected_policy_28525ba1",
+          "s3PublicPolicy": "Public_policy_28525ba1",
+          "s3ReadPolicy": "read_policy_28525ba1",
+          "s3UploadsPolicy": "Uploads_policy_28525ba1",
+          "authPolicyName": "s3_amplify_28525ba1",
+          "unauthPolicyName": "s3_amplify_28525ba1",
+          "AuthenticatedAllowList": "ALLOW",
+          "GuestAllowList": "DISALLOW",
+          "s3PermissionsAuthenticatedPrivate": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+          "s3PermissionsAuthenticatedProtected": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+          "s3PermissionsAuthenticatedPublic": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+          "s3PermissionsAuthenticatedUploads": "s3:PutObject",
+          "s3PermissionsGuestPublic": "DISALLOW",
+          "s3PermissionsGuestUploads": "DISALLOW",
+          "env": "dev"
+        }
+      }
+    },
+    "apiagilay": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "Parameters": {
+          "AppSyncApiName": "agilay",
+          "DynamoDBBillingMode": "PAY_PER_REQUEST",
+          "DynamoDBEnableServerSideEncryption": false,
+          "AuthCognitoUserPoolId": {
+            "Fn::GetAtt": [
+              "authagilay6a5aabdd",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "S3DeploymentBucket": "amplify-agilay-dev-40209-deployment",
+          "S3DeploymentRootKey": "amplify-appsync-files/681776a3d913590c358e2959828ce1634a354f50",
+          "env": "dev"
         }
       }
     },
@@ -229,7 +263,7 @@
       "DependsOn": [
         "AuthRole",
         "UnauthRole",
-        "authAgilay"
+        "authagilay6a5aabdd"
       ],
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -239,68 +273,81 @@
               "\n",
               [
                 "const response = require('cfn-response');",
-                "const aws = require('aws-sdk');",
-                "let responseData = {};",
+                "const { IAMClient, GetRoleCommand, UpdateAssumeRolePolicyCommand } = require('@aws-sdk/client-iam');",
                 "exports.handler = function(event, context) {",
-                "  try {",
-                "    let authRoleName = event.ResourceProperties.authRoleName;",
-                "    let unauthRoleName = event.ResourceProperties.unauthRoleName;",
-                "    let idpId = event.ResourceProperties.idpId;",
-                "    let promises = [];",
-                "    let getPromises = [];",
-                "    let authParamsJson = { 'Version': '2012-10-17','Statement': [{'Effect': 'Allow','Principal': {'Federated': 'cognito-identity.amazonaws.com'},'Action': 'sts:AssumeRoleWithWebIdentity','Condition': {'StringEquals': {'cognito-identity.amazonaws.com:aud': idpId},'ForAnyValue:StringLike': {'cognito-identity.amazonaws.com:amr': 'authenticated'}}}]};",
-                "    let unauthParamsJson = { 'Version': '2012-10-17','Statement': [{'Effect': 'Allow','Principal': {'Federated': 'cognito-identity.amazonaws.com'},'Action': 'sts:AssumeRoleWithWebIdentity','Condition': {'StringEquals': {'cognito-identity.amazonaws.com:aud': idpId},'ForAnyValue:StringLike': {'cognito-identity.amazonaws.com:amr': 'unauthenticated'}}}]};",
-                "    if (event.RequestType == 'Delete') {",
-                "        delete authParamsJson.Statement[0].Condition;",
-                "        delete unauthParamsJson.Statement[0].Condition;",
-                "        let authParams = { PolicyDocument: JSON.stringify(authParamsJson),RoleName: authRoleName};",
-                "        let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson),RoleName: unauthRoleName};",
-                "        const iam = new aws.IAM({ apiVersion: '2010-05-08', region: event.ResourceProperties.region});",
-                "        getPromises.push(iam.getRole({RoleName: authParams.RoleName}).promise());",
-                "        getPromises.push(iam.getRole({RoleName: unauthParams.RoleName}).promise());",
-                "        Promise.all(getPromises)",
-                "         .then((res) => {",
-                "        console.log('in res' , res)",
-                "           promises.push(iam.updateAssumeRolePolicy(authParams).promise());",
-                "           promises.push(iam.updateAssumeRolePolicy(unauthParams).promise());",
-                "           return Promise.all(promises)",
-                "             .then((res) => {",
-                "               console.log(\"delete response data\" + JSON.stringify(res));",
-                "               response.send(event, context, response.SUCCESS, {});",
-                "             });",
-                "          })",
-                "           .catch((err) => {",
-                "             console.log(err.stack);",
-                "             responseData = {Error: err};",
-                "             response.send(event, context, response.SUCCESS, responseData);",
-                "             })",
-                "    }",
-                "    if (event.RequestType == 'Update' || event.RequestType == 'Create') {",
-                "       const iam = new aws.IAM({ apiVersion: '2010-05-08', region: event.ResourceProperties.region});",
-                "        let authParams = { PolicyDocument: JSON.stringify(authParamsJson),RoleName: authRoleName};",
-                "        let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson),RoleName: unauthRoleName};",
-                "        promises.push(iam.updateAssumeRolePolicy(authParams).promise());",
-                "        promises.push(iam.updateAssumeRolePolicy(unauthParams).promise());",
-                "        Promise.all(promises)",
-                "         .then((res) => {",
-                "            console.log(\"createORupdate\" + res);",
-                "            console.log(\"response data\" + JSON.stringify(res));",
+                "    // Don't return promise, response.send() marks context as done internally",
+                "    const ignoredPromise = handleEvent(event, context)",
+                "};",
+                "async function handleEvent(event, context) {",
+                "    try {",
+                "        let authRoleName = event.ResourceProperties.authRoleName;",
+                "        let unauthRoleName = event.ResourceProperties.unauthRoleName;",
+                "        let idpId = event.ResourceProperties.idpId;",
+                "        let authParamsJson = {",
+                "            'Version': '2012-10-17',",
+                "            'Statement': [{",
+                "                'Effect': 'Allow',",
+                "                'Principal': {'Federated': 'cognito-identity.amazonaws.com'},",
+                "                'Action': 'sts:AssumeRoleWithWebIdentity',",
+                "                'Condition': {",
+                "                    'StringEquals': {'cognito-identity.amazonaws.com:aud': idpId},",
+                "                    'ForAnyValue:StringLike': {'cognito-identity.amazonaws.com:amr': 'authenticated'}",
+                "                }",
+                "            }]",
+                "        };",
+                "        let unauthParamsJson = {",
+                "            'Version': '2012-10-17',",
+                "            'Statement': [{",
+                "                'Effect': 'Allow',",
+                "                'Principal': {'Federated': 'cognito-identity.amazonaws.com'},",
+                "                'Action': 'sts:AssumeRoleWithWebIdentity',",
+                "                'Condition': {",
+                "                    'StringEquals': {'cognito-identity.amazonaws.com:aud': idpId},",
+                "                    'ForAnyValue:StringLike': {'cognito-identity.amazonaws.com:amr': 'unauthenticated'}",
+                "                }",
+                "            }]",
+                "        };",
+                "        if (event.RequestType === 'Delete') {",
+                "            try {",
+                "                delete authParamsJson.Statement[0].Condition;",
+                "                delete unauthParamsJson.Statement[0].Condition;",
+                "                let authParams = {PolicyDocument: JSON.stringify(authParamsJson), RoleName: authRoleName};",
+                "                let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson), RoleName: unauthRoleName};",
+                "                const iam = new IAMClient({region: event.ResourceProperties.region});",
+                "                let res = await Promise.all([",
+                "                    iam.send(new GetRoleCommand({RoleName: authParams.RoleName})),",
+                "                    iam.send(new GetRoleCommand({RoleName: unauthParams.RoleName}))",
+                "                ]);",
+                "                res = await Promise.all([",
+                "                    iam.send(new UpdateAssumeRolePolicyCommand(authParams)),",
+                "                    iam.send(new UpdateAssumeRolePolicyCommand(unauthParams))",
+                "                ]);",
+                "                response.send(event, context, response.SUCCESS, {});",
+                "            } catch (err) {",
+                "                console.log(err.stack);",
+                "                response.send(event, context, response.SUCCESS, {Error: err});",
+                "            }",
+                "        } else if (event.RequestType === 'Update' || event.RequestType === 'Create') {",
+                "            const iam = new IAMClient({region: event.ResourceProperties.region});",
+                "            let authParams = {PolicyDocument: JSON.stringify(authParamsJson), RoleName: authRoleName};",
+                "            let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson), RoleName: unauthRoleName};",
+                "            const res = await Promise.all([",
+                "                iam.send(new UpdateAssumeRolePolicyCommand(authParams)),",
+                "                iam.send(new UpdateAssumeRolePolicyCommand(unauthParams))",
+                "            ]);",
                 "            response.send(event, context, response.SUCCESS, {});",
-                "         });",
+                "        }",
+                "    } catch (err) {",
+                "        console.log(err.stack);",
+                "        response.send(event, context, response.FAILED, {Error: err});",
                 "    }",
-                "  } catch(err) {",
-                "       console.log(err.stack);",
-                "       responseData = {Error: err};",
-                "       response.send(event, context, response.FAILED, responseData);",
-                "       throw err;",
-                "  }",
                 "};"
               ]
             ]
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
+        "Runtime": "nodejs18.x",
         "Timeout": 300,
         "Role": {
           "Fn::GetAtt": [
@@ -324,7 +371,7 @@
         },
         "idpId": {
           "Fn::GetAtt": [
-            "authAgilay",
+            "authagilay6a5aabdd",
             "Outputs.IdentityPoolId"
           ]
         },
@@ -383,7 +430,10 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": "iam:UpdateAssumeRolePolicy",
+                  "Action": [
+                    "iam:UpdateAssumeRolePolicy",
+                    "iam:GetRole"
+                  ],
                   "Resource": {
                     "Fn::GetAtt": [
                       "AuthRole",
@@ -393,7 +443,10 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": "iam:UpdateAssumeRolePolicy",
+                  "Action": [
+                    "iam:UpdateAssumeRolePolicy",
+                    "iam:GetRole"
+                  ],
                   "Resource": {
                     "Fn::GetAtt": [
                       "UnauthRole",

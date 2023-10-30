@@ -80,7 +80,7 @@ class _PostCardState extends State<PostCard> {
     return Container(
         padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
         //height: 250,
-        color: Colors.black,
+        color: Colors.white,
         width: widthToUse,
         //color: Colors.black,
         /*child: Dismissible(
@@ -128,136 +128,134 @@ class _PostCardState extends State<PostCard> {
 
   _seriesContainer(BuildContext context, double heigtToUse, List seriesList) {
     return Container(
-        color: Colors.black,
-        height: (heigtToUse / 1.47),
+        color: Colors.white,
+        //height: (heigtToUse / 1.47),
         padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-        child: Card(
-            elevation: elavationVal,
-            color: Colors.black, //Dark Mode
-            shape: new RoundedRectangleBorder(
-              side: new BorderSide(color: Colors.white, width: .3),
-              borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
-                        child: SizedBox(
-                          width: 45,
-                          height: 45,
-                          child: InkWell(
-                            onTap: () => {},
-                            child: Container(
-                              height: 45,
-                              width: 45,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.amber,
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  child: CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage:
-                                        AssetImage('assets/profile-jam.jpg'),
-                                  ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Card(
+              elevation: elavationVal,
+              color: Colors.white, //Dark Mode
+              shape: new RoundedRectangleBorder(
+                side: new BorderSide(color: Colors.white, width: .3),
+                borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
+              ),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 15, 0, 15),
+                      child: SizedBox(
+                        width: 45,
+                        height: 45,
+                        child: InkWell(
+                          onTap: () => {},
+                          child: Container(
+                            height: 45,
+                            width: 45,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.amber,
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                child: CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage:
+                                      AssetImage('assets/profile-jam.jpg'),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                      Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 15, 0, 0),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 125,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Marcius, Shaye, Mac and 5 others',
-                                  style: TextStyle(
-                                      //color: Colors.black,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
-                                ),
-                                Row(
-                                  children: [
-                                    RichText(
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 15, 0, 0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width - 125,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Marcius, Shaye, Mac and 5 others',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    //color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                              Row(
+                                children: [
+                                  RichText(
+                                    textScaleFactor:
+                                        MediaQuery.of(context).textScaleFactor,
+                                    text: TextSpan(
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'added a new episode on',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              //color: Colors.white,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(3, 0, 0, 0),
+                                    child: RichText(
                                       textScaleFactor: MediaQuery.of(context)
                                           .textScaleFactor,
                                       text: TextSpan(
                                         children: <TextSpan>[
                                           TextSpan(
-                                            text: 'added a new episode on',
+                                            text: 'Comedy Central',
                                             style: TextStyle(
-                                                //color: Colors.black,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.normal,
+                                                color: Colors.black,
+                                                //color: Colors.white,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 15),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(3, 0, 0, 0),
-                                      child: RichText(
-                                        textScaleFactor: MediaQuery.of(context)
-                                            .textScaleFactor,
-                                        text: TextSpan(
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: 'Comedy Central',
-                                              style: TextStyle(
-                                                  //color: Colors.black,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
+                                  )
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                child: Text(
+                                  '1 min ago',
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      //color: Colors.white,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 11),
                                 ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                  child: Text(
-                                    '1 min ago',
-                                    style: TextStyle(
-                                        //color: Colors.grey,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 11),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
-                    ]),
-                Container(
-                  color: Colors.black,
-                  height: (heigtToUse / 1.76) + 0.123,
-                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                  child: ListView.builder(
-                    itemCount: 5,
-                    scrollDirection: Axis.horizontal,
-                    controller: scrollController,
-                    padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Series(
-                          seriesList: seriesList[index], indexLine: index); //),
-                    },
-                  ),
-                )
-              ],
-            )));
+                              ),
+                            ],
+                          ),
+                        )),
+                  ]),
+            ),
+            Container(
+                padding: new EdgeInsets.fromLTRB(3, 0, 3, 0),
+                height: heigtToUse / 2,
+                child: ListView.builder(
+                  itemCount: 5,
+                  scrollDirection: Axis.horizontal,
+                  controller: scrollController,
+                  padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Series(
+                        seriesList: seriesList[index], indexLine: index); //),
+                  },
+                ))
+          ],
+        ));
   }
 
   Widget _buildChild(BuildContext context) {

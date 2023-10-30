@@ -5,7 +5,7 @@
     },
     {
         "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\res\\merged\\debug\\drawable\\notification_bg_low.xml",
-        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\464699ef3cd3e523030d96dfaeabe998\\core-1.3.2\\res\\drawable\\notification_bg_low.xml"
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\drawable\\notification_bg_low.xml"
     },
     {
         "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\res\\merged\\debug\\drawable\\btn_radio_off_to_on_mtrl_animation.xml",
@@ -105,7 +105,7 @@
     },
     {
         "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\res\\merged\\debug\\drawable\\notification_bg.xml",
-        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\464699ef3cd3e523030d96dfaeabe998\\core-1.3.2\\res\\drawable\\notification_bg.xml"
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\drawable\\notification_bg.xml"
     },
     {
         "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\res\\merged\\debug\\drawable\\abc_seekbar_track_material.xml",
@@ -185,7 +185,7 @@
     },
     {
         "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\res\\merged\\debug\\drawable\\notification_icon_background.xml",
-        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\464699ef3cd3e523030d96dfaeabe998\\core-1.3.2\\res\\drawable\\notification_icon_background.xml"
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\drawable\\notification_icon_background.xml"
     },
     {
         "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\res\\merged\\debug\\drawable\\mtrl_tabs_default_indicator.xml",
@@ -217,6 +217,6 @@
     },
     {
         "merged": "T:\\JAM\\agilay\\agilay\\build\\amplify_api\\intermediates\\res\\merged\\debug\\drawable\\notification_tile_bg.xml",
-        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\464699ef3cd3e523030d96dfaeabe998\\core-1.3.2\\res\\drawable\\notification_tile_bg.xml"
+        "source": "C:\\Users\\Mac\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\drawable\\notification_tile_bg.xml"
     }
 ]

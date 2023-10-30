@@ -1,19 +1,27 @@
 {
-  "staging": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-agilay-staging-190336-authRole",
-      "UnauthRoleArn": "arn:aws:iam::306971405788:role/amplify-agilay-staging-190336-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::306971405788:role/amplify-agilay-staging-190336-authRole",
+      "AuthRoleName": "amplify-agilay-dev-40209-authRole",
+      "UnauthRoleArn": "arn:aws:iam::306971405788:role/amplify-agilay-dev-40209-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::306971405788:role/amplify-agilay-dev-40209-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-agilay-staging-190336-deployment",
-      "UnauthRoleName": "amplify-agilay-staging-190336-unauthRole",
-      "StackName": "amplify-agilay-staging-190336",
-      "StackId": "arn:aws:cloudformation:us-east-1:306971405788:stack/amplify-agilay-staging-190336/bce063c0-4646-11ec-93b4-0aad277d2d75",
-      "AmplifyAppId": "d2og8emqw4guam"
+      "DeploymentBucketName": "amplify-agilay-dev-40209-deployment",
+      "UnauthRoleName": "amplify-agilay-dev-40209-unauthRole",
+      "StackName": "amplify-agilay-dev-40209",
+      "StackId": "arn:aws:cloudformation:us-east-1:306971405788:stack/amplify-agilay-dev-40209/72d8c970-444b-11ee-b774-0e0527f064a5",
+      "AmplifyAppId": "d1s7negsr6a4b"
     },
     "categories": {
       "auth": {
-        "Agilay": {}
+        "agilayfb7d5c21": {},
+        "agilayac82fd6f": {},
+        "agilay6a5aabdd": {}
+      },
+      "storage": {
+        "s328525ba1": {}
+      },
+      "api": {
+        "agilay": {}
       }
     }
   }
