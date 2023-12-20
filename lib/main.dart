@@ -19,15 +19,54 @@ import 'screens/auth_page.dart';
 import 'screens/confirm.dart';
 import 'screens/confirm_reset.dart';
 
-void main() {
-  //await configureAmplify();
-  runApp(const MyApp());
-}
+main() => runApp(new MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  bool _amplifyConfigured = false;
+
+  @override
+  initState() {
+    super.initState();
+    debugPrint('running configure Amplify');
+    _configureAmplify();
+  }
+
+  void _configureAmplify() async {
+    // await Amplify.addPlugin(AmplifyAPI()); // UNCOMMENT this line after backend is deployed
+    final AmplifyDataStore _dataStorePlugin =
+        AmplifyDataStore(modelProvider: ModelProvider.instance);
+    final AmplifyAPI _apiPlugin =
+        AmplifyAPI(modelProvider: ModelProvider.instance);
+    final AmplifyAuthCognito _authPlugin = AmplifyAuthCognito();
+    await Amplify.addPlugins([_authPlugin, _dataStorePlugin, _apiPlugin]);
+    debugPrint('_dataStorePlugin');
+    debugPrint(_dataStorePlugin.toString());
+    debugPrint('_apiPlugin');
+    debugPrint(_apiPlugin.toString());
+    debugPrint('_authPlugin');
+    debugPrint(_authPlugin.toString());
+
+    // Once Plugins are added, configure Amplify
+    //await Amplify.configure(amplifyconfig);
+    await Amplify.configure(amplifyconfig);
+    debugPrint('Done configure Amplify');
+    try {
+      setState(() {
+        _amplifyConfigured = true;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -80,7 +119,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+/*class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -117,7 +156,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Once Plugins are added, configure Amplify
     //await Amplify.configure(amplifyconfig);
+
     try {
+      await Amplify.configure(amplifyconfig);
       setState(() {
         _amplifyConfigured = true;
       });
@@ -150,4 +191,4 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return AuthPage();
   }
-}
+}*/

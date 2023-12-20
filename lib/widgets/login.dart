@@ -391,7 +391,7 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _createUser(String name) async {
-    try {
+    /*try {
       final post = User(
           username: 'Marcius',
           email: name.toString(),
@@ -402,7 +402,7 @@ class _LoginState extends State<Login> {
     } catch (e) {
       // Handle the error (e.g., display an error message)
       print('Error creating post: $e');
-    }
+    }*/
   }
 
   Future<String?> _signupUser(String name, String password) {

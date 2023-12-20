@@ -1,10 +1,27 @@
+import 'package:agilay/screens/auth_page.dart';
 import 'package:agilay/screens/chat_page.dart';
 import 'package:agilay/screens/new_post_page.dart';
 import 'package:agilay/screens/profile_page.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+
+void _signOutAndNavigateToLogin(BuildContext context) async {
+  try {
+    await Amplify.Auth.signOut();
+    // Navigate to the login page
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AuthPage(),
+      ),
+    );
+  } catch (e) {
+    print('Error during sign-out: $e');
+  }
+}
 
 class HomeBar extends StatelessWidget {
   HomeBar(this._tabController,
@@ -187,7 +204,98 @@ class HomeBar extends StatelessWidget {
               Padding(
                 padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: Row(children: [
-                  GestureDetector(
+                  PopupMenuButton(
+                    child: ClipOval(
+                      child: SizedBox.fromSize(
+                          size: Size.fromRadius(15), // Image radius
+                          child: Image.asset('assets/profile-jam.jpg',
+                              height:
+                                  15, //widget._tabController.index == 1 ? 16 : 12,
+                              width:
+                                  15, //widget._tabController.index == 1 ? 16 : 12,
+                              filterQuality: FilterQuality.medium,
+                              fit: BoxFit.cover)),
+                    ),
+                    onSelected: (value) {
+                      if (value == "profile") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProfilePage()),
+                        );
+                      } else if (value == "settings") {
+                        // add desired output
+                      } else if (value == "switch") {
+                        // add desired output
+                      } else if (value == "logout") {
+                        _signOutAndNavigateToLogin(context);
+                      }
+                    },
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                      PopupMenuItem(
+                        value: "profile",
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.person, color: Colors.amber),
+                            ),
+                            const Text(
+                              'View Profile',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: "settings",
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.settings, color: Colors.amber),
+                            ),
+                            const Text(
+                              'Settings',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: "switch",
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.switch_account,
+                                  color: Colors.amber),
+                            ),
+                            const Text(
+                              'Switch Account',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: "logout",
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.logout, color: Colors.amber),
+                            ),
+                            const Text(
+                              'Logout',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  /*GestureDetector(
                       onTap: () => {
                             //_onProfileImageTapped()
                             Navigator.push(
@@ -217,7 +325,7 @@ class HomeBar extends StatelessWidget {
                                     fit: BoxFit.cover),
                           ),
                         ),
-                      )),
+                      )),*/
                   /*Padding(
                       padding: EdgeInsets.fromLTRB(3, 0, 0, 0),
                       child: Text('@Marcius',

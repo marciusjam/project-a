@@ -32,7 +32,7 @@ class _NavigationContainerState extends State<NavigationContainer> {
   @override
   initState() {
     super.initState();
-    _configureAmplify();
+    //_configureAmplify();
   }
 
   void _onIconTapped(int index) {

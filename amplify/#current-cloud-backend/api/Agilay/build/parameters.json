@@ -2,12 +2,12 @@
     "AppSyncApiName": "agilay",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
     "DynamoDBEnableServerSideEncryption": false,
-    "AuthCognitoUserPoolId": {
-        "Fn::GetAtt": [
-            "authagilay6a5aabdd",
-            "Outputs.UserPoolId"
-        ]
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
     },
     "S3DeploymentBucket": "amplify-agilay-dev-40209-deployment",
-    "S3DeploymentRootKey": "amplify-appsync-files/681776a3d913590c358e2959828ce1634a354f50"
+    "S3DeploymentRootKey": "amplify-appsync-files/1dd915c93c0e868661e206ef04b115604dc53eb7"
 }

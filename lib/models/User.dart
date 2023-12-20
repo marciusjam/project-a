@@ -21,7 +21,6 @@
 
 import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart' as amplify_core;
-import 'package:collection/collection.dart';
 
 
 /** This is an auto generated class representing the User type in your schema. */
@@ -32,7 +31,7 @@ class User extends amplify_core.Model {
   final String? _email;
   final String? _phoneNumber;
   final String? _bio;
-  final List<Post>? _posts;
+  final Post? _posts;
   final amplify_core.TemporalDateTime? _createdAt;
   final amplify_core.TemporalDateTime? _updatedAt;
 
@@ -87,7 +86,7 @@ class User extends amplify_core.Model {
     return _bio;
   }
   
-  List<Post>? get posts {
+  Post? get posts {
     return _posts;
   }
   
@@ -101,14 +100,14 @@ class User extends amplify_core.Model {
   
   const User._internal({required this.id, required username, required email, required phoneNumber, bio, posts, createdAt, updatedAt}): _username = username, _email = email, _phoneNumber = phoneNumber, _bio = bio, _posts = posts, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory User({String? id, required String username, required String email, required String phoneNumber, String? bio, List<Post>? posts}) {
+  factory User({String? id, required String username, required String email, required String phoneNumber, String? bio, Post? posts}) {
     return User._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
       username: username,
       email: email,
       phoneNumber: phoneNumber,
       bio: bio,
-      posts: posts != null ? List<Post>.unmodifiable(posts) : posts);
+      posts: posts);
   }
   
   bool equals(Object other) {
@@ -124,7 +123,7 @@ class User extends amplify_core.Model {
       _email == other._email &&
       _phoneNumber == other._phoneNumber &&
       _bio == other._bio &&
-      DeepCollectionEquality().equals(_posts, other._posts);
+      _posts == other._posts;
   }
   
   @override
@@ -140,6 +139,7 @@ class User extends amplify_core.Model {
     buffer.write("email=" + "$_email" + ", ");
     buffer.write("phoneNumber=" + "$_phoneNumber" + ", ");
     buffer.write("bio=" + "$_bio" + ", ");
+    buffer.write("posts=" + (_posts != null ? _posts!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -147,7 +147,7 @@ class User extends amplify_core.Model {
     return buffer.toString();
   }
   
-  User copyWith({String? id, String? username, String? email, String? phoneNumber, String? bio, List<Post>? posts}) {
+  User copyWith({String? id, String? username, String? email, String? phoneNumber, String? bio, Post? posts}) {
     return User._internal(
       id: id ?? this.id,
       username: username ?? this.username,
@@ -163,7 +163,7 @@ class User extends amplify_core.Model {
     ModelFieldValue<String>? email,
     ModelFieldValue<String>? phoneNumber,
     ModelFieldValue<String?>? bio,
-    ModelFieldValue<List<Post>?>? posts
+    ModelFieldValue<Post?>? posts
   }) {
     return User._internal(
       id: id == null ? this.id : id.value,
@@ -181,17 +181,14 @@ class User extends amplify_core.Model {
       _email = json['email'],
       _phoneNumber = json['phoneNumber'],
       _bio = json['bio'],
-      _posts = json['posts'] is List
-        ? (json['posts'] as List)
-          .where((e) => e?['serializedData'] != null)
-          .map((e) => Post.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
+      _posts = json['posts']?['serializedData'] != null
+        ? Post.fromJson(new Map<String, dynamic>.from(json['posts']['serializedData']))
         : null,
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'username': _username, 'email': _email, 'phoneNumber': _phoneNumber, 'bio': _bio, 'posts': _posts?.map((Post? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'username': _username, 'email': _email, 'phoneNumber': _phoneNumber, 'bio': _bio, 'posts': _posts?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
@@ -243,11 +240,11 @@ class User extends amplify_core.Model {
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: User.POSTS,
       isRequired: false,
-      ofModelName: 'Post',
-      associatedKey: Post.USER
+      targetName: 'userPostsId',
+      ofModelName: 'Post'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(

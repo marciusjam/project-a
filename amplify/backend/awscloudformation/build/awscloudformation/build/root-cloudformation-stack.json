@@ -152,6 +152,26 @@
         }
       }
     },
+    "apiagilay": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "Parameters": {
+          "AppSyncApiName": "agilay",
+          "DynamoDBBillingMode": "PAY_PER_REQUEST",
+          "DynamoDBEnableServerSideEncryption": false,
+          "authRoleName": {
+            "Ref": "AuthRoleName"
+          },
+          "unauthRoleName": {
+            "Ref": "UnauthRoleName"
+          },
+          "S3DeploymentBucket": "amplify-agilay-dev-40209-deployment",
+          "S3DeploymentRootKey": "amplify-appsync-files/1dd915c93c0e868661e206ef04b115604dc53eb7",
+          "env": "dev"
+        }
+      }
+    },
     "authagilay6a5aabdd": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
@@ -235,26 +255,6 @@
           "s3PermissionsAuthenticatedUploads": "s3:PutObject",
           "s3PermissionsGuestPublic": "DISALLOW",
           "s3PermissionsGuestUploads": "DISALLOW",
-          "env": "dev"
-        }
-      }
-    },
-    "apiagilay": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-        "Parameters": {
-          "AppSyncApiName": "agilay",
-          "DynamoDBBillingMode": "PAY_PER_REQUEST",
-          "DynamoDBEnableServerSideEncryption": false,
-          "AuthCognitoUserPoolId": {
-            "Fn::GetAtt": [
-              "authagilay6a5aabdd",
-              "Outputs.UserPoolId"
-            ]
-          },
-          "S3DeploymentBucket": "amplify-agilay-dev-40209-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/681776a3d913590c358e2959828ce1634a354f50",
           "env": "dev"
         }
       }

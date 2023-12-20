@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:agilay/models/ModelProvider.dart';
 import 'package:agilay/models/Post.dart';
@@ -26,7 +27,22 @@ class PreviewPage extends StatefulWidget {
 
 class _PreviewPageState extends State<PreviewPage> {
   final TextEditingController descriptionController;
+  late AmplifyDataStore datastorePlugin;
   var _isLoading;
+
+  final hubSubscription =
+      Amplify.Hub.listen(HubChannel.Auth, (AuthHubEvent hubEvent) async {
+    if (hubEvent.eventName == 'SIGNED_OUT') {
+      try {
+        await Amplify.DataStore.clear();
+        safePrint('DataStore is cleared as the user has signed out.');
+      } on DataStoreException catch (e) {
+        safePrint('Failed to clear DataStore: $e');
+      }
+    }
+  });
+
+  bool _listeningToHub = true;
 
   /*bool _amplifyConfigured = false;
 
@@ -51,30 +67,59 @@ class _PreviewPageState extends State<PreviewPage> {
     final content = this.descriptionController.text;
     debugPrint('content: ' + content);
     try {
-      final post = Post(description: content);
-      await Amplify.DataStore.save(post);
+      final post = Post(
+          description: content,
+          likes: 15,
+          status: PostStatus.ACTIVE,
+          content: "Lorem ipsum dolor sit amet");
 
+      await Amplify.DataStore.save(post);
+      //changeSync();
       // Post created successfully, navigate to the next screen or show a success message
+    } on DataStoreException {
+      safePrint('Could not update post, maybe the title has been changed?');
     } catch (e) {
-      // Handle the error (e.g., display an error message)
-      print('Error creating post: $e');
+      debugPrint(e.toString());
     }
   }
 
-  /*void _configureAmplify() async {
-    // await Amplify.addPlugin(AmplifyAPI()); // UNCOMMENT this line after backend is deployed
-    await Amplify.addPlugins([_dataStorePlugin, _apiPlugin, _authPlugin]);
-
-    // Once Plugins are added, configure Amplify
-    //await Amplify.configure(amplifyconfig);
+  Future<void> changeSync() async {
     try {
-      setState(() {
-        _amplifyConfigured = true;
-      });
-    } catch (e) {
-      print(e);
+      await Amplify.DataStore.stop();
+    } catch (error) {
+      print('Error stopping DataStore: $error');
     }
-  }*/
+
+    try {
+      await Amplify.DataStore.start();
+    } on Exception catch (error) {
+      print('Error starting DataStore: $error');
+    }
+  }
+
+  void _configureAmplify() async {
+    try {
+      datastorePlugin = AmplifyDataStore(
+        modelProvider: ModelProvider.instance,
+        errorHandler: ((error) =>
+            {print("Custom ErrorHandler received: " + error.toString())}),
+      );
+      await Amplify.addPlugin(datastorePlugin);
+
+      // Configure
+
+      // Uncomment the below lines to enable online sync.
+      // await Amplify.addPlugin(AmplifyAPI());
+      // await Amplify.configure(amplifyconfig);
+
+      // Remove this line when using the lines above for online sync
+      await Amplify.configure("{}");
+    } on AmplifyAlreadyConfiguredException {
+      await Amplify.DataStore.start();
+      print(
+          'Amplify was already configured. Looks like app restarted on android.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

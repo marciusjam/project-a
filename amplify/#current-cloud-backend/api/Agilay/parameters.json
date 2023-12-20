@@ -2,10 +2,5 @@
   "AppSyncApiName": "agilay",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
-  "AuthCognitoUserPoolId": {
-    "Fn::GetAtt": [
-      "authagilay6a5aabdd",
-      "Outputs.UserPoolId"
-    ]
-  }
+  "AuthModeLastUpdated": "2023-12-01T18:52:56.296Z"
 }

@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:agilay/models/Post.dart';
+import 'package:agilay/models/PostStatus.dart';
 import 'package:agilay/widgets/home_bar.dart';
 import 'package:agilay/widgets/post_card.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +27,32 @@ class _InterestsPageState extends State<InterestsPage>
     with SingleTickerProviderStateMixin {
   var _scrollController, _tabController;
   late final Function onIconTap;
+  List<Post> _posts = [];
+  bool _isSynced = false;
+  bool _listeningToHub = true;
+  late StreamSubscription<DataStoreHubEvent> hubSubscription;
+  List<String> _postStreamingData = <String>[];
+  late Stream<SubscriptionEvent<Post>> postStream;
+  void listenToHub() {
+    setState(() {
+      hubSubscription = Amplify.Hub.listen(HubChannel.DataStore, (msg) {
+        print(msg.type);
+        if (msg.type == DataStoreHubEventType.networkStatus) {
+          print('Network status message: $msg');
+          return;
+        }
+        //print(msg);
+      });
+      _listeningToHub = true;
+    });
+  }
+
+  void stopListeningToHub() {
+    hubSubscription.cancel();
+    setState(() {
+      _listeningToHub = false;
+    });
+  }
 
   final List<Story> stories = [
     Story(imageUrl: 'assets/story_image_1.jpg', username: 'John'),
@@ -42,7 +72,6 @@ class _InterestsPageState extends State<InterestsPage>
           filterQuality: FilterQuality.medium,
           fit: BoxFit.cover),
     ),*/
-
     PostCard('textPost'),
     PostCard('series'),
     PostCard('image-Horizontal'),
@@ -52,6 +81,52 @@ class _InterestsPageState extends State<InterestsPage>
     PostCard('video-Vertical'),
     PostCard('textPost'),
   ];
+
+  Future<void> fetchAllPosts() async {
+    try {
+      /*final postList = await Amplify.DataStore.observeQuery(Post.classType)
+          .listen((QuerySnapshot<Post> snapshot) {
+        setState(() {
+          _posts = snapshot.items;
+        });
+      });*/
+      /*try {
+        await Amplify.DataStore.clear();
+      } on Exception catch (error) {
+        print('Error clearing DataStore: $error');
+      }
+
+      try {
+        await Amplify.DataStore.start();
+      } on Exception catch (error) {
+        print('Error starting DataStore: $error');
+      }*/
+
+      /*await Amplify.DataStore.start();
+      _stream = await Amplify.DataStore.observeQuery(Post.classType,
+              where: Post.STATUS.eq(PostStatus.ACTIVE))
+          .listen((QuerySnapshot<Post> snapshot) {
+        setState(() {
+          _posts = snapshot.items;
+          _isSynced = snapshot.isSynced;
+        });
+      });*/
+
+      postStream = Amplify.DataStore.observe(Post.classType);
+      postStream.listen((event) {
+        _postStreamingData.add('Post: ' +
+            (event.eventType.toString() == EventType.delete.toString()
+                ? event.item.id
+                : event.item.description) +
+            ', of type: ' +
+            event.eventType.toString());
+      }).onError((error) => print('haha $error'));
+    } on DataStoreException catch (e) {
+      safePrint('Something went wrong querying posts: ${e.message}');
+    } catch (e) {
+      print("Could not query DataStore: " + e.toString());
+    }
+  }
 
   _pageView(List myList) {
     return ListView.builder(
@@ -126,6 +201,10 @@ class _InterestsPageState extends State<InterestsPage>
     _scrollController = ScrollController();
     _tabController = TabController(vsync: this, length: 5);
     super.initState();
+    listenToHub();
+    fetchAllPosts();
+    debugPrint('ulala');
+    debugPrint(_postStreamingData.toString());
   }
 
   @override
@@ -133,6 +212,18 @@ class _InterestsPageState extends State<InterestsPage>
     return Container(
       child: Column(
         children: [
+          Switch(
+            value: _listeningToHub,
+            onChanged: (value) {
+              if (_listeningToHub) {
+                stopListeningToHub();
+              } else {
+                listenToHub();
+              }
+            },
+            activeTrackColor: Colors.lightGreenAccent,
+            activeColor: Colors.green,
+          ),
           /*Row(
             children: [
               Padding(

@@ -201,21 +201,12 @@ class _ProfilePageState extends State<ProfilePage>
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        height: MediaQuery.of(context).size.height - 100,
+                        height: MediaQuery.of(context).size.height,
                         child: _pageView(list),
 
                         //  _buildBox(),
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                        child: Container(
-                            height: 100,
-                            child: ElevatedButton(
-                              onPressed: () =>
-                                  _signOutAndNavigateToLogin(context),
-                              child: Text('Sign Out'),
-                            )),
-                      )
+
                       /*SizedBox(
                         height: 100,
                         //padding: EdgeInsets.symmetric(horizontal: 20),

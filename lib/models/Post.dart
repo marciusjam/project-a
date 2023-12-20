@@ -21,7 +21,6 @@
 
 import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart' as amplify_core;
-import 'package:collection/collection.dart';
 
 
 /** This is an auto generated class representing the Post type in your schema. */
@@ -29,13 +28,9 @@ class Post extends amplify_core.Model {
   static const classType = const _PostModelType();
   final String id;
   final String? _description;
-  final String? _image;
-  final String? _video;
-  final List<Comment>? _comments;
-  final User? _user;
-  final String? _userId;
-  final amplify_core.TemporalDateTime? _createdOn;
-  final amplify_core.TemporalDateTime? _updatedOn;
+  final PostStatus? _status;
+  final int? _likes;
+  final String? _content;
   final amplify_core.TemporalDateTime? _createdAt;
   final amplify_core.TemporalDateTime? _updatedAt;
 
@@ -60,32 +55,25 @@ class Post extends amplify_core.Model {
     }
   }
   
-  String? get image {
-    return _image;
+  PostStatus get status {
+    try {
+      return _status!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
-  String? get video {
-    return _video;
+  int? get likes {
+    return _likes;
   }
   
-  List<Comment>? get comments {
-    return _comments;
-  }
-  
-  User? get user {
-    return _user;
-  }
-  
-  String? get userId {
-    return _userId;
-  }
-  
-  amplify_core.TemporalDateTime? get createdOn {
-    return _createdOn;
-  }
-  
-  amplify_core.TemporalDateTime? get updatedOn {
-    return _updatedOn;
+  String? get content {
+    return _content;
   }
   
   amplify_core.TemporalDateTime? get createdAt {
@@ -96,19 +84,15 @@ class Post extends amplify_core.Model {
     return _updatedAt;
   }
   
-  const Post._internal({required this.id, required description, image, video, comments, user, userId, createdOn, updatedOn, createdAt, updatedAt}): _description = description, _image = image, _video = video, _comments = comments, _user = user, _userId = userId, _createdOn = createdOn, _updatedOn = updatedOn, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Post._internal({required this.id, required description, required status, likes, content, createdAt, updatedAt}): _description = description, _status = status, _likes = likes, _content = content, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Post({String? id, required String description, String? image, String? video, List<Comment>? comments, User? user, String? userId, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
+  factory Post({String? id, required String description, required PostStatus status, int? likes, String? content}) {
     return Post._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
       description: description,
-      image: image,
-      video: video,
-      comments: comments != null ? List<Comment>.unmodifiable(comments) : comments,
-      user: user,
-      userId: userId,
-      createdOn: createdOn,
-      updatedOn: updatedOn);
+      status: status,
+      likes: likes,
+      content: content);
   }
   
   bool equals(Object other) {
@@ -121,13 +105,9 @@ class Post extends amplify_core.Model {
     return other is Post &&
       id == other.id &&
       _description == other._description &&
-      _image == other._image &&
-      _video == other._video &&
-      DeepCollectionEquality().equals(_comments, other._comments) &&
-      _user == other._user &&
-      _userId == other._userId &&
-      _createdOn == other._createdOn &&
-      _updatedOn == other._updatedOn;
+      _status == other._status &&
+      _likes == other._likes &&
+      _content == other._content;
   }
   
   @override
@@ -140,11 +120,9 @@ class Post extends amplify_core.Model {
     buffer.write("Post {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("description=" + "$_description" + ", ");
-    buffer.write("image=" + "$_image" + ", ");
-    buffer.write("video=" + "$_video" + ", ");
-    buffer.write("userId=" + "$_userId" + ", ");
-    buffer.write("createdOn=" + (_createdOn != null ? _createdOn!.format() : "null") + ", ");
-    buffer.write("updatedOn=" + (_updatedOn != null ? _updatedOn!.format() : "null") + ", ");
+    buffer.write("status=" + (_status != null ? amplify_core.enumToString(_status)! : "null") + ", ");
+    buffer.write("likes=" + (_likes != null ? _likes!.toString() : "null") + ", ");
+    buffer.write("content=" + "$_content" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -152,100 +130,72 @@ class Post extends amplify_core.Model {
     return buffer.toString();
   }
   
-  Post copyWith({String? id, String? description, String? image, String? video, List<Comment>? comments, User? user, String? userId, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
+  Post copyWith({String? id, String? description, PostStatus? status, int? likes, String? content}) {
     return Post._internal(
       id: id ?? this.id,
       description: description ?? this.description,
-      image: image ?? this.image,
-      video: video ?? this.video,
-      comments: comments ?? this.comments,
-      user: user ?? this.user,
-      userId: userId ?? this.userId,
-      createdOn: createdOn ?? this.createdOn,
-      updatedOn: updatedOn ?? this.updatedOn);
+      status: status ?? this.status,
+      likes: likes ?? this.likes,
+      content: content ?? this.content);
   }
   
   Post copyWithModelFieldValues({
     ModelFieldValue<String>? id,
     ModelFieldValue<String>? description,
-    ModelFieldValue<String?>? image,
-    ModelFieldValue<String?>? video,
-    ModelFieldValue<List<Comment>?>? comments,
-    ModelFieldValue<User?>? user,
-    ModelFieldValue<String?>? userId,
-    ModelFieldValue<amplify_core.TemporalDateTime?>? createdOn,
-    ModelFieldValue<amplify_core.TemporalDateTime?>? updatedOn
+    ModelFieldValue<PostStatus>? status,
+    ModelFieldValue<int?>? likes,
+    ModelFieldValue<String?>? content
   }) {
     return Post._internal(
       id: id == null ? this.id : id.value,
       description: description == null ? this.description : description.value,
-      image: image == null ? this.image : image.value,
-      video: video == null ? this.video : video.value,
-      comments: comments == null ? this.comments : comments.value,
-      user: user == null ? this.user : user.value,
-      userId: userId == null ? this.userId : userId.value,
-      createdOn: createdOn == null ? this.createdOn : createdOn.value,
-      updatedOn: updatedOn == null ? this.updatedOn : updatedOn.value
+      status: status == null ? this.status : status.value,
+      likes: likes == null ? this.likes : likes.value,
+      content: content == null ? this.content : content.value
     );
   }
   
   Post.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _description = json['description'],
-      _image = json['image'],
-      _video = json['video'],
-      _comments = json['comments'] is List
-        ? (json['comments'] as List)
-          .where((e) => e?['serializedData'] != null)
-          .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
-        : null,
-      _user = json['user']?['serializedData'] != null
-        ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
-        : null,
-      _userId = json['userId'],
-      _createdOn = json['createdOn'] != null ? amplify_core.TemporalDateTime.fromString(json['createdOn']) : null,
-      _updatedOn = json['updatedOn'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedOn']) : null,
+      _status = amplify_core.enumFromString<PostStatus>(json['status'], PostStatus.values),
+      _likes = (json['likes'] as num?)?.toInt(),
+      _content = json['content'],
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'description': _description, 'image': _image, 'video': _video, 'comments': _comments?.map((Comment? e) => e?.toJson()).toList(), 'user': _user?.toJson(), 'userId': _userId, 'createdOn': _createdOn?.format(), 'updatedOn': _updatedOn?.format(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'description': _description, 'status': amplify_core.enumToString(_status), 'likes': _likes, 'content': _content, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
     'id': id,
     'description': _description,
-    'image': _image,
-    'video': _video,
-    'comments': _comments,
-    'user': _user,
-    'userId': _userId,
-    'createdOn': _createdOn,
-    'updatedOn': _updatedOn,
+    'status': _status,
+    'likes': _likes,
+    'content': _content,
     'createdAt': _createdAt,
     'updatedAt': _updatedAt
   };
 
   static final ID = amplify_core.QueryField(fieldName: "id");
   static final DESCRIPTION = amplify_core.QueryField(fieldName: "description");
-  static final IMAGE = amplify_core.QueryField(fieldName: "image");
-  static final VIDEO = amplify_core.QueryField(fieldName: "video");
-  static final COMMENTS = amplify_core.QueryField(
-    fieldName: "comments",
-    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Comment'));
-  static final USER = amplify_core.QueryField(
-    fieldName: "user",
-    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'User'));
-  static final USERID = amplify_core.QueryField(fieldName: "userId");
-  static final CREATEDON = amplify_core.QueryField(fieldName: "createdOn");
-  static final UPDATEDON = amplify_core.QueryField(fieldName: "updatedOn");
+  static final STATUS = amplify_core.QueryField(fieldName: "status");
+  static final LIKES = amplify_core.QueryField(fieldName: "likes");
+  static final CONTENT = amplify_core.QueryField(fieldName: "content");
   static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Post";
     modelSchemaDefinition.pluralName = "Posts";
     
-    modelSchemaDefinition.indexes = [
-      amplify_core.ModelIndex(fields: const ["userId", "createdOn"], name: "byUser")
+    modelSchemaDefinition.authRules = [
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PUBLIC,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
+        ])
     ];
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
@@ -257,47 +207,21 @@ class Post extends amplify_core.Model {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Post.IMAGE,
+      key: Post.STATUS,
+      isRequired: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.enumeration)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Post.LIKES,
+      isRequired: false,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Post.CONTENT,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Post.VIDEO,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
-      key: Post.COMMENTS,
-      isRequired: false,
-      ofModelName: 'Comment',
-      associatedKey: Comment.POST
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
-      key: Post.USER,
-      isRequired: false,
-      ofModelName: 'User',
-      associatedKey: User.POSTS
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Post.USERID,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Post.CREATEDON,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Post.UPDATEDON,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(

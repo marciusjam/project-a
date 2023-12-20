@@ -1,65 +1,19 @@
-type User {
-  id: ID!
-  username: String!
-  email: String!
-  phoneNumber: String!
-  bio: String
-  followers: [User]
-  posts(createdOn: ModelStringKeyConditionInput, filter: ModelPostFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostConnection
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-}
-
-type Post {
+type Post @aws_iam @aws_api_key {
   id: ID!
   description: String!
-  image: String
-  video: String
-  comments(createdOn: ModelStringKeyConditionInput, filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection
-  likes: [Like]
-  upvotes: [Upvote]
-  user: User
-  userId: ID
-  createdOn: AWSDateTime
-  updatedOn: AWSDateTime
+  status: PostStatus!
+  likes: Int
+  content: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
 }
 
-type Comment {
-  id: ID!
-  likes: [Like]
-  content: String!
-  user: User
-  userId: ID
-  post: Post
-  postId: ID
-  createdOn: AWSDateTime
-  updatedOn: AWSDateTime
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-}
-
-type Like {
-  id: ID!
-  user: User
-  userId: ID
-  post: Post
-  postId: ID
-  comment: Comment
-  commentId: ID
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-}
-
-type Upvote {
-  id: ID!
-  user: User
-  userId: ID
-  post: Post
-  postId: ID
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
+enum PostStatus {
+  ACTIVE
+  INACTIVE
 }
 
 input ModelStringInput {
@@ -212,341 +166,88 @@ enum ModelSortDirection {
   DESC
 }
 
-type ModelUserConnection {
-  items: [User]!
-  nextToken: String
-}
-
-input ModelUserFilterInput {
-  id: ModelIDInput
-  username: ModelStringInput
-  email: ModelStringInput
-  phoneNumber: ModelStringInput
-  bio: ModelStringInput
-  and: [ModelUserFilterInput]
-  or: [ModelUserFilterInput]
-  not: ModelUserFilterInput
-}
-
-type Query {
-  getUser(id: ID!): User
-  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
-  getPost(id: ID!): Post
-  listPosts(filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection
-  getComment(id: ID!): Comment
-  listComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection
-  getLike(id: ID!): Like
-  listLikes(filter: ModelLikeFilterInput, limit: Int, nextToken: String): ModelLikeConnection
-  getUpvote(id: ID!): Upvote
-  listUpvotes(filter: ModelUpvoteFilterInput, limit: Int, nextToken: String): ModelUpvoteConnection
-}
-
-input ModelUserConditionInput {
-  username: ModelStringInput
-  email: ModelStringInput
-  phoneNumber: ModelStringInput
-  bio: ModelStringInput
-  and: [ModelUserConditionInput]
-  or: [ModelUserConditionInput]
-  not: ModelUserConditionInput
-}
-
-input CreateUserInput {
-  id: ID
-  username: String!
-  email: String!
-  phoneNumber: String!
-  bio: String
-}
-
-input UpdateUserInput {
-  id: ID!
-  username: String
-  email: String
-  phoneNumber: String
-  bio: String
-}
-
-input DeleteUserInput {
-  id: ID!
-}
-
-type Mutation {
-  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
-  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
-  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
-  createPost(input: CreatePostInput!, condition: ModelPostConditionInput): Post
-  updatePost(input: UpdatePostInput!, condition: ModelPostConditionInput): Post
-  deletePost(input: DeletePostInput!, condition: ModelPostConditionInput): Post
-  createComment(input: CreateCommentInput!, condition: ModelCommentConditionInput): Comment
-  updateComment(input: UpdateCommentInput!, condition: ModelCommentConditionInput): Comment
-  deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment
-  createLike(input: CreateLikeInput!, condition: ModelLikeConditionInput): Like
-  updateLike(input: UpdateLikeInput!, condition: ModelLikeConditionInput): Like
-  deleteLike(input: DeleteLikeInput!, condition: ModelLikeConditionInput): Like
-  createUpvote(input: CreateUpvoteInput!, condition: ModelUpvoteConditionInput): Upvote
-  updateUpvote(input: UpdateUpvoteInput!, condition: ModelUpvoteConditionInput): Upvote
-  deleteUpvote(input: DeleteUpvoteInput!, condition: ModelUpvoteConditionInput): Upvote
-}
-
-input ModelSubscriptionUserFilterInput {
-  id: ModelSubscriptionIDInput
-  username: ModelSubscriptionStringInput
-  email: ModelSubscriptionStringInput
-  phoneNumber: ModelSubscriptionStringInput
-  bio: ModelSubscriptionStringInput
-  and: [ModelSubscriptionUserFilterInput]
-  or: [ModelSubscriptionUserFilterInput]
-}
-
-type Subscription {
-  onCreateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["createUser"])
-  onUpdateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["updateUser"])
-  onDeleteUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["deleteUser"])
-  onCreatePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["createPost"])
-  onUpdatePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["updatePost"])
-  onDeletePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["deletePost"])
-  onCreateComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["createComment"])
-  onUpdateComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["updateComment"])
-  onDeleteComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["deleteComment"])
-  onCreateLike(filter: ModelSubscriptionLikeFilterInput): Like @aws_subscribe(mutations: ["createLike"])
-  onUpdateLike(filter: ModelSubscriptionLikeFilterInput): Like @aws_subscribe(mutations: ["updateLike"])
-  onDeleteLike(filter: ModelSubscriptionLikeFilterInput): Like @aws_subscribe(mutations: ["deleteLike"])
-  onCreateUpvote(filter: ModelSubscriptionUpvoteFilterInput): Upvote @aws_subscribe(mutations: ["createUpvote"])
-  onUpdateUpvote(filter: ModelSubscriptionUpvoteFilterInput): Upvote @aws_subscribe(mutations: ["updateUpvote"])
-  onDeleteUpvote(filter: ModelSubscriptionUpvoteFilterInput): Upvote @aws_subscribe(mutations: ["deleteUpvote"])
-}
-
-type ModelPostConnection {
+type ModelPostConnection @aws_api_key @aws_iam {
   items: [Post]!
   nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelPostStatusInput {
+  eq: PostStatus
+  ne: PostStatus
 }
 
 input ModelPostFilterInput {
   id: ModelIDInput
   description: ModelStringInput
-  image: ModelStringInput
-  video: ModelStringInput
-  userId: ModelIDInput
-  createdOn: ModelStringInput
-  updatedOn: ModelStringInput
+  status: ModelPostStatusInput
+  likes: ModelIntInput
+  content: ModelStringInput
   and: [ModelPostFilterInput]
   or: [ModelPostFilterInput]
   not: ModelPostFilterInput
+  _deleted: ModelBooleanInput
+}
+
+type Query {
+  getPost(id: ID!): Post @aws_api_key @aws_iam
+  listPosts(filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_api_key @aws_iam
+  syncPosts(filter: ModelPostFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPostConnection @aws_api_key @aws_iam
 }
 
 input ModelPostConditionInput {
   description: ModelStringInput
-  image: ModelStringInput
-  video: ModelStringInput
-  userId: ModelIDInput
-  createdOn: ModelStringInput
-  updatedOn: ModelStringInput
+  status: ModelPostStatusInput
+  likes: ModelIntInput
+  content: ModelStringInput
   and: [ModelPostConditionInput]
   or: [ModelPostConditionInput]
   not: ModelPostConditionInput
+  _deleted: ModelBooleanInput
 }
 
 input CreatePostInput {
   id: ID
   description: String!
-  image: String
-  video: String
-  userId: ID
-  createdOn: AWSDateTime
-  updatedOn: AWSDateTime
+  status: PostStatus!
+  likes: Int
+  content: String
+  _version: Int
 }
 
 input UpdatePostInput {
   id: ID!
   description: String
-  image: String
-  video: String
-  userId: ID
-  createdOn: AWSDateTime
-  updatedOn: AWSDateTime
+  status: PostStatus
+  likes: Int
+  content: String
+  _version: Int
 }
 
 input DeletePostInput {
   id: ID!
+  _version: Int
+}
+
+type Mutation {
+  createPost(input: CreatePostInput!, condition: ModelPostConditionInput): Post @aws_api_key @aws_iam
+  updatePost(input: UpdatePostInput!, condition: ModelPostConditionInput): Post @aws_api_key @aws_iam
+  deletePost(input: DeletePostInput!, condition: ModelPostConditionInput): Post @aws_api_key @aws_iam
 }
 
 input ModelSubscriptionPostFilterInput {
   id: ModelSubscriptionIDInput
   description: ModelSubscriptionStringInput
-  image: ModelSubscriptionStringInput
-  video: ModelSubscriptionStringInput
-  userId: ModelSubscriptionIDInput
-  createdOn: ModelSubscriptionStringInput
-  updatedOn: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
+  likes: ModelSubscriptionIntInput
+  content: ModelSubscriptionStringInput
   and: [ModelSubscriptionPostFilterInput]
   or: [ModelSubscriptionPostFilterInput]
+  _deleted: ModelBooleanInput
 }
 
-type ModelCommentConnection {
-  items: [Comment]!
-  nextToken: String
-}
-
-input ModelCommentFilterInput {
-  id: ModelIDInput
-  content: ModelStringInput
-  userId: ModelIDInput
-  postId: ModelIDInput
-  createdOn: ModelStringInput
-  updatedOn: ModelStringInput
-  and: [ModelCommentFilterInput]
-  or: [ModelCommentFilterInput]
-  not: ModelCommentFilterInput
-}
-
-input ModelCommentConditionInput {
-  content: ModelStringInput
-  userId: ModelIDInput
-  postId: ModelIDInput
-  createdOn: ModelStringInput
-  updatedOn: ModelStringInput
-  and: [ModelCommentConditionInput]
-  or: [ModelCommentConditionInput]
-  not: ModelCommentConditionInput
-}
-
-input CreateCommentInput {
-  id: ID
-  content: String!
-  userId: ID
-  postId: ID
-  createdOn: AWSDateTime
-  updatedOn: AWSDateTime
-}
-
-input UpdateCommentInput {
-  id: ID!
-  content: String
-  userId: ID
-  postId: ID
-  createdOn: AWSDateTime
-  updatedOn: AWSDateTime
-}
-
-input DeleteCommentInput {
-  id: ID!
-}
-
-input ModelSubscriptionCommentFilterInput {
-  id: ModelSubscriptionIDInput
-  content: ModelSubscriptionStringInput
-  userId: ModelSubscriptionIDInput
-  postId: ModelSubscriptionIDInput
-  createdOn: ModelSubscriptionStringInput
-  updatedOn: ModelSubscriptionStringInput
-  and: [ModelSubscriptionCommentFilterInput]
-  or: [ModelSubscriptionCommentFilterInput]
-}
-
-type ModelLikeConnection {
-  items: [Like]!
-  nextToken: String
-}
-
-input ModelLikeFilterInput {
-  id: ModelIDInput
-  userId: ModelIDInput
-  postId: ModelIDInput
-  commentId: ModelIDInput
-  and: [ModelLikeFilterInput]
-  or: [ModelLikeFilterInput]
-  not: ModelLikeFilterInput
-}
-
-input ModelLikeConditionInput {
-  userId: ModelIDInput
-  postId: ModelIDInput
-  commentId: ModelIDInput
-  and: [ModelLikeConditionInput]
-  or: [ModelLikeConditionInput]
-  not: ModelLikeConditionInput
-}
-
-input CreateLikeInput {
-  id: ID
-  userId: ID
-  postId: ID
-  commentId: ID
-}
-
-input UpdateLikeInput {
-  id: ID!
-  userId: ID
-  postId: ID
-  commentId: ID
-}
-
-input DeleteLikeInput {
-  id: ID!
-}
-
-input ModelSubscriptionLikeFilterInput {
-  id: ModelSubscriptionIDInput
-  userId: ModelSubscriptionIDInput
-  postId: ModelSubscriptionIDInput
-  commentId: ModelSubscriptionIDInput
-  and: [ModelSubscriptionLikeFilterInput]
-  or: [ModelSubscriptionLikeFilterInput]
-}
-
-type ModelUpvoteConnection {
-  items: [Upvote]!
-  nextToken: String
-}
-
-input ModelUpvoteFilterInput {
-  id: ModelIDInput
-  userId: ModelIDInput
-  postId: ModelIDInput
-  and: [ModelUpvoteFilterInput]
-  or: [ModelUpvoteFilterInput]
-  not: ModelUpvoteFilterInput
-}
-
-input ModelUpvoteConditionInput {
-  userId: ModelIDInput
-  postId: ModelIDInput
-  and: [ModelUpvoteConditionInput]
-  or: [ModelUpvoteConditionInput]
-  not: ModelUpvoteConditionInput
-}
-
-input CreateUpvoteInput {
-  id: ID
-  userId: ID
-  postId: ID
-}
-
-input UpdateUpvoteInput {
-  id: ID!
-  userId: ID
-  postId: ID
-}
-
-input DeleteUpvoteInput {
-  id: ID!
-}
-
-input ModelSubscriptionUpvoteFilterInput {
-  id: ModelSubscriptionIDInput
-  userId: ModelSubscriptionIDInput
-  postId: ModelSubscriptionIDInput
-  and: [ModelSubscriptionUpvoteFilterInput]
-  or: [ModelSubscriptionUpvoteFilterInput]
-}
-
-input ModelStringKeyConditionInput {
-  eq: String
-  le: String
-  lt: String
-  ge: String
-  gt: String
-  between: [String]
-  beginsWith: String
+type Subscription {
+  onCreatePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["createPost"]) @aws_api_key @aws_iam
+  onUpdatePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["updatePost"]) @aws_api_key @aws_iam
+  onDeletePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["deletePost"]) @aws_api_key @aws_iam
 }

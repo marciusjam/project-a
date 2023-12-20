@@ -12,38 +12,65 @@
       "AmplifyAppId": "d1s7negsr6a4b"
     }
   },
+  "api": {
+    "agilay": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            }
+          }
+        },
+        "GraphQLAPIIdOutput": "bb74fpmpdfh2xej5e4usnzjhxe",
+        "GraphQLAPIEndpointOutput": "https://csqqottnozhljjtemfzm3artuu.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-4zhexwhgzveqthu3lcwehroj7e"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2023-12-01T18:55:05.190Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiagilay"
+      },
+      "lastPushDirHash": "5QpKk42gCj+gdCtmI49cGmtoS6k="
+    }
+  },
   "auth": {
     "agilay6a5aabdd": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
       "customAuth": false,
+      "dependsOn": [],
       "frontendAuthConfig": {
-        "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL",
-          "PHONE_NUMBER"
-        ],
-        "signupAttributes": [
-          "EMAIL"
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
         ],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 8,
           "passwordPolicyCharacters": []
         },
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL",
+          "PHONE_NUMBER"
         ],
         "verificationMechanisms": [
           "EMAIL"
         ]
       },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/auth/agilay6a5aabdd-cloudformation-template.json",
-        "logicalId": "authagilay6a5aabdd"
-      },
-      "lastPushTimeStamp": "2023-09-27T13:10:11.449Z",
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
       "output": {
         "UserPoolId": "us-east-1_4rpgzvuS1",
         "AppClientIDWeb": "6h5k19r0758nefaoeffrpukvfj",
@@ -53,66 +80,27 @@
         "IdentityPoolName": "agilay6a5aabdd_identitypool_6a5aabdd__dev",
         "UserPoolName": "agilay6a5aabdd_userpool_6a5aabdd"
       },
-      "lastPushDirHash": "TfwXv3yeSDXgTFrNDiaYLUcgQu0="
+      "lastPushTimeStamp": "2023-12-01T18:55:05.061Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/auth/agilay6a5aabdd-cloudformation-template.json",
+        "logicalId": "authagilay6a5aabdd"
+      }
     }
   },
   "storage": {
     "s328525ba1": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [],
-      "lastPushTimeStamp": "2023-09-27T13:10:11.459Z",
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
-        "logicalId": "storages328525ba1"
-      },
+      "providerPlugin": "awscloudformation",
+      "service": "S3",
       "output": {
         "BucketName": "agilay51cb75ea91264f98aea831d548621e0940209-dev",
         "Region": "us-east-1"
       },
-      "lastPushDirHash": "0y6A/8qPAsmq9SAvTSokTqCfsoM="
-    }
-  },
-  "api": {
-    "agilay": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "auth",
-          "resourceName": "agilay6a5aabdd",
-          "attributes": [
-            "UserPoolId"
-          ]
-        }
-      ],
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
-            }
-          },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authagilay6a5aabdd"
-              }
-            }
-          ]
-        },
-        "GraphQLAPIIdOutput": "bb74fpmpdfh2xej5e4usnzjhxe",
-        "GraphQLAPIEndpointOutput": "https://csqqottnozhljjtemfzm3artuu.appsync-api.us-east-1.amazonaws.com/graphql",
-        "GraphQLAPIKeyOutput": "da2-4zhexwhgzveqthu3lcwehroj7e"
-      },
-      "lastPushTimeStamp": "2023-09-27T13:10:13.653Z",
+      "lastPushTimeStamp": "2023-12-01T18:55:05.062Z",
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-        "logicalId": "apiagilay"
-      },
-      "lastPushDirHash": "qB+VC1MGCsxtAAqbsOAysWczEyU="
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agilay-dev-40209-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storages328525ba1"
+      }
     }
   }
 }
