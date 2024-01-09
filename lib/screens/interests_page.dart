@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:agilay/models/ModelProvider.dart';
 
 class Story {
   final String imageUrl;
@@ -112,7 +113,7 @@ class _InterestsPageState extends State<InterestsPage>
         });
       });*/
 
-      postStream = Amplify.DataStore.observe(Post.classType);
+      /*postStream = Amplify.DataStore.observe(Post.classType);
       postStream.listen((event) {
         _postStreamingData.add('Post: ' +
             (event.eventType.toString() == EventType.delete.toString()
@@ -120,7 +121,10 @@ class _InterestsPageState extends State<InterestsPage>
                 : event.item.description) +
             ', of type: ' +
             event.eventType.toString());
-      }).onError((error) => print('haha $error'));
+      }).onError((error) => print('haha $error'));*/
+
+      final posts = await Amplify.DataStore.query(Post.classType);
+      safePrint('Posts: $posts');
     } on DataStoreException catch (e) {
       safePrint('Something went wrong querying posts: ${e.message}');
     } catch (e) {
