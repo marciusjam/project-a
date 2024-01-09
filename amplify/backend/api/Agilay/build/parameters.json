@@ -1,0 +1,8 @@
+{
+    "AppSyncApiName": "agilay",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthModeLastUpdated": "2023-12-01T18:52:56.296Z",
+    "S3DeploymentBucket": "amplify-agilay-dev-40209-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/1dd915c93c0e868661e206ef04b115604dc53eb7"
+}

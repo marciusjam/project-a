@@ -1,38 +1,77 @@
 import 'package:agilay/navigation_container.dart';
 import 'package:agilay/screens/confirm.dart';
-import 'package:agilay/screens/entry.dart';
+import 'package:agilay/screens/auth_page.dart';
 import 'package:agilay/screens/home_page.dart';
 import 'package:flutter/material.dart';
 // Amplify Flutter Packages
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:google_fonts/google_fonts.dart';
 // import 'package:amplify_api/amplify_api.dart'; // UNCOMMENT this line after backend is deployed
 
 // Generated in previous step
 import 'models/ModelProvider.dart';
 import 'amplifyconfiguration.dart';
 
-import 'screens/entry.dart';
+import 'screens/auth_page.dart';
 import 'screens/confirm.dart';
 import 'screens/confirm_reset.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+main() => runApp(new MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  bool _amplifyConfigured = false;
+
+  @override
+  initState() {
+    super.initState();
+    debugPrint('running configure Amplify');
+    _configureAmplify();
+  }
+
+  void _configureAmplify() async {
+    // await Amplify.addPlugin(AmplifyAPI()); // UNCOMMENT this line after backend is deployed
+    final AmplifyDataStore _dataStorePlugin =
+        AmplifyDataStore(modelProvider: ModelProvider.instance);
+    final AmplifyAPI _apiPlugin =
+        AmplifyAPI(modelProvider: ModelProvider.instance);
+    final AmplifyAuthCognito _authPlugin = AmplifyAuthCognito();
+    await Amplify.addPlugins([_authPlugin, _dataStorePlugin, _apiPlugin]);
+    debugPrint('_dataStorePlugin');
+    debugPrint(_dataStorePlugin.toString());
+    debugPrint('_apiPlugin');
+    debugPrint(_apiPlugin.toString());
+    debugPrint('_authPlugin');
+    debugPrint(_authPlugin.toString());
+
+    // Once Plugins are added, configure Amplify
+    //await Amplify.configure(amplifyconfig);
+    await Amplify.configure(amplifyconfig);
+    debugPrint('Done configure Amplify');
+    try {
+      setState(() {
+        _amplifyConfigured = true;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Agilay',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -43,12 +82,13 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        textTheme: GoogleFonts.varelaRoundTextTheme(),
-        primaryColor: Colors.white,
+
+        primaryColor: Colors.amber,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       //home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: NavigationContainer(),
+      home: //AuthPage(),
+          NavigationContainer(),
       onGenerateRoute: (settings) {
         if (settings.name == '/confirm') {
           return PageRouteBuilder(
@@ -68,17 +108,18 @@ class MyApp extends StatelessWidget {
 
         if (settings.name == '/home') {
           return PageRouteBuilder(
-            pageBuilder: (_, __, ___) => HomePage(),
+            pageBuilder: (_, __, ___) => NavigationContainer(),
+            //HomePage(),
             transitionsBuilder: (_, __, ___, child) => child,
           );
         }
-        return MaterialPageRoute(builder: (_) => EntryScreen());
+        return MaterialPageRoute(builder: (_) => AuthPage());
       },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+/*class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -114,31 +155,15 @@ class _MyHomePageState extends State<MyHomePage> {
     await Amplify.addPlugins([_dataStorePlugin, _apiPlugin, _authPlugin]);
 
     // Once Plugins are added, configure Amplify
-    await Amplify.configure(amplifyconfig);
+    //await Amplify.configure(amplifyconfig);
+
     try {
+      await Amplify.configure(amplifyconfig);
       setState(() {
         _amplifyConfigured = true;
       });
     } catch (e) {
       print(e);
-    }
-  }
-
-  void _getBlog() async {
-    try {
-      List<Blog> Blogs = await Amplify.DataStore.query(Blog.classType);
-      print(Blogs);
-    } catch (e) {
-      print("Could not query DataStore: ");
-    }
-  }
-
-  void _createBlog() async {
-    try {
-      final item = Blog(name: "blog 1");
-      await Amplify.DataStore.save(item);
-    } catch (e) {
-      print("Could not query DataStore: ");
     }
   }
 
@@ -164,47 +189,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _getBlog,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    return AuthPage();
   }
-}
+}*/

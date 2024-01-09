@@ -4,12 +4,16 @@
             "addmissingownerfields": true,
             "improvepluralization": false,
             "validatetypenamereservedwords": true,
-            "useexperimentalpipelinedtransformer": false,
+            "useexperimentalpipelinedtransformer": true,
             "enableiterativegsiupdates": true,
             "secondarykeyasgsi": true,
             "skipoverridemutationinputtypes": true,
-            "transformerversion": 1,
-            "suppressschemamigrationprompt": true
+            "transformerversion": 2,
+            "suppressschemamigrationprompt": true,
+            "securityenhancementnotification": false,
+            "showfieldauthnotification": false,
+            "usesubusernamefordefaultidentityclaim": true,
+            "usefieldnameforprimarykeyconnectionfield": false
         },
         "frontend-ios": {
             "enablexcodeintegration": true
@@ -47,5 +51,8 @@
         "project": {
             "overrides": true
         }
+    },
+    "debug": {
+        "shareProjectConfig": false
     }
 }

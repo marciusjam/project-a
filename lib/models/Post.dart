@@ -17,22 +17,22 @@
 // Generated files can be excluded from analysis in analysis_options.yaml
 // For more info, see: https://dart.dev/guides/language/analysis-options#excluding-code-from-analysis
 
-// ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
+// ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
 
 /** This is an auto generated class representing the Post type in your schema. */
-@immutable
-class Post extends Model {
+class Post extends amplify_core.Model {
   static const classType = const _PostModelType();
   final String id;
-  final String? _title;
-  final String? _blogID;
-  final List<Comment>? _comments;
+  final String? _description;
+  final PostStatus? _status;
+  final int? _likes;
+  final String? _content;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -42,34 +42,57 @@ class Post extends Model {
     return id;
   }
   
-  String get title {
+  String get description {
     try {
-      return _title!;
+      return _description!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
-  String get blogID {
+  PostStatus get status {
     try {
-      return _blogID!;
+      return _status!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
-  List<Comment>? get comments {
-    return _comments;
+  int? get likes {
+    return _likes;
   }
   
-  const Post._internal({required this.id, required title, required blogID, comments}): _title = title, _blogID = blogID, _comments = comments;
+  String? get content {
+    return _content;
+  }
   
-  factory Post({String? id, required String title, required String blogID, List<Comment>? comments}) {
+  amplify_core.TemporalDateTime? get createdAt {
+    return _createdAt;
+  }
+  
+  amplify_core.TemporalDateTime? get updatedAt {
+    return _updatedAt;
+  }
+  
+  const Post._internal({required this.id, required description, required status, likes, content, createdAt, updatedAt}): _description = description, _status = status, _likes = likes, _content = content, _createdAt = createdAt, _updatedAt = updatedAt;
+  
+  factory Post({String? id, required String description, required PostStatus status, int? likes, String? content}) {
     return Post._internal(
-      id: id == null ? UUID.getUUID() : id,
-      title: title,
-      blogID: blogID,
-      comments: comments != null ? List<Comment>.unmodifiable(comments) : comments);
+      id: id == null ? amplify_core.UUID.getUUID() : id,
+      description: description,
+      status: status,
+      likes: likes,
+      content: content);
   }
   
   bool equals(Object other) {
@@ -81,9 +104,10 @@ class Post extends Model {
     if (identical(other, this)) return true;
     return other is Post &&
       id == other.id &&
-      _title == other._title &&
-      _blogID == other._blogID &&
-      DeepCollectionEquality().equals(_comments, other._comments);
+      _description == other._description &&
+      _status == other._status &&
+      _likes == other._likes &&
+      _content == other._content;
   }
   
   @override
@@ -95,85 +119,137 @@ class Post extends Model {
     
     buffer.write("Post {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("title=" + "$_title" + ", ");
-    buffer.write("blogID=" + "$_blogID");
+    buffer.write("description=" + "$_description" + ", ");
+    buffer.write("status=" + (_status != null ? amplify_core.enumToString(_status)! : "null") + ", ");
+    buffer.write("likes=" + (_likes != null ? _likes!.toString() : "null") + ", ");
+    buffer.write("content=" + "$_content" + ", ");
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Post copyWith({String? id, String? title, String? blogID, List<Comment>? comments}) {
-    return Post(
+  Post copyWith({String? id, String? description, PostStatus? status, int? likes, String? content}) {
+    return Post._internal(
       id: id ?? this.id,
-      title: title ?? this.title,
-      blogID: blogID ?? this.blogID,
-      comments: comments ?? this.comments);
+      description: description ?? this.description,
+      status: status ?? this.status,
+      likes: likes ?? this.likes,
+      content: content ?? this.content);
+  }
+  
+  Post copyWithModelFieldValues({
+    ModelFieldValue<String>? id,
+    ModelFieldValue<String>? description,
+    ModelFieldValue<PostStatus>? status,
+    ModelFieldValue<int?>? likes,
+    ModelFieldValue<String?>? content
+  }) {
+    return Post._internal(
+      id: id == null ? this.id : id.value,
+      description: description == null ? this.description : description.value,
+      status: status == null ? this.status : status.value,
+      likes: likes == null ? this.likes : likes.value,
+      content: content == null ? this.content : content.value
+    );
   }
   
   Post.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _title = json['title'],
-      _blogID = json['blogID'],
-      _comments = json['comments'] is List
-        ? (json['comments'] as List)
-          .where((e) => e?['serializedData'] != null)
-          .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
-        : null;
+      _description = json['description'],
+      _status = amplify_core.enumFromString<PostStatus>(json['status'], PostStatus.values),
+      _likes = (json['likes'] as num?)?.toInt(),
+      _content = json['content'],
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'title': _title, 'blogID': _blogID, 'comments': _comments?.map((Comment? e) => e?.toJson()).toList()
+    'id': id, 'description': _description, 'status': amplify_core.enumToString(_status), 'likes': _likes, 'content': _content, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+  };
+  
+  Map<String, Object?> toMap() => {
+    'id': id,
+    'description': _description,
+    'status': _status,
+    'likes': _likes,
+    'content': _content,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt
   };
 
-  static final QueryField ID = QueryField(fieldName: "post.id");
-  static final QueryField TITLE = QueryField(fieldName: "title");
-  static final QueryField BLOGID = QueryField(fieldName: "blogID");
-  static final QueryField COMMENTS = QueryField(
-    fieldName: "comments",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Comment).toString()));
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final DESCRIPTION = amplify_core.QueryField(fieldName: "description");
+  static final STATUS = amplify_core.QueryField(fieldName: "status");
+  static final LIKES = amplify_core.QueryField(fieldName: "likes");
+  static final CONTENT = amplify_core.QueryField(fieldName: "content");
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Post";
     modelSchemaDefinition.pluralName = "Posts";
     
     modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.PUBLIC,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PUBLIC,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ])
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Post.TITLE,
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Post.DESCRIPTION,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Post.BLOGID,
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Post.STATUS,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.enumeration)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-      key: Post.COMMENTS,
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Post.LIKES,
       isRequired: false,
-      ofModelName: (Comment).toString(),
-      associatedKey: Comment.POSTID
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Post.CONTENT,
+      isRequired: false,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
   });
 }
 
-class _PostModelType extends ModelType<Post> {
+class _PostModelType extends amplify_core.ModelType<Post> {
   const _PostModelType();
   
   @override
   Post fromJson(Map<String, dynamic> jsonData) {
     return Post.fromJson(jsonData);
+  }
+  
+  @override
+  String modelName() {
+    return 'Post';
   }
 }
