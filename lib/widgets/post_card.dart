@@ -80,7 +80,7 @@ class _PostCardState extends State<PostCard> {
     return Container(
         padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
         //height: 250,
-        color: Colors.white,
+        color: Color.fromARGB(255, 255, 255, 255),
         width: widthToUse,
         //color: Colors.black,
         /*child: Dismissible(
@@ -136,7 +136,7 @@ class _PostCardState extends State<PostCard> {
           children: [
             Card(
               elevation: elavationVal,
-              color: Colors.white, //Dark Mode
+              surfaceTintColor: Colors.white, //IOS
               shape: new RoundedRectangleBorder(
                 side: new BorderSide(color: Colors.white, width: .3),
                 borderRadius: new BorderRadius.all(const Radius.circular(10.0)),

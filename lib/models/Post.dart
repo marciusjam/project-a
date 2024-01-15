@@ -135,19 +135,19 @@ class Post extends amplify_core.Model {
     var buffer = new StringBuffer();
 
     buffer.write("{");
-    buffer.write("'id':" + "$id" + ", ");
-    buffer.write("'description':" + "$_description" + ", ");
-    buffer.write("'status':" +
-        (_status != null ? amplify_core.enumToString(_status)! : "null") +
+    buffer.write('"id":' + '"$id"' + ", ");
+    buffer.write('"description":' + '"$_description"' + ", ");
+    buffer.write('"status":' + '"' +
+        (_status != null ?  amplify_core.enumToString(_status)!  : "null") + '"' + 
         ", ");
     buffer.write(
-        "'likes':" + (_likes != null ? _likes!.toString() : "null") + ", ");
-    buffer.write("'content':" + "$_content" + ", ");
-    buffer.write("'createdAt':" +
-        (_createdAt != null ? _createdAt!.format() : "null") +
+        '"likes":' + (_likes != null ? _likes!.toString() : "null") + ", ");
+    buffer.write('"content":' + '"$_content"' + ", ");
+    buffer.write('"createdAt":' + '"' +
+        (_createdAt != null ? _createdAt!.format() : "null") + '"' + 
         ", ");
     buffer.write(
-        "'updatedAt':" + (_updatedAt != null ? _updatedAt!.format() : "null"));
+        '"updatedAt":' + '"' + (_updatedAt != null ? _updatedAt!.format() : "null") + '"' );
     buffer.write("}");
 
     return buffer.toString();

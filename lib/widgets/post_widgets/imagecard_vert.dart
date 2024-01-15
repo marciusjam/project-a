@@ -37,7 +37,7 @@ class ImageCardVert extends StatelessWidget {
             )),*/
         Card(
             elevation: elavationVal,
-            color: Colors.white, //Dark Mode
+            surfaceTintColor: Colors.white, //IOS
             shape: new RoundedRectangleBorder(
               side: new BorderSide(color: Colors.white, width: .3),
               borderRadius: new BorderRadius.all(const Radius.circular(10.0)),

@@ -31,7 +31,7 @@ class _InterestsPageState extends State<InterestsPage>
   var _scrollController, _tabController;
   late final Function onIconTap;
   late Future<List<Post?>> _posts;
-  List allPosts = [];
+  List<Widget> allPosts = [];
   bool _isSynced = false;
   bool _listeningToHub = true;
   late StreamSubscription<DataStoreHubEvent> hubSubscription;
@@ -86,13 +86,13 @@ class _InterestsPageState extends State<InterestsPage>
     PostCard('textPost'),
   ];
 
-  Future<List<Post?>> fetchAllPosts() async {
+  Future<List<Widget>> fetchAllPosts() async {
     try {
       final request = ModelQueries.list(Post.classType);
       final response = await Amplify.API.query(request: request).response;
       debugPrint('response,data');
       debugPrint(response.data.toString());
-      String? gatheredPosts = response.data?.items.toString();
+      String? gatheredPosts = response.data?.items.toString().replaceAll("\n","");
       debugPrint('Posts: $gatheredPosts');
 
       if (gatheredPosts == null) {
@@ -100,7 +100,7 @@ class _InterestsPageState extends State<InterestsPage>
         return const [];
       }
 
-      List<Post> mainMap = json.decode(gatheredPosts);
+      List mainMap = json.decode(gatheredPosts);
       //List<Post> currentPosts = mainMap;
 
       for (var eachPosts in mainMap) {
@@ -108,13 +108,22 @@ class _InterestsPageState extends State<InterestsPage>
         //Map valueMap = json.decode(eachPosts.toString());
         debugPrint('eachPosts');
         debugPrint(eachPosts.toString());
+        debugPrint(eachPosts['description']);
+
+        //TODO
+        //if S3 data == null == Text Post
+        //if S3 data == photo > Check resolution > If vert == Image Vert
+        //if S3 data == photo > Check resolution > If horiz == Image Horizontal
+        //if S3 data == video > Check resolution > If vert == Video Horizontal
+        //if S3 data == video > Check resolution > If horiz == Video Horizontal 
+        //if S3 data == multiple vert videos == Series
 
         setState(() {
-          allPosts.add(eachPosts.description.toString());
+          allPosts.add(PostCard('textPost'));
         });
       }
       //debugPrint(allPosts.toString());
-      return mainMap;
+      return allPosts;
     } on ApiException catch (e) {
       safePrint('Query failed: $e');
       return const [];

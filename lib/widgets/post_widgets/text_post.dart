@@ -12,7 +12,7 @@ class TextPost extends StatelessWidget {
     return Container(
         child: Column(children: [
       Card(
-          color: Colors.white, //Dark Mode
+          surfaceTintColor: Colors.white, //IOS
           elevation: elavationVal,
           shape: new RoundedRectangleBorder(
             side: new BorderSide(color: Colors.white, width: .3),
