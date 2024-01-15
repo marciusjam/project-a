@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:agilay/models/Post.dart';
 import 'package:agilay/models/PostStatus.dart';
 import 'package:agilay/widgets/home_bar.dart';
 import 'package:agilay/widgets/post_card.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -28,7 +30,8 @@ class _InterestsPageState extends State<InterestsPage>
     with SingleTickerProviderStateMixin {
   var _scrollController, _tabController;
   late final Function onIconTap;
-  List<Post> _posts = [];
+  late Future<List<Post?>> _posts;
+  List allPosts = [];
   bool _isSynced = false;
   bool _listeningToHub = true;
   late StreamSubscription<DataStoreHubEvent> hubSubscription;
@@ -83,52 +86,38 @@ class _InterestsPageState extends State<InterestsPage>
     PostCard('textPost'),
   ];
 
-  Future<void> fetchAllPosts() async {
+  Future<List<Post?>> fetchAllPosts() async {
     try {
-      /*final postList = await Amplify.DataStore.observeQuery(Post.classType)
-          .listen((QuerySnapshot<Post> snapshot) {
-        setState(() {
-          _posts = snapshot.items;
-        });
-      });*/
-      /*try {
-        await Amplify.DataStore.clear();
-      } on Exception catch (error) {
-        print('Error clearing DataStore: $error');
+      final request = ModelQueries.list(Post.classType);
+      final response = await Amplify.API.query(request: request).response;
+      debugPrint('response,data');
+      debugPrint(response.data.toString());
+      String? gatheredPosts = response.data?.items.toString();
+      debugPrint('Posts: $gatheredPosts');
+
+      if (gatheredPosts == null) {
+        safePrint('errors: ${response.errors}');
+        return const [];
       }
 
-      try {
-        await Amplify.DataStore.start();
-      } on Exception catch (error) {
-        print('Error starting DataStore: $error');
-      }*/
+      List<Post> mainMap = json.decode(gatheredPosts);
+      //List<Post> currentPosts = mainMap;
 
-      /*await Amplify.DataStore.start();
-      _stream = await Amplify.DataStore.observeQuery(Post.classType,
-              where: Post.STATUS.eq(PostStatus.ACTIVE))
-          .listen((QuerySnapshot<Post> snapshot) {
+      for (var eachPosts in mainMap) {
+        // do something
+        //Map valueMap = json.decode(eachPosts.toString());
+        debugPrint('eachPosts');
+        debugPrint(eachPosts.toString());
+
         setState(() {
-          _posts = snapshot.items;
-          _isSynced = snapshot.isSynced;
+          allPosts.add(eachPosts.description.toString());
         });
-      });*/
-
-      /*postStream = Amplify.DataStore.observe(Post.classType);
-      postStream.listen((event) {
-        _postStreamingData.add('Post: ' +
-            (event.eventType.toString() == EventType.delete.toString()
-                ? event.item.id
-                : event.item.description) +
-            ', of type: ' +
-            event.eventType.toString());
-      }).onError((error) => print('haha $error'));*/
-
-      final posts = await Amplify.DataStore.query(Post.classType);
-      safePrint('Posts: $posts');
-    } on DataStoreException catch (e) {
-      safePrint('Something went wrong querying posts: ${e.message}');
-    } catch (e) {
-      print("Could not query DataStore: " + e.toString());
+      }
+      //debugPrint(allPosts.toString());
+      return mainMap;
+    } on ApiException catch (e) {
+      safePrint('Query failed: $e');
+      return const [];
     }
   }
 
@@ -206,9 +195,12 @@ class _InterestsPageState extends State<InterestsPage>
     _tabController = TabController(vsync: this, length: 5);
     super.initState();
     listenToHub();
+    debugPrint('fetchAllPosts');
     fetchAllPosts();
+    debugPrint('allTodos');
+    debugPrint(allPosts.toString());
     debugPrint('ulala');
-    debugPrint(_postStreamingData.toString());
+    //debugPrint(_postStreamingData.toString());
   }
 
   @override
@@ -216,7 +208,7 @@ class _InterestsPageState extends State<InterestsPage>
     return Container(
       child: Column(
         children: [
-          Switch(
+          /*Switch(
             value: _listeningToHub,
             onChanged: (value) {
               if (_listeningToHub) {
@@ -227,7 +219,7 @@ class _InterestsPageState extends State<InterestsPage>
             },
             activeTrackColor: Colors.lightGreenAccent,
             activeColor: Colors.green,
-          ),
+          ),*/
           /*Row(
             children: [
               Padding(
@@ -244,7 +236,7 @@ class _InterestsPageState extends State<InterestsPage>
               )
             ],
           ),*/
-          Expanded(child: _pageView(list))
+          Expanded(child: _pageView(allPosts))
         ],
       ),
     );

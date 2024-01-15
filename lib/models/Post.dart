@@ -22,7 +22,6 @@
 import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
-
 /** This is an auto generated class representing the Post type in your schema. */
 class Post extends amplify_core.Model {
   static const classType = const _PostModelType();
@@ -36,218 +35,259 @@ class Post extends amplify_core.Model {
 
   @override
   getInstanceType() => classType;
-  
+
   @override
   String getId() {
     return id;
   }
-  
+
   String get description {
     try {
       return _description!;
-    } catch(e) {
+    } catch (e) {
       throw amplify_core.AmplifyCodeGenModelException(
-          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
+          amplify_core.AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: amplify_core.AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
     }
   }
-  
+
   PostStatus get status {
     try {
       return _status!;
-    } catch(e) {
+    } catch (e) {
       throw amplify_core.AmplifyCodeGenModelException(
-          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
+          amplify_core.AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: amplify_core.AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
     }
   }
-  
+
   int? get likes {
     return _likes;
   }
-  
+
   String? get content {
     return _content;
   }
-  
+
   amplify_core.TemporalDateTime? get createdAt {
     return _createdAt;
   }
-  
+
   amplify_core.TemporalDateTime? get updatedAt {
     return _updatedAt;
   }
-  
-  const Post._internal({required this.id, required description, required status, likes, content, createdAt, updatedAt}): _description = description, _status = status, _likes = likes, _content = content, _createdAt = createdAt, _updatedAt = updatedAt;
-  
-  factory Post({String? id, required String description, required PostStatus status, int? likes, String? content}) {
+
+  const Post._internal(
+      {required this.id,
+      required description,
+      required status,
+      likes,
+      content,
+      createdAt,
+      updatedAt})
+      : _description = description,
+        _status = status,
+        _likes = likes,
+        _content = content,
+        _createdAt = createdAt,
+        _updatedAt = updatedAt;
+
+  factory Post(
+      {String? id,
+      required String description,
+      required PostStatus status,
+      int? likes,
+      String? content}) {
     return Post._internal(
-      id: id == null ? amplify_core.UUID.getUUID() : id,
-      description: description,
-      status: status,
-      likes: likes,
-      content: content);
+        id: id == null ? amplify_core.UUID.getUUID() : id,
+        description: description,
+        status: status,
+        likes: likes,
+        content: content);
   }
-  
+
   bool equals(Object other) {
     return this == other;
   }
-  
+
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Post &&
-      id == other.id &&
-      _description == other._description &&
-      _status == other._status &&
-      _likes == other._likes &&
-      _content == other._content;
+        id == other.id &&
+        _description == other._description &&
+        _status == other._status &&
+        _likes == other._likes &&
+        _content == other._content;
   }
-  
+
   @override
   int get hashCode => toString().hashCode;
-  
+
   @override
   String toString() {
     var buffer = new StringBuffer();
-    
-    buffer.write("Post {");
-    buffer.write("id=" + "$id" + ", ");
-    buffer.write("description=" + "$_description" + ", ");
-    buffer.write("status=" + (_status != null ? amplify_core.enumToString(_status)! : "null") + ", ");
-    buffer.write("likes=" + (_likes != null ? _likes!.toString() : "null") + ", ");
-    buffer.write("content=" + "$_content" + ", ");
-    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
-    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
+
+    buffer.write("{");
+    buffer.write("'id':" + "$id" + ", ");
+    buffer.write("'description':" + "$_description" + ", ");
+    buffer.write("'status':" +
+        (_status != null ? amplify_core.enumToString(_status)! : "null") +
+        ", ");
+    buffer.write(
+        "'likes':" + (_likes != null ? _likes!.toString() : "null") + ", ");
+    buffer.write("'content':" + "$_content" + ", ");
+    buffer.write("'createdAt':" +
+        (_createdAt != null ? _createdAt!.format() : "null") +
+        ", ");
+    buffer.write(
+        "'updatedAt':" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
-    
+
     return buffer.toString();
   }
-  
-  Post copyWith({String? id, String? description, PostStatus? status, int? likes, String? content}) {
+
+  Post copyWith(
+      {String? id,
+      String? description,
+      PostStatus? status,
+      int? likes,
+      String? content}) {
     return Post._internal(
-      id: id ?? this.id,
-      description: description ?? this.description,
-      status: status ?? this.status,
-      likes: likes ?? this.likes,
-      content: content ?? this.content);
+        id: id ?? this.id,
+        description: description ?? this.description,
+        status: status ?? this.status,
+        likes: likes ?? this.likes,
+        content: content ?? this.content);
   }
-  
-  Post copyWithModelFieldValues({
-    ModelFieldValue<String>? id,
-    ModelFieldValue<String>? description,
-    ModelFieldValue<PostStatus>? status,
-    ModelFieldValue<int?>? likes,
-    ModelFieldValue<String?>? content
-  }) {
+
+  Post copyWithModelFieldValues(
+      {ModelFieldValue<String>? id,
+      ModelFieldValue<String>? description,
+      ModelFieldValue<PostStatus>? status,
+      ModelFieldValue<int?>? likes,
+      ModelFieldValue<String?>? content}) {
     return Post._internal(
-      id: id == null ? this.id : id.value,
-      description: description == null ? this.description : description.value,
-      status: status == null ? this.status : status.value,
-      likes: likes == null ? this.likes : likes.value,
-      content: content == null ? this.content : content.value
-    );
+        id: id == null ? this.id : id.value,
+        description: description == null ? this.description : description.value,
+        status: status == null ? this.status : status.value,
+        likes: likes == null ? this.likes : likes.value,
+        content: content == null ? this.content : content.value);
   }
-  
-  Post.fromJson(Map<String, dynamic> json)  
-    : id = json['id'],
-      _description = json['description'],
-      _status = amplify_core.enumFromString<PostStatus>(json['status'], PostStatus.values),
-      _likes = (json['likes'] as num?)?.toInt(),
-      _content = json['content'],
-      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
-  
+
+  Post.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        _description = json['description'],
+        _status = amplify_core.enumFromString<PostStatus>(
+            json['status'], PostStatus.values),
+        _likes = (json['likes'] as num?)?.toInt(),
+        _content = json['content'],
+        _createdAt = json['createdAt'] != null
+            ? amplify_core.TemporalDateTime.fromString(json['createdAt'])
+            : null,
+        _updatedAt = json['updatedAt'] != null
+            ? amplify_core.TemporalDateTime.fromString(json['updatedAt'])
+            : null;
+
   Map<String, dynamic> toJson() => {
-    'id': id, 'description': _description, 'status': amplify_core.enumToString(_status), 'likes': _likes, 'content': _content, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
-  };
-  
+        'id': id,
+        'description': _description,
+        'status': amplify_core.enumToString(_status),
+        'likes': _likes,
+        'content': _content,
+        'createdAt': _createdAt?.format(),
+        'updatedAt': _updatedAt?.format()
+      };
+
   Map<String, Object?> toMap() => {
-    'id': id,
-    'description': _description,
-    'status': _status,
-    'likes': _likes,
-    'content': _content,
-    'createdAt': _createdAt,
-    'updatedAt': _updatedAt
-  };
+        'id': id,
+        'description': _description,
+        'status': _status,
+        'likes': _likes,
+        'content': _content,
+        'createdAt': _createdAt,
+        'updatedAt': _updatedAt
+      };
 
   static final ID = amplify_core.QueryField(fieldName: "id");
   static final DESCRIPTION = amplify_core.QueryField(fieldName: "description");
   static final STATUS = amplify_core.QueryField(fieldName: "status");
   static final LIKES = amplify_core.QueryField(fieldName: "likes");
   static final CONTENT = amplify_core.QueryField(fieldName: "content");
-  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
+  static var schema = amplify_core.Model.defineSchema(
+      define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Post";
     modelSchemaDefinition.pluralName = "Posts";
-    
+
     modelSchemaDefinition.authRules = [
       amplify_core.AuthRule(
-        authStrategy: amplify_core.AuthStrategy.PUBLIC,
-        operations: const [
-          amplify_core.ModelOperation.CREATE,
-          amplify_core.ModelOperation.UPDATE,
-          amplify_core.ModelOperation.DELETE,
-          amplify_core.ModelOperation.READ
-        ])
+          authStrategy: amplify_core.AuthStrategy.PUBLIC,
+          operations: const [
+            amplify_core.ModelOperation.CREATE,
+            amplify_core.ModelOperation.UPDATE,
+            amplify_core.ModelOperation.DELETE,
+            amplify_core.ModelOperation.READ
+          ])
     ];
-    
+
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
-    
+
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Post.DESCRIPTION,
-      isRequired: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
+        key: Post.DESCRIPTION,
+        isRequired: true,
+        ofType: amplify_core.ModelFieldType(
+            amplify_core.ModelFieldTypeEnum.string)));
+
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Post.STATUS,
-      isRequired: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.enumeration)
-    ));
-    
+        key: Post.STATUS,
+        isRequired: true,
+        ofType: amplify_core.ModelFieldType(
+            amplify_core.ModelFieldTypeEnum.enumeration)));
+
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Post.LIKES,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
-    ));
-    
+        key: Post.LIKES,
+        isRequired: false,
+        ofType:
+            amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)));
+
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Post.CONTENT,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
-      fieldName: 'createdAt',
-      isRequired: false,
-      isReadOnly: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
-      fieldName: 'updatedAt',
-      isRequired: false,
-      isReadOnly: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
-    ));
+        key: Post.CONTENT,
+        isRequired: false,
+        ofType: amplify_core.ModelFieldType(
+            amplify_core.ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(
+        amplify_core.ModelFieldDefinition.nonQueryField(
+            fieldName: 'createdAt',
+            isRequired: false,
+            isReadOnly: true,
+            ofType: amplify_core.ModelFieldType(
+                amplify_core.ModelFieldTypeEnum.dateTime)));
+
+    modelSchemaDefinition.addField(
+        amplify_core.ModelFieldDefinition.nonQueryField(
+            fieldName: 'updatedAt',
+            isRequired: false,
+            isReadOnly: true,
+            ofType: amplify_core.ModelFieldType(
+                amplify_core.ModelFieldTypeEnum.dateTime)));
   });
 }
 
 class _PostModelType extends amplify_core.ModelType<Post> {
   const _PostModelType();
-  
+
   @override
   Post fromJson(Map<String, dynamic> jsonData) {
     return Post.fromJson(jsonData);
   }
-  
+
   @override
   String modelName() {
     return 'Post';
