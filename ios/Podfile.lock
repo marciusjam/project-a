@@ -1,146 +1,182 @@
 PODS:
-  - Amplify (1.15.6):
-    - Amplify/Default (= 1.15.6)
-  - Amplify/Default (1.15.6)
-  - amplify_api (0.0.1):
-    - Amplify (~> 1.15.5)
-    - amplify_core
-    - AmplifyPlugins/AWSAPIPlugin (~> 1.15.5)
-    - Flutter
+  - Amplify (1.30.4):
+    - Amplify/Default (= 1.30.4)
+  - Amplify/Default (1.30.4)
   - amplify_auth_cognito (0.0.1):
-    - Amplify (~> 1.15.5)
-    - amplify_core
-    - AmplifyPlugins/AWSCognitoAuthPlugin (~> 1.15.5)
     - Flutter
-    - ObjectMapper
-  - amplify_core (0.0.1):
-    - Flutter
+    - FlutterMacOS
   - amplify_datastore (0.0.1):
-    - Amplify (~> 1.15.5)
-    - amplify_core
-    - AmplifyPlugins/AWSDataStorePlugin (~> 1.15.5)
+    - Amplify (= 1.30.4)
+    - AmplifyPlugins/AWSAPIPlugin (= 1.30.4)
+    - AmplifyPlugins/AWSDataStorePlugin (= 1.30.4)
     - Flutter
-  - amplify_flutter (0.0.1):
-    - Amplify (~> 1.15.5)
-    - amplify_core
-    - AmplifyPlugins/AWSCognitoAuthPlugin (~> 1.15.5)
-    - AWSPluginsCore (~> 1.15.5)
+    - Starscream (= 4.0.4)
+  - amplify_secure_storage (0.0.1):
     - Flutter
-  - AmplifyPlugins/AWSAPIPlugin (1.15.6):
-    - AppSyncRealTimeClient (~> 1.4)
-    - AWSCore (~> 2.26.1)
-    - AWSPluginsCore (= 1.15.6)
-  - AmplifyPlugins/AWSCognitoAuthPlugin (1.15.6):
-    - AWSAuthCore (~> 2.26.1)
-    - AWSCognitoIdentityProvider (~> 2.26.1)
-    - AWSCognitoIdentityProviderASF (~> 2.26.1)
-    - AWSCore (~> 2.26.1)
-    - AWSMobileClient (~> 2.26.1)
-    - AWSPluginsCore (= 1.15.6)
-  - AmplifyPlugins/AWSDataStorePlugin (1.15.6):
-    - AWSCore (~> 2.26.1)
-    - AWSPluginsCore (= 1.15.6)
-    - SQLite.swift (= 0.12.2)
-  - AppSyncRealTimeClient (1.6.0):
-    - Starscream (~> 3.1.1)
-  - AWSAuthCore (2.26.6):
-    - AWSCore (= 2.26.6)
-  - AWSCognitoIdentityProvider (2.26.6):
-    - AWSCognitoIdentityProviderASF (= 2.26.6)
-    - AWSCore (= 2.26.6)
-  - AWSCognitoIdentityProviderASF (2.26.6):
-    - AWSCore (= 2.26.6)
-  - AWSCore (2.26.6)
-  - AWSMobileClient (2.26.6):
-    - AWSAuthCore (= 2.26.6)
-    - AWSCognitoIdentityProvider (= 2.26.6)
-    - AWSCognitoIdentityProviderASF (= 2.26.6)
-    - AWSCore (= 2.26.6)
-  - AWSPluginsCore (1.15.6):
-    - Amplify (= 1.15.6)
-    - AWSCore (~> 2.26.1)
+  - AmplifyPlugins/AWSAPIPlugin (1.30.4):
+    - AppSyncRealTimeClient (~> 3.1)
+    - AWSCore (~> 2.33.0)
+    - AWSPluginsCore (= 1.30.4)
+  - AmplifyPlugins/AWSDataStorePlugin (1.30.4):
+    - AWSCore (~> 2.33.0)
+    - AWSPluginsCore (= 1.30.4)
+    - SQLite.swift (= 0.13.2)
+  - AppSyncRealTimeClient (3.1.2):
+    - Starscream (= 4.0.4)
+  - AWSCore (2.33.8)
+  - AWSPluginsCore (1.30.4):
+    - Amplify (= 1.30.4)
+    - AWSCore (~> 2.33.0)
+  - BSGridCollectionViewLayout (1.2.5)
+  - BSImagePicker (2.10.3):
+    - BSGridCollectionViewLayout (= 1.2.5)
+    - BSImageView (= 1.0.3)
+  - BSImageView (1.0.3)
+  - camera_avfoundation (0.0.1):
+    - Flutter
+  - connectivity_plus (0.0.1):
+    - Flutter
+    - ReachabilitySwift
+  - device_info_plus (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
-  - ObjectMapper (4.2.0)
-  - path_provider_ios (0.0.1):
+  - flutter_native_image (0.0.1):
     - Flutter
-  - SQLite.swift (0.12.2):
-    - SQLite.swift/standard (= 0.12.2)
-  - SQLite.swift/standard (0.12.2)
-  - Starscream (3.1.1)
-  - url_launcher (0.0.1):
+  - image_picker_ios (0.0.1):
     - Flutter
-  - video_player (0.0.1):
+  - libphonenumber_plugin (0.0.1):
+    - Flutter
+    - PhoneNumberKit
+  - multi_image_picker (4.8.00):
+    - BSImagePicker (~> 2.10.3)
+    - Flutter
+  - package_info_plus (0.4.5):
+    - Flutter
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - permission_handler_apple (9.1.1):
+    - Flutter
+  - PhoneNumberKit (3.7.6):
+    - PhoneNumberKit/PhoneNumberKitCore (= 3.7.6)
+    - PhoneNumberKit/UIKit (= 3.7.6)
+  - PhoneNumberKit/PhoneNumberKitCore (3.7.6)
+  - PhoneNumberKit/UIKit (3.7.6):
+    - PhoneNumberKit/PhoneNumberKitCore
+  - photo_manager (2.0.0):
+    - Flutter
+    - FlutterMacOS
+  - ReachabilitySwift (5.0.0)
+  - SQLite.swift (0.13.2):
+    - SQLite.swift/standard (= 0.13.2)
+  - SQLite.swift/standard (0.13.2)
+  - Starscream (4.0.4)
+  - url_launcher_ios (0.0.1):
+    - Flutter
+  - video_player_avfoundation (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - amplify_api (from `.symlinks/plugins/amplify_api/ios`)
-  - amplify_auth_cognito (from `.symlinks/plugins/amplify_auth_cognito/ios`)
-  - amplify_core (from `.symlinks/plugins/amplify_core/ios`)
+  - amplify_auth_cognito (from `.symlinks/plugins/amplify_auth_cognito/darwin`)
   - amplify_datastore (from `.symlinks/plugins/amplify_datastore/ios`)
-  - amplify_flutter (from `.symlinks/plugins/amplify_flutter/ios`)
+  - amplify_secure_storage (from `.symlinks/plugins/amplify_secure_storage/ios`)
+  - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
-  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
-  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
-  - video_player (from `.symlinks/plugins/video_player/ios`)
+  - flutter_native_image (from `.symlinks/plugins/flutter_native_image/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
+  - multi_image_picker (from `.symlinks/plugins/multi_image_picker/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
 
 SPEC REPOS:
   trunk:
     - Amplify
     - AmplifyPlugins
     - AppSyncRealTimeClient
-    - AWSAuthCore
-    - AWSCognitoIdentityProvider
-    - AWSCognitoIdentityProviderASF
     - AWSCore
-    - AWSMobileClient
     - AWSPluginsCore
-    - ObjectMapper
+    - BSGridCollectionViewLayout
+    - BSImagePicker
+    - BSImageView
+    - PhoneNumberKit
+    - ReachabilitySwift
     - SQLite.swift
     - Starscream
 
 EXTERNAL SOURCES:
-  amplify_api:
-    :path: ".symlinks/plugins/amplify_api/ios"
   amplify_auth_cognito:
-    :path: ".symlinks/plugins/amplify_auth_cognito/ios"
-  amplify_core:
-    :path: ".symlinks/plugins/amplify_core/ios"
+    :path: ".symlinks/plugins/amplify_auth_cognito/darwin"
   amplify_datastore:
     :path: ".symlinks/plugins/amplify_datastore/ios"
-  amplify_flutter:
-    :path: ".symlinks/plugins/amplify_flutter/ios"
+  amplify_secure_storage:
+    :path: ".symlinks/plugins/amplify_secure_storage/ios"
+  camera_avfoundation:
+    :path: ".symlinks/plugins/camera_avfoundation/ios"
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
-  path_provider_ios:
-    :path: ".symlinks/plugins/path_provider_ios/ios"
-  url_launcher:
-    :path: ".symlinks/plugins/url_launcher/ios"
-  video_player:
-    :path: ".symlinks/plugins/video_player/ios"
+  flutter_native_image:
+    :path: ".symlinks/plugins/flutter_native_image/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
+  libphonenumber_plugin:
+    :path: ".symlinks/plugins/libphonenumber_plugin/ios"
+  multi_image_picker:
+    :path: ".symlinks/plugins/multi_image_picker/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
+  photo_manager:
+    :path: ".symlinks/plugins/photo_manager/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/ios"
 
 SPEC CHECKSUMS:
-  Amplify: d6ec04316dd74852f6a968d89c0f8cab9947d4d5
-  amplify_api: d2e245623799af22ef371b9bcc960277c965ebb4
-  amplify_auth_cognito: af3d562913c44b5508a68ed73105a0488a56bf36
-  amplify_core: 8b38d20089fe4f225c14db6892f586bd03824a42
-  amplify_datastore: 1d0addd7741cc1b6ee7314f4f44a0755326ef231
-  amplify_flutter: 372e5d0210d6de0cbf7be025dbd20cc21831ab24
-  AmplifyPlugins: 7cfe5a34e97c6091855c10d83ccda538fb371cd1
-  AppSyncRealTimeClient: 8b5ec94085b8ee9bb6fb9d9d76a157beb538ec6f
-  AWSAuthCore: 19808b0221c0963c650e8d9d8c65465b7e50c6e1
-  AWSCognitoIdentityProvider: eeb90cf37247ce868fe3bbfdfb2a6b5bd2f47c73
-  AWSCognitoIdentityProviderASF: 2be698f72bebb21c1846d10c3d8d2e21c08d97bd
-  AWSCore: c60f9d6bd085bf9186d8629ca7ee7df54db1f494
-  AWSMobileClient: 78d19c70841c27e2a8b492569bae529b1ce0cf68
-  AWSPluginsCore: 46b75ee57b0a1f10d64f4fa6b3b4153f5900dd4f
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
-  path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
-  SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
-  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
-  url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
-  video_player: ecd305f42e9044793efd34846e1ce64c31ea6fcb
+  Amplify: 4e41668c8801667e174ab50c12bc3099c71a257f
+  amplify_auth_cognito: 76b5a54f05f66f69966b468b8121a0dd33a32c70
+  amplify_datastore: 806c9f0489d77bf3648cefd61df63cb4e00477e2
+  amplify_secure_storage: 501cbdac671a050090d48dfcc002d5637d3f4a55
+  AmplifyPlugins: 1335f0919aa07329df58685a020f2311c75a5176
+  AppSyncRealTimeClient: 36ff2f65f330bce7f1d0d2157a4ae5d255483dac
+  AWSCore: dfd3136979a57bba64f4771db2e59ed97adb0d3c
+  AWSPluginsCore: f2188458c27e6cb09597c67876f80611d14275d7
+  BSGridCollectionViewLayout: 333dcb457a5a3bdd9212607ab5756553dcfe06cb
+  BSImagePicker: 07404254f2fcdaf5a2eb403c0f8c337267ce8738
+  BSImageView: a149459433a2687157d034c78e059d30ac7f2544
+  camera_avfoundation: 3125e8cd1a4387f6f31c6c63abb8a55892a9eeeb
+  connectivity_plus: 07c49e96d7fc92bc9920617b83238c4d178b446a
+  device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_native_image: 9c0b7451838484458e5b0fae007b86a4c2d4bdfe
+  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  libphonenumber_plugin: e8a7d64a6624a7c25f2c4ab0b7ead2a8e341e35e
+  multi_image_picker: 443e776a762d7901641854043b60abf88a85d5ef
+  package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
+  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
+  PhoneNumberKit: 3c68a822bad955ffcefc72a52df72b6596498555
+  photo_manager: 4f6810b7dfc4feb03b461ac1a70dacf91fba7604
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  SQLite.swift: 4fc2be46c36392e3b87afe6fe7f1801c1daa07ef
+  Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
+  url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
+  video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
 
 PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.14.3
