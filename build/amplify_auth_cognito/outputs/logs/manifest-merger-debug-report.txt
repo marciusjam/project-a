@@ -1,25 +1,25 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml:1:1-2:60
-INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml:1:1-2:60
-INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml:1:1-2:60
+ADDED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml:1:1-2:60
+INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml:1:1-2:60
+INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml:1:1-2:60
 	package
-		ADDED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml:2:5-57
-		INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
+		ADDED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml:2:5-57
+		INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml:1:11-69
+		ADDED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml:1:11-69
 uses-sdk
-INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
+INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
+INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
+INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
+INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
+		INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
+		ADDED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Mac\AppData\Local\Pub\Cache\hosted\pub.dev\amplify_auth_cognito-1.4.1\android\src\main\AndroidManifest.xml
+		INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
+		ADDED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/Jam/.pub-cache/hosted/pub.dev/amplify_auth_cognito-1.6.0/android/src/main/AndroidManifest.xml

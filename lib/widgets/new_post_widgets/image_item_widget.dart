@@ -29,7 +29,7 @@ class ImageItemWidget extends StatelessWidget {
   ) {
     return Stack(
       children: <Widget>[
-        Positioned.fill(
+        /*Positioned.fill(
           child: AssetEntityImage(
             entity,
             isOriginal: false,
@@ -37,7 +37,7 @@ class ImageItemWidget extends StatelessWidget {
             thumbnailFormat: option.format,
             fit: BoxFit.cover,
           ),
-        ),
+        ),*/
         PositionedDirectional(
           bottom: 4,
           start: 0,
