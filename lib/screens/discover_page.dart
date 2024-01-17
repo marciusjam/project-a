@@ -28,11 +28,14 @@ class _DiscoverPageState extends State<DiscoverPage>
   late final Function onIconTap;
 
   List<Widget> list = [
-    PostCard('video-Vertical'),
-    PostCard('image-Horizontal'),
-    PostCard('textPost'),
-    PostCard('image-Vertical'),
-    PostCard('video-Horizontal'),
+    PostCard('textPost', ''),
+    PostCard('series', ''),
+    PostCard('image-Horizontal', ''),
+    PostCard('image-Vertical', ''),
+    PostCard('video-Horizontal', ''),
+    PostCard('series', ''),
+    PostCard('video-Vertical', ''),
+    PostCard('textPost', ''),
   ];
 
   _pageView(List myList) {

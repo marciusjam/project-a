@@ -13,8 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PostCard extends StatefulWidget {
-  const PostCard(this.type, {Key? key}) : super(key: key);
   final String type;
+  final String description;
+  const PostCard(this.type, this.description, {Key? key}) : super(key: key);
+ 
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -60,7 +62,7 @@ class _PostCardState extends State<PostCard> {
     } else {
       return Column(
         children: [
-          _mainContainer(context, double.maxFinite)
+          _mainContainer(context, double.maxFinite, widget.description)
 
           /*Container(
           decoration: BoxDecoration(
@@ -76,7 +78,7 @@ class _PostCardState extends State<PostCard> {
     }
   }
 
-  Container _mainContainer(BuildContext context, double widthToUse) {
+  Container _mainContainer(BuildContext context, double widthToUse, String description) {
     return Container(
         padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
         //height: 250,
@@ -122,7 +124,7 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           key: Key('1'),*/
-        child: _buildChild(context) //),
+        child: _buildChild(context, description) //),
         );
   }
 
@@ -258,20 +260,20 @@ class _PostCardState extends State<PostCard> {
         ));
   }
 
-  Widget _buildChild(BuildContext context) {
+  Widget _buildChild(BuildContext context, String description) {
     debugPrint('postType: ' + widget.type);
     if (widget.type == 'image-Horizontal') {
       return ImageCardHoriz();
     } else if (widget.type == 'image-Vertical') {
       return const ImageCardVert();
     } else if (widget.type == 'textPost') {
-      return const TextPost();
+      return TextPost(description);
     } else if (widget.type == 'video-Horizontal') {
       return const VideoCardHoriz();
     } else if (widget.type == 'video-Vertical') {
       return const VideoCardVert();
     } else {
-      return const TextPost();
+      return TextPost(description);
     }
   }
 }

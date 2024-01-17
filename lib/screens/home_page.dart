@@ -50,9 +50,11 @@ class _HomePageState extends State<HomePage>
 
   final List<Widget> _pages = [
     //SideMenuPage(),
-    //ProfilePage(),
-    InterestsPage(),
     ChatPage(),
+    InterestsPage(),
+    ProfilePage(),
+    SideMenuPage(),
+    DiscoverPage(),
     //NewPostPage(cameras: cameras),
     //DiscoverPage(),
     //ProfilePage(),
@@ -81,7 +83,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     _scrollController = ScrollController();
-    _tabController = TabController(vsync: this, length: 2);
+    _tabController = TabController(vsync: this, length: 5);
     initializeCameras();
     super.initState();
   }

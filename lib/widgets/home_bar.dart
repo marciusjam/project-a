@@ -87,6 +87,8 @@ class HomeBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController postController = TextEditingController();
 
+   
+
     return SliverAppBar(
       //expandedHeight: 100,
       toolbarHeight: 50,
@@ -103,11 +105,13 @@ class HomeBar extends StatelessWidget {
         statusBarBrightness: Brightness.light,
       ),
       bottom: TabBar(
+        isScrollable: true,
         onTap: (value) => _onTabClick(value),
         enableFeedback: false,
         overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
-        indicatorColor: Colors.amber,
+        indicatorColor: Colors.transparent,
         indicatorSize: TabBarIndicatorSize.tab,
+        tabAlignment: TabAlignment.start,
         //indicatorPadding: EdgeInsets.fromLTRB(12, 0, 0, 0),
         controller: _tabController,
         unselectedLabelColor: Colors.black12,
@@ -118,7 +122,73 @@ class HomeBar extends StatelessWidget {
           //fontFamily: 'Gotham-Black',
           fontWeight: FontWeight.bold,
         ),
-        tabs: <Widget>[
+        tabs: [
+          Tab(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
+                  child: Stack(
+                    children: <Widget>[
+                      Icon(Icons.brightness_1, size: 20.0, color: Colors.amber),
+                      Positioned(
+                          top: 5.0,
+                          right: 7.0,
+                          child: Center(
+                            child: Text(
+                              '3',
+                              style: new TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11.0,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
+                Text(
+                  'Messages',
+                )
+                /*SvgPicture.asset(
+                                  'assets/chat.svg',
+                                  height: 20,
+                                  width: 20,
+                                  fit: BoxFit.fitHeight,
+                                  color: Colors.grey,
+                                ),*/
+              ],
+            ),
+          ),
+          /*SizedBox(
+      width: 35.0,
+      child:*///),
+          /*SizedBox(
+      width: 35.0,
+      child:Tab(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
+                  child: Stack(
+                    children: <Widget>[
+                      Icon(Icons.search, size: 30.0, color: Colors.amber),
+                      
+                    ],
+                  ),
+                ),
+                
+                /*SvgPicture.asset(
+                                  'assets/chat.svg',
+                                  height: 20,
+                                  width: 20,
+                                  fit: BoxFit.fitHeight,
+                                  color: Colors.grey,
+                                ),*/
+            ],
+            ),
+          ),),*/
           Tab(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -164,24 +234,13 @@ class HomeBar extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
                   child: Stack(
                     children: <Widget>[
-                      Icon(Icons.brightness_1, size: 20.0, color: Colors.amber),
-                      Positioned(
-                          top: 5.0,
-                          right: 7.0,
-                          child: Center(
-                            child: Text(
-                              '3',
-                              style: new TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          )),
+                      Icon(Icons.local_fire_department_sharp, size: 25.0, color: Colors.red),
+                      
                     ],
                   ),
                 ),
                 Text(
-                  'Messages',
+                  'Trends',
                 )
                 /*SvgPicture.asset(
                                   'assets/chat.svg',
@@ -190,9 +249,61 @@ class HomeBar extends StatelessWidget {
                                   fit: BoxFit.fitHeight,
                                   color: Colors.grey,
                                 ),*/
-              ],
+            ],
             ),
-          )
+          ),
+          Tab(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
+                  child: Stack(
+                    children: <Widget>[
+                      Icon(Icons.music_video_rounded, size: 25.0, color: Colors.blue),
+                      
+                    ],
+                  ),
+                ),
+                Text(
+                  'Podcasts',
+                )
+                /*SvgPicture.asset(
+                                  'assets/chat.svg',
+                                  height: 20,
+                                  width: 20,
+                                  fit: BoxFit.fitHeight,
+                                  color: Colors.grey,
+                                ),*/
+            ],
+            ),
+          ),
+          Tab(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 3, 5),
+                  child: Stack(
+                    children: <Widget>[
+                      Icon(Icons.live_tv_rounded, size: 20.0, color: Colors.green),
+                      
+                    ],
+                  ),
+                ),
+                Text(
+                  'Streams',
+                )
+                /*SvgPicture.asset(
+                                  'assets/chat.svg',
+                                  height: 20,
+                                  width: 20,
+                                  fit: BoxFit.fitHeight,
+                                  color: Colors.grey,
+                                ),*/
+            ],
+            ),
+          ),
         ],
       ),
       title: Padding(

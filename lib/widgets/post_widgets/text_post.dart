@@ -4,7 +4,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class TextPost extends StatelessWidget {
-  const TextPost({Key? key}) : super(key: key);
+  final String description;
+  const TextPost(this.description, {Key? key}) : super(key: key);
   final double elavationVal = 3;
 
   @override
@@ -77,7 +78,7 @@ class TextPost extends StatelessWidget {
                                         children: <TextSpan>[
                                           TextSpan(
                                             text:
-                                                'I know I got this. I just need to grind this son of a bitch. Lorem ipsum is the key to generate random sentences. 💯',
+                                                description,
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 //color: Colors.white,

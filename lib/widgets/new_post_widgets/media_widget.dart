@@ -21,7 +21,7 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
   List<AssetEntity> selectedAssets = [];
   int _selectedIndex = 1;
   String selectedOption = '';
-  late VideoPlayerController _videoController;
+  //late VideoPlayerController _videoController;
   late TextEditingController _textController;
   List<AssetEntity> _galleryImages = [];
   XFile? _pickedVideo;
@@ -44,18 +44,29 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
   @override
   void initState() {
     super.initState();
-    _videoController = VideoPlayerController.network(
-        'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4')
+    /*_videoController = VideoPlayerController.network(
+        'https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8')
       ..initialize().then((_) {
         setState(() {});
       });
-    _textController = TextEditingController();
+    _textController = TextEditingController();*/
     // Fetch gallery images
-    _requestAssets();
+    debugPrint('paths list ' + _path.toString());
+    _requestAssets().then((_) {
+        debugPrint('done running');
+      });
+    
   }
 
   Future<void> _requestAssets() async {
     final status = await Permission.photos.request();
+    debugPrint('ps status ' + status.toString());
+    if (status == PermissionStatus.permanentlyDenied) {
+      // The user opted to never again see the permission request dialog for this
+      // app. The only way to change the permission's status now is to let the
+      // user manually enables it in the system settings.
+      await openAppSettings();
+    }
     if (status.isGranted) {
       // You have permission; proceed with fetching images
 
@@ -95,7 +106,7 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
         setState(() {
           _isLoading = false;
         });
-        //showToast('No paths found.');
+        showToast('No paths found.');
         return;
       }
       setState(() {
@@ -119,8 +130,8 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
 
   @override
   void dispose() {
-    _videoController.dispose();
-    _textController.dispose();
+    //_videoController.dispose();
+    //_textController.dispose();
     super.dispose();
   }
 

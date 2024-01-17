@@ -76,14 +76,14 @@ class _InterestsPageState extends State<InterestsPage>
           filterQuality: FilterQuality.medium,
           fit: BoxFit.cover),
     ),*/
-    PostCard('textPost'),
-    PostCard('series'),
-    PostCard('image-Horizontal'),
-    PostCard('image-Vertical'),
-    PostCard('video-Horizontal'),
-    PostCard('series'),
-    PostCard('video-Vertical'),
-    PostCard('textPost'),
+    PostCard('textPost', ''),
+    PostCard('series', ''),
+    PostCard('image-Horizontal', ''),
+    PostCard('image-Vertical', ''),
+    PostCard('video-Horizontal', ''),
+    PostCard('series', ''),
+    PostCard('video-Vertical', ''),
+    PostCard('textPost', ''),
   ];
 
   Future<List<Widget>> fetchAllPosts() async {
@@ -109,18 +109,25 @@ class _InterestsPageState extends State<InterestsPage>
         debugPrint('eachPosts');
         debugPrint(eachPosts.toString());
         debugPrint(eachPosts['description']);
+        debugPrint(eachPosts['content']);
+        
+        String description = eachPosts['description'];
+        var content = eachPosts['content'];
 
-        //TODO
-        //if S3 data == null == Text Post
-        //if S3 data == photo > Check resolution > If vert == Image Vert
-        //if S3 data == photo > Check resolution > If horiz == Image Horizontal
-        //if S3 data == video > Check resolution > If vert == Video Horizontal
-        //if S3 data == video > Check resolution > If horiz == Video Horizontal 
-        //if S3 data == multiple vert videos == Series
+        if(content == '' || content == 'null'){
+          //if S3 data == photo > Check resolution > If vert == Image Vert
+          //if S3 data == photo > Check resolution > If horiz == Image Horizontal
+          //if S3 data == video > Check resolution > If vert == Video Horizontal
+          //if S3 data == video > Check resolution > If horiz == Video Horizontal 
+          //if S3 data == multiple vert videos == Series
+          
+        }else{ //if S3 data == null == Text Post
+          setState(() {
+            allPosts.add(PostCard('textPost', description));
+          });
+        }
 
-        setState(() {
-          allPosts.add(PostCard('textPost'));
-        });
+        
       }
       //debugPrint(allPosts.toString());
       return allPosts;

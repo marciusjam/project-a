@@ -133,14 +133,14 @@ class _ProfilePageState extends State<ProfilePage>
             fontSize: 15),
       ),
     ),
-    PostCard('textPost'),
-    PostCard('series'),
-    PostCard('image-Horizontal'),
-    PostCard('image-Vertical'),
-    PostCard('video-Horizontal'),
-    PostCard('series'),
-    PostCard('video-Vertical'),
-    PostCard('textPost'),
+    PostCard('textPost', ''),
+    PostCard('series', ''),
+    PostCard('image-Horizontal', ''),
+    PostCard('image-Vertical', ''),
+    PostCard('video-Horizontal', ''),
+    PostCard('series', ''),
+    PostCard('video-Vertical', ''),
+    PostCard('textPost', ''),
   ];
 
   @override
