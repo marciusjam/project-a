@@ -1,11 +1,44 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class ImageCardVert extends StatelessWidget {
-  const ImageCardVert({Key? key}) : super(key: key);
+class ImageCardVert extends StatefulWidget {
+  final String description;
+  final List<String> content;
+  const ImageCardVert(this.description, this.content, {Key? key}) : super(key: key);
+
+  @override
+  State<ImageCardVert> createState() => _ImageCardVertState();
+}
+
+class _ImageCardVertState extends State<ImageCardVert> {
   final double elavationVal = 3;
+  String? globalImageUrl;
+
+  Future<String> getFileUrl(String fileKey) async {
+      try {
+        final result = await Amplify.Storage.getUrl(key: fileKey).result;
+        debugPrint('result ' + result.url.toString());
+        return result.url.toString();
+      } catch (e) {
+        throw e;
+      }
+    }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getFileUrl(widget.content.first).then((value) {
+      setState(() {
+        globalImageUrl = value;
+      });
+    });
+    debugPrint('globalImageUrl ' + globalImageUrl.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +88,7 @@ class ImageCardVert extends StatelessWidget {
                               topRight: Radius.circular(10),
                               topLeft: Radius.circular(10)),
                           child: Image.network(
-                              'https://terrigen-cdn-dev.marvel.com/content/prod/1x/axejudgement2022001_cover.jpg',
+                              globalImageUrl.toString(),
                               height: double.infinity,
                               //height: 600,
                               width: double.infinity,
@@ -129,7 +162,7 @@ class ImageCardVert extends StatelessWidget {
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                     text:
-                                                        'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, but also the leap into electronic typesetting. ❤️💯',
+                                                        widget.description,
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         //color: Colors.white,

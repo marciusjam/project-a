@@ -1,7 +1,7 @@
-import 'package:agilay/main.dart';
-import 'package:agilay/widgets/home_bar.dart';
-import 'package:agilay/widgets/login.dart';
-import 'package:agilay/widgets/post_card.dart';
+import 'package:Makulay/main.dart';
+import 'package:Makulay/widgets/home_bar.dart';
+import 'package:Makulay/widgets/login.dart';
+import 'package:Makulay/widgets/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';

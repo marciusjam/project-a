@@ -1,5 +1,5 @@
-import 'package:agilay/widgets/new_post_widgets/camera_widget.dart';
-import 'package:agilay/widgets/new_post_widgets/media_widget.dart';
+import 'package:Makulay/widgets/new_post_widgets/camera_widget.dart';
+import 'package:Makulay/widgets/new_post_widgets/media_widget.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 

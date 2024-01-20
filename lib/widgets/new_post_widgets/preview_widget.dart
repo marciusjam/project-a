@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:agilay/models/ModelProvider.dart';
-import 'package:agilay/models/Post.dart';
-import 'package:agilay/widgets/new_post_widgets/image_item_widget.dart';
+import 'package:Makulay/models/ModelProvider.dart';
+import 'package:Makulay/models/Post.dart';
+import 'package:Makulay/widgets/new_post_widgets/image_item_widget.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
@@ -16,17 +16,23 @@ import 'package:photo_manager/photo_manager.dart';
 import 'dart:typed_data';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:aws_common/vm.dart';
+
 class PreviewPage extends StatefulWidget {
   final TextEditingController descriptionController;
-  const PreviewPage({Key? key, required this.descriptionController})
+  final List<AssetEntity> selectedAssetsController;
+  const PreviewPage({Key? key, required this.descriptionController, required this.selectedAssetsController})
       : super(key: key);
   @override
   _PreviewPageState createState() =>
-      _PreviewPageState(descriptionController: descriptionController);
+      _PreviewPageState(descriptionController: descriptionController, selectedAssetsController: selectedAssetsController);
 }
 
 class _PreviewPageState extends State<PreviewPage> {
   final TextEditingController descriptionController;
+  final List<AssetEntity> selectedAssetsController;
   late AmplifyDataStore datastorePlugin;
   var _isLoading;
 
@@ -51,7 +57,7 @@ class _PreviewPageState extends State<PreviewPage> {
   final AmplifyAPI _apiPlugin = AmplifyAPI();
   final AmplifyAuthCognito _authPlugin = AmplifyAuthCognito();*/
 
-  _PreviewPageState({required this.descriptionController});
+  _PreviewPageState({required this.descriptionController,  required this.selectedAssetsController});
   @override
   void initState() {
     super.initState();
@@ -63,15 +69,58 @@ class _PreviewPageState extends State<PreviewPage> {
     super.dispose();
   }
 
+
+  Future<String> getFileUrl(String fileKey) async {
+      try {
+        final result = await Amplify.Storage.getUrl(key: fileKey).result;
+        return result.url.toString();
+      } catch (e) {
+        throw e;
+      }
+    }
+  
+
   Future<void> _createPost() async {
-    final content = this.descriptionController.text;
-    debugPrint('content: ' + content);
+    final description = this.descriptionController.text;
+    final selectedAssets = this.selectedAssetsController;
+    debugPrint('description: ' + description);
+    debugPrint('seletedAssets: ' + selectedAssets.toString());
+    List<String> imageUrls = [];
+    for(var entity in selectedAssets){
+      //Future<File?> file = entity.file;
+      File? file = await entity.file;
+
+      if (file != null) {
+        // Now 'file' is of type File
+        print('File: '+ file.toString());
+      } else {
+        print('File not selected or loaded.');
+      }
+
+      AssetType fileType = entity.type;
+      
+      print('File Type: $fileType');
+      final awsFile = AWSFilePlatform.fromFile(file!);
+      print('awsFile: '+ awsFile.toString());
+      final fileName = DateTime.now().toIso8601String(); 
+      final uploadResult = await Amplify.Storage.uploadFile(
+        localFile: awsFile,
+        key: 'DEV1/' + fileName,
+      ).result;
+      safePrint('Uploaded data: ${uploadResult.uploadedItem.key}');
+      String imageUrl =  await getFileUrl(uploadResult.uploadedItem.key);
+      safePrint('imageUrl: $imageUrl');
+      imageUrls.add(imageUrl);
+    }
+
+    
+    
     try {
       final post = Post(
-          description: content,
+          description: description,
           likes: 15,
           status: PostStatus.ACTIVE,
-          content: "Lorem ipsum dolor sit amet");
+          content: '"'+ imageUrls.toString() +'"');
 
       await Amplify.DataStore.save(post);
       //changeSync();

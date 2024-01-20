@@ -1,4 +1,4 @@
-import 'package:agilay/widgets/login.dart';
+import 'package:Makulay/widgets/login.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 

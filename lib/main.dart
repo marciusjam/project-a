@@ -1,7 +1,8 @@
-import 'package:agilay/navigation_container.dart';
-import 'package:agilay/screens/confirm.dart';
-import 'package:agilay/screens/auth_page.dart';
-import 'package:agilay/screens/home_page.dart';
+import 'package:Makulay/navigation_container.dart';
+import 'package:Makulay/screens/confirm.dart';
+import 'package:Makulay/screens/auth_page.dart';
+import 'package:Makulay/screens/home_page.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 // Amplify Flutter Packages
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -43,16 +44,19 @@ class _MyAppState extends State<MyApp> {
     // await Amplify.addPlugin(AmplifyAPI()); // UNCOMMENT this line after backend is deployed
     final AmplifyDataStore _dataStorePlugin =
         AmplifyDataStore(modelProvider: ModelProvider.instance);
+    final AmplifyStorageS3 _storagePlugin = AmplifyStorageS3();
     final AmplifyAPI _apiPlugin =
         AmplifyAPI(modelProvider: ModelProvider.instance);
     final AmplifyAuthCognito _authPlugin = AmplifyAuthCognito();
-    await Amplify.addPlugins([_authPlugin, _dataStorePlugin, _apiPlugin]);
+    await Amplify.addPlugins([_authPlugin, _dataStorePlugin, _apiPlugin, _storagePlugin]);
     debugPrint('_dataStorePlugin');
     debugPrint(_dataStorePlugin.toString());
     debugPrint('_apiPlugin');
     debugPrint(_apiPlugin.toString());
     debugPrint('_authPlugin');
     debugPrint(_authPlugin.toString());
+    debugPrint('_storagePlugin');
+    debugPrint(_storagePlugin.toString());
 
     // Once Plugins are added, configure Amplify
     //await Amplify.configure(amplifyconfig);

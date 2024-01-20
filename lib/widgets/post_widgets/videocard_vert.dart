@@ -1,4 +1,4 @@
-import 'package:agilay/widgets/custom_videoplayer.dart';
+import 'package:Makulay/widgets/custom_videoplayer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';

@@ -1,9 +1,9 @@
-import 'package:agilay/widgets/home_bar.dart';
-import 'package:agilay/widgets/post_card.dart';
-import 'package:agilay/widgets/post_widgets/imagecard_horiz.dart';
-import 'package:agilay/widgets/post_widgets/imagecard_vert.dart';
-import 'package:agilay/widgets/post_widgets/videocard_horiz.dart';
-import 'package:agilay/widgets/post_widgets/videocard_vert.dart';
+import 'package:Makulay/widgets/home_bar.dart';
+import 'package:Makulay/widgets/post_card.dart';
+import 'package:Makulay/widgets/post_widgets/imagecard_horiz.dart';
+import 'package:Makulay/widgets/post_widgets/imagecard_vert.dart';
+import 'package:Makulay/widgets/post_widgets/videocard_horiz.dart';
+import 'package:Makulay/widgets/post_widgets/videocard_vert.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -11,7 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:video_player/video_player.dart';
 import 'package:provider/provider.dart';
-import 'package:agilay/widgets/post_widgets/text_post.dart';
+import 'package:Makulay/widgets/post_widgets/text_post.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({
@@ -28,14 +28,14 @@ class _DiscoverPageState extends State<DiscoverPage>
   late final Function onIconTap;
 
   List<Widget> list = [
-    PostCard('textPost', ''),
-    PostCard('series', ''),
-    PostCard('image-Horizontal', ''),
-    PostCard('image-Vertical', ''),
-    PostCard('video-Horizontal', ''),
-    PostCard('series', ''),
-    PostCard('video-Vertical', ''),
-    PostCard('textPost', ''),
+    PostCard('textPost', '', []),
+    PostCard('series', '', []),
+    PostCard('image-Horizontal', '', []),
+    PostCard('image-Vertical', '', []),
+    PostCard('video-Horizontal', '', []),
+    PostCard('series', '', []),
+    PostCard('video-Vertical', '', []),
+    PostCard('textPost', '', []),
   ];
 
   _pageView(List myList) {

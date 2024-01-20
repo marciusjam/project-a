@@ -1,11 +1,11 @@
-import 'package:agilay/models/Model_Series.dart';
-import 'package:agilay/screens/chat_page.dart';
-import 'package:agilay/widgets/post_widgets/imagecard_horiz.dart';
-import 'package:agilay/widgets/post_widgets/imagecard_vert.dart';
-import 'package:agilay/widgets/post_widgets/series.dart';
-import 'package:agilay/widgets/post_widgets/text_post.dart';
-import 'package:agilay/widgets/post_widgets/videocard_horiz.dart';
-import 'package:agilay/widgets/post_widgets/videocard_vert.dart';
+import 'package:Makulay/models/Model_Series.dart';
+import 'package:Makulay/screens/chat_page.dart';
+import 'package:Makulay/widgets/post_widgets/imagecard_horiz.dart';
+import 'package:Makulay/widgets/post_widgets/imagecard_vert.dart';
+import 'package:Makulay/widgets/post_widgets/series.dart';
+import 'package:Makulay/widgets/post_widgets/text_post.dart';
+import 'package:Makulay/widgets/post_widgets/videocard_horiz.dart';
+import 'package:Makulay/widgets/post_widgets/videocard_vert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:video_player/video_player.dart';
@@ -15,7 +15,8 @@ import 'package:provider/provider.dart';
 class PostCard extends StatefulWidget {
   final String type;
   final String description;
-  const PostCard(this.type, this.description, {Key? key}) : super(key: key);
+  final List<String> content;
+  const PostCard(this.type, this.description, this.content, {Key? key}) : super(key: key);
  
 
   @override
@@ -62,7 +63,7 @@ class _PostCardState extends State<PostCard> {
     } else {
       return Column(
         children: [
-          _mainContainer(context, double.maxFinite, widget.description)
+          _mainContainer(context, double.maxFinite, widget.description, widget.content)
 
           /*Container(
           decoration: BoxDecoration(
@@ -78,7 +79,7 @@ class _PostCardState extends State<PostCard> {
     }
   }
 
-  Container _mainContainer(BuildContext context, double widthToUse, String description) {
+  Container _mainContainer(BuildContext context, double widthToUse, String description, List<String> content) {
     return Container(
         padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
         //height: 250,
@@ -124,7 +125,7 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           key: Key('1'),*/
-        child: _buildChild(context, description) //),
+        child: _buildChild(context, description, content) //),
         );
   }
 
@@ -260,12 +261,12 @@ class _PostCardState extends State<PostCard> {
         ));
   }
 
-  Widget _buildChild(BuildContext context, String description) {
+  Widget _buildChild(BuildContext context, String description, List<String> content) {
     debugPrint('postType: ' + widget.type);
     if (widget.type == 'image-Horizontal') {
-      return ImageCardHoriz();
+      return ImageCardHoriz(description, content);
     } else if (widget.type == 'image-Vertical') {
-      return const ImageCardVert();
+      return ImageCardVert(description, content);
     } else if (widget.type == 'textPost') {
       return TextPost(description);
     } else if (widget.type == 'video-Horizontal') {

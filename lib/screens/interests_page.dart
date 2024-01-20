@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:agilay/models/Post.dart';
-import 'package:agilay/models/PostStatus.dart';
-import 'package:agilay/widgets/home_bar.dart';
-import 'package:agilay/widgets/post_card.dart';
+import 'package:Makulay/models/Post.dart';
+import 'package:Makulay/models/PostStatus.dart';
+import 'package:Makulay/widgets/home_bar.dart';
+import 'package:Makulay/widgets/post_card.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:agilay/models/ModelProvider.dart';
+import 'package:Makulay/models/ModelProvider.dart';
 
 class Story {
   final String imageUrl;
@@ -76,14 +76,14 @@ class _InterestsPageState extends State<InterestsPage>
           filterQuality: FilterQuality.medium,
           fit: BoxFit.cover),
     ),*/
-    PostCard('textPost', ''),
-    PostCard('series', ''),
-    PostCard('image-Horizontal', ''),
-    PostCard('image-Vertical', ''),
-    PostCard('video-Horizontal', ''),
-    PostCard('series', ''),
-    PostCard('video-Vertical', ''),
-    PostCard('textPost', ''),
+    PostCard('textPost', '', []),
+    PostCard('series', '', []),
+    PostCard('image-Horizontal', '', []),
+    PostCard('image-Vertical', '', []),
+    PostCard('video-Horizontal', '', []),
+    PostCard('series', '', []),
+    PostCard('video-Vertical', '', []),
+    PostCard('textPost', '', []),
   ];
 
   Future<List<Widget>> fetchAllPosts() async {
@@ -102,6 +102,7 @@ class _InterestsPageState extends State<InterestsPage>
 
       List mainMap = json.decode(gatheredPosts);
       //List<Post> currentPosts = mainMap;
+      List<String> contentList = [];
 
       for (var eachPosts in mainMap) {
         // do something
@@ -112,18 +113,23 @@ class _InterestsPageState extends State<InterestsPage>
         debugPrint(eachPosts['content']);
         
         String description = eachPosts['description'];
-        var content = eachPosts['content'];
+        
+        String content = eachPosts['content'];
 
-        if(content == '' || content == 'null'){
+        if(content != '' && content != "null" && content != null){
+          contentList.add(content.toString());
+          //var contentList = json.decode(content).cast<String>().toList();
           //if S3 data == photo > Check resolution > If vert == Image Vert
           //if S3 data == photo > Check resolution > If horiz == Image Horizontal
           //if S3 data == video > Check resolution > If vert == Video Horizontal
           //if S3 data == video > Check resolution > If horiz == Video Horizontal 
           //if S3 data == multiple vert videos == Series
-          
+          setState(() {
+            allPosts.add(PostCard('image-Vertical', description, contentList));
+          });
         }else{ //if S3 data == null == Text Post
           setState(() {
-            allPosts.add(PostCard('textPost', description));
+            allPosts.add(PostCard('textPost', description, []));
           });
         }
 

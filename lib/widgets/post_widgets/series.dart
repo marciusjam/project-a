@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:agilay/models/Model_Series.dart';
+import 'package:Makulay/models/Model_Series.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';

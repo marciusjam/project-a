@@ -1,12 +1,13 @@
-import 'package:agilay/models/Post.dart';
-import 'package:agilay/widgets/new_post_widgets/preview_widget.dart';
+import 'package:Makulay/models/Post.dart';
+import 'package:Makulay/widgets/new_post_widgets/preview_widget.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:photo_manager/src/types/entity.dart';
 
 class DescriptionPage extends StatefulWidget {
-  const DescriptionPage(List<AssetEntity> selectedAssets, {super.key});
+  final List<AssetEntity> selectedAssets;
+  const DescriptionPage(this.selectedAssets, {super.key});
 
   @override
   State<DescriptionPage> createState() => _DescriptionPageState();
@@ -14,8 +15,25 @@ class DescriptionPage extends StatefulWidget {
 
 class _DescriptionPageState extends State<DescriptionPage> {
   final TextEditingController _descriptionController = TextEditingController();
-
+  
   String selectedOption = '';
+
+  @override
+  void initState() {
+    super.initState();
+    /*_videoController = VideoPlayerController.network(
+        'https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8')
+      ..initialize().then((_) {
+        setState(() {});
+      });
+    _textController = TextEditingController();*/
+    // Fetch gallery images
+    debugPrint('Description page');
+    debugPrint('slected LISTS ' + widget.selectedAssets.toString());
+    
+    
+  }
+
   Widget buildRadioButton(String title, String value) {
     return Row(
       children: <Widget>[
@@ -154,7 +172,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                           MaterialPageRoute(
                               builder: (context) => PreviewPage(
                                   descriptionController:
-                                      _descriptionController)),
+                                      _descriptionController, selectedAssetsController: widget.selectedAssets,)),
                         );
                       },
                       child: const Text('Next'),

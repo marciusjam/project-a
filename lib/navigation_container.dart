@@ -1,9 +1,9 @@
-import 'package:agilay/screens/chat_page.dart';
-import 'package:agilay/screens/home_page.dart';
-import 'package:agilay/screens/new_post_page.dart';
-import 'package:agilay/screens/profile_page.dart';
-import 'package:agilay/screens/search_page.dart';
-import 'package:agilay/widgets/navigation_bar.dart';
+import 'package:Makulay/screens/chat_page.dart';
+import 'package:Makulay/screens/home_page.dart';
+import 'package:Makulay/screens/new_post_page.dart';
+import 'package:Makulay/screens/profile_page.dart';
+import 'package:Makulay/screens/search_page.dart';
+import 'package:Makulay/widgets/navigation_bar.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';

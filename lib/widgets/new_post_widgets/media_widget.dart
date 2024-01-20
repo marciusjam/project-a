@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:agilay/widgets/new_post_widgets/description_page.dart';
-import 'package:agilay/widgets/new_post_widgets/image_item_widget.dart';
-import 'package:agilay/widgets/new_post_widgets/preview_widget.dart';
+import 'package:Makulay/widgets/new_post_widgets/description_page.dart';
+import 'package:Makulay/widgets/new_post_widgets/image_item_widget.dart';
+import 'package:Makulay/widgets/new_post_widgets/preview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -184,7 +184,6 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
             _loadMoreAsset();
           }
           final AssetEntity entity = _entities![index];
-          //final asset = assetPath.entities[index];
           final isSelected = selectedAssets.contains(entity);
           return GestureDetector(
             onTap: () {
@@ -193,6 +192,7 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
                 if (isSelected) {
                   selectedAssets.remove(entity);
                 } else {
+                  
                   selectedAssets.add(entity);
                 }
                 debugPrint('selectedAssets ' + selectedAssets.toString());

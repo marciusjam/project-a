@@ -1,4 +1,4 @@
-import 'package:agilay/models/ModelProvider.dart';
+import 'package:Makulay/models/ModelProvider.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 // Amplify Flutter Packages

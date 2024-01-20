@@ -1,7 +1,7 @@
-import 'package:agilay/screens/auth_page.dart';
-import 'package:agilay/screens/chat_page.dart';
-import 'package:agilay/screens/new_post_page.dart';
-import 'package:agilay/screens/profile_page.dart';
+import 'package:Makulay/screens/auth_page.dart';
+import 'package:Makulay/screens/chat_page.dart';
+import 'package:Makulay/screens/new_post_page.dart';
+import 'package:Makulay/screens/profile_page.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +98,7 @@ class HomeBar extends StatelessWidget {
       pinned: true,
       elevation: 0,
       floating: true,
+      surfaceTintColor: Colors.white,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         //statusBarColor: Colors.black,
@@ -109,7 +110,7 @@ class HomeBar extends StatelessWidget {
         onTap: (value) => _onTabClick(value),
         enableFeedback: false,
         overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
-        indicatorColor: Colors.transparent,
+        indicatorColor: Colors.amber,
         indicatorSize: TabBarIndicatorSize.tab,
         tabAlignment: TabAlignment.start,
         //indicatorPadding: EdgeInsets.fromLTRB(12, 0, 0, 0),
@@ -313,7 +314,7 @@ class HomeBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
+                padding: new EdgeInsets.fromLTRB(0, 5, 0, 0),
                 child: Row(children: [
                   PopupMenuButton(
                     child: ClipOval(
@@ -450,7 +451,7 @@ class HomeBar extends StatelessWidget {
               ),
               Spacer(),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                 child: Row(children: [
                   GestureDetector(
                       onTap: () => {_onLogoTapped()},
@@ -460,11 +461,11 @@ class HomeBar extends StatelessWidget {
                         children: [
                           Image.asset(
                             //'assets/agila-logo.png',
-                            'assets/agila-logo.png',
+                            'assets/makulay.png',
                             height:
-                                36, //widget._tabController.index == 1 ? 16 : 12,
+                                45, //widget._tabController.index == 1 ? 16 : 12,
                             width:
-                                36, //widget._tabController.index == 1 ? 16 : 12,
+                                45, //widget._tabController.index == 1 ? 16 : 12,
                             filterQuality: FilterQuality.medium,
                           ),
 
@@ -538,7 +539,7 @@ class HomeBar extends StatelessWidget {
                 ]),
               ),*/
               Padding(
-                padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
+                padding: new EdgeInsets.fromLTRB(0, 5, 0, 0),
                 child: GestureDetector(
                     onTap: () => {
                           //_onCreateTap()
