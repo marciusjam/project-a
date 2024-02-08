@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:Makulay/models/ModelProvider.dart';
 import 'package:Makulay/models/Post.dart';
+import 'package:Makulay/models/PostStatus.dart';
+import 'package:Makulay/navigation_container.dart';
 import 'package:Makulay/widgets/new_post_widgets/image_item_widget.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -34,6 +36,7 @@ class _PreviewPageState extends State<PreviewPage> {
   final TextEditingController descriptionController;
   final List<AssetEntity> selectedAssetsController;
   late AmplifyDataStore datastorePlugin;
+  late String userid;
   var _isLoading;
 
   final hubSubscription =
@@ -61,6 +64,7 @@ class _PreviewPageState extends State<PreviewPage> {
   @override
   void initState() {
     super.initState();
+    fetchCurrentUserAttributes();
     //_configureAmplify();
   }
 
@@ -78,6 +82,22 @@ class _PreviewPageState extends State<PreviewPage> {
         throw e;
       }
     }
+
+  Future<void> fetchCurrentUserAttributes() async {
+  try {
+    final result = await Amplify.Auth.getCurrentUser();
+    //String userEmail = result[2].value.toString();
+    setState(() {
+      userid = result.userId;
+    });
+  } on AuthException catch (e) {
+    safePrint('Error fetching user attributes: ${e.message}');
+    if(e.message == 'No user is currently signed in'){
+      
+    }
+    
+  }
+}
   
 
   Future<void> _createPost() async {
@@ -85,7 +105,10 @@ class _PreviewPageState extends State<PreviewPage> {
     final selectedAssets = this.selectedAssetsController;
     debugPrint('description: ' + description);
     debugPrint('seletedAssets: ' + selectedAssets.toString());
+    String keyName = '';
     List<String> imageUrls = [];
+    String orientation = '';
+    AssetType fileType = AssetType.image;
     for(var entity in selectedAssets){
       //Future<File?> file = entity.file;
       File? file = await entity.file;
@@ -97,9 +120,19 @@ class _PreviewPageState extends State<PreviewPage> {
         print('File not selected or loaded.');
       }
 
-      AssetType fileType = entity.type;
+      fileType = entity.type;
+
+      int fileHeight = entity.height;
+      int fileWidth = entity.width;
+      
+      if(fileHeight > fileWidth){
+        orientation = 'vertical';
+      }else{
+        orientation = 'horizontal';
+      }
       
       print('File Type: $fileType');
+      print('File Type Name: ' + fileType.name);
       final awsFile = AWSFilePlatform.fromFile(file!);
       print('awsFile: '+ awsFile.toString());
       final fileName = DateTime.now().toIso8601String(); 
@@ -108,25 +141,36 @@ class _PreviewPageState extends State<PreviewPage> {
         key: 'DEV1/' + fileName,
       ).result;
       safePrint('Uploaded data: ${uploadResult.uploadedItem.key}');
-      String imageUrl =  await getFileUrl(uploadResult.uploadedItem.key);
-      safePrint('imageUrl: $imageUrl');
-      imageUrls.add(imageUrl);
+      keyName = uploadResult.uploadedItem.key;
+      //String imageUrl =  await getFileUrl(uploadResult.uploadedItem.key);
+      //safePrint('imageUrl: $imageUrl');
+      //imageUrls.add(imageUrl);
     }
 
     
     
     try {
       final post = Post(
+          postId: userid + '-1',
           description: description,
-          likes: 15,
-          status: PostStatus.ACTIVE,
-          content: '"'+ imageUrls.toString() +'"');
+          status: RecordStatus.ACTIVE,
+          orientation: orientation,
+          contenttype: fileType.name,
+          user: User(id: userid,userId: userid, username: ''),
+            
+          //content: '"'+ imageUrls.toString() +'"');
+          content: keyName);
 
-      await Amplify.DataStore.save(post);
+      await Amplify.DataStore.save(post).then((value) => {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => NavigationContainer()),
+        )
+      });
       //changeSync();
       // Post created successfully, navigate to the next screen or show a success message
-    } on DataStoreException {
-      safePrint('Could not update post, maybe the title has been changed?');
+    } on DataStoreException catch(e){
+      debugPrint('Error ' + e.message);
     } catch (e) {
       debugPrint(e.toString());
     }

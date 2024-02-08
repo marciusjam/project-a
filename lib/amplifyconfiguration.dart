@@ -4,12 +4,12 @@ const amplifyconfig = '''{
     "api": {
         "plugins": {
             "awsAPIPlugin": {
-                "agilay": {
+                "makulay": {
                     "endpointType": "GraphQL",
-                    "endpoint": "https://csqqottnozhljjtemfzm3artuu.appsync-api.us-east-1.amazonaws.com/graphql",
-                    "region": "us-east-1",
+                    "endpoint": "https://gecwqjzi3zghbluzi7k7qbdjsq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+                    "region": "ap-southeast-1",
                     "authorizationType": "API_KEY",
-                    "apiKey": "da2-4zhexwhgzveqthu3lcwehroj7e"
+                    "apiKey": "da2-vshfb42rbjaepcznb3c4l5qrfe"
                 }
             }
         }
@@ -22,39 +22,54 @@ const amplifyconfig = '''{
                 "IdentityManager": {
                     "Default": {}
                 },
+                "AppSync": {
+                    "Default": {
+                        "ApiUrl": "https://gecwqjzi3zghbluzi7k7qbdjsq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+                        "Region": "ap-southeast-1",
+                        "AuthMode": "API_KEY",
+                        "ApiKey": "da2-vshfb42rbjaepcznb3c4l5qrfe",
+                        "ClientDatabasePrefix": "makulay_API_KEY"
+                    },
+                    "makulay_AWS_IAM": {
+                        "ApiUrl": "https://gecwqjzi3zghbluzi7k7qbdjsq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+                        "Region": "ap-southeast-1",
+                        "AuthMode": "AWS_IAM",
+                        "ClientDatabasePrefix": "makulay_AWS_IAM"
+                    }
+                },
                 "CredentialsProvider": {
                     "CognitoIdentity": {
                         "Default": {
-                            "PoolId": "us-east-1:052bbceb-ee4d-4227-8fda-77662c8ad97f",
-                            "Region": "us-east-1"
+                            "PoolId": "ap-southeast-1:4d29215b-82c8-41d3-8260-2dfcbde52b4d",
+                            "Region": "ap-southeast-1"
                         }
                     }
                 },
                 "CognitoUserPool": {
                     "Default": {
-                        "PoolId": "us-east-1_4rpgzvuS1",
-                        "AppClientId": "5vr8sva116isud6fbenqbkmsp8",
-                        "Region": "us-east-1"
+                        "PoolId": "ap-southeast-1_FIhd1BRhs",
+                        "AppClientId": "27mok2agpum3avj6stri493259",
+                        "Region": "ap-southeast-1"
                     }
                 },
                 "Auth": {
                     "Default": {
                         "authenticationFlowType": "USER_SRP_AUTH",
-                        "socialProviders": [],
-                        "usernameAttributes": [
-                            "EMAIL",
-                            "PHONE_NUMBER"
-                        ],
-                        "signupAttributes": [
-                            "EMAIL"
+                        "mfaConfiguration": "OFF",
+                        "mfaTypes": [
+                            "SMS"
                         ],
                         "passwordProtectionSettings": {
                             "passwordPolicyMinLength": 8,
                             "passwordPolicyCharacters": []
                         },
-                        "mfaConfiguration": "OFF",
-                        "mfaTypes": [
-                            "SMS"
+                        "signupAttributes": [
+                            "EMAIL"
+                        ],
+                        "socialProviders": [],
+                        "usernameAttributes": [
+                            "EMAIL",
+                            "PHONE_NUMBER"
                         ],
                         "verificationMechanisms": [
                             "EMAIL"
@@ -63,23 +78,8 @@ const amplifyconfig = '''{
                 },
                 "S3TransferUtility": {
                     "Default": {
-                        "Bucket": "agilay51cb75ea91264f98aea831d548621e0940209-dev",
-                        "Region": "us-east-1"
-                    }
-                },
-                "AppSync": {
-                    "Default": {
-                        "ApiUrl": "https://csqqottnozhljjtemfzm3artuu.appsync-api.us-east-1.amazonaws.com/graphql",
-                        "Region": "us-east-1",
-                        "AuthMode": "API_KEY",
-                        "ApiKey": "da2-4zhexwhgzveqthu3lcwehroj7e",
-                        "ClientDatabasePrefix": "agilay_API_KEY"
-                    },
-                    "agilay_AMAZON_COGNITO_USER_POOLS": {
-                        "ApiUrl": "https://csqqottnozhljjtemfzm3artuu.appsync-api.us-east-1.amazonaws.com/graphql",
-                        "Region": "us-east-1",
-                        "AuthMode": "AMAZON_COGNITO_USER_POOLS",
-                        "ClientDatabasePrefix": "agilay_AMAZON_COGNITO_USER_POOLS"
+                        "Bucket": "makulay8bf74d2dc76d4f068d2db770d437b058210358-dev",
+                        "Region": "ap-southeast-1"
                     }
                 }
             }
@@ -88,8 +88,8 @@ const amplifyconfig = '''{
     "storage": {
         "plugins": {
             "awsS3StoragePlugin": {
-                "bucket": "agilay51cb75ea91264f98aea831d548621e0940209-dev",
-                "region": "us-east-1",
+                "bucket": "makulay8bf74d2dc76d4f068d2db770d437b058210358-dev",
+                "region": "ap-southeast-1",
                 "defaultAccessLevel": "guest"
             }
         }

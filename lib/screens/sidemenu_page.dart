@@ -1,4 +1,5 @@
 import 'package:Makulay/main.dart';
+import 'package:Makulay/navigation_container.dart';
 import 'package:Makulay/widgets/home_bar.dart';
 import 'package:Makulay/widgets/login.dart';
 import 'package:Makulay/widgets/post_card.dart';
@@ -14,7 +15,7 @@ void _signOutAndNavigateToLogin(BuildContext context) async {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => MyApp(),
+        builder: (context) => NavigationContainer(),
       ),
     );
   } catch (e) {

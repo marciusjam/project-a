@@ -1,4 +1,5 @@
 import 'package:Makulay/models/ModelProvider.dart';
+import 'package:Makulay/navigation_container.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,10 @@ import 'package:Makulay/screens/home_page.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:uuid/uuid.dart';
+
+var globalEmail;
+var globalPassword;
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -25,6 +30,8 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
+    final TextEditingController verifCodeController = TextEditingController();
+    final TextEditingController confirmPasswordController = TextEditingController();
 
     if (method == 'Login') {
       return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -41,13 +48,12 @@ class _LoginState extends State<Login> {
                     fontSize: 20,
                   ),
                   decoration: InputDecoration(
-                    hintText: 'Email/Username/Phone Number',
+                    hintText: 'Email/Phone Number',
                     hintStyle: TextStyle(
                       color: Colors.grey,
                       fontSize: 20,
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.never,
-                    //labelText: 'Email/Username/Phone Number',
                     focusColor: Colors.amber,
                     labelStyle: TextStyle(
                       color: Colors.amber,
@@ -181,7 +187,7 @@ class _LoginState extends State<Login> {
         ),
         //)
       ]);
-    } else {
+    } else if(method == 'Signup') {
       return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
           child: Padding(
@@ -196,13 +202,12 @@ class _LoginState extends State<Login> {
                     fontSize: 20,
                   ),
                   decoration: InputDecoration(
-                    hintText: 'Email/Username/Phone Number',
+                    hintText: 'Email/Phone Number',
                     hintStyle: TextStyle(
                       color: Colors.grey,
                       fontSize: 20,
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.never,
-                    //labelText: 'Email/Username/Phone Number',
                     focusColor: Colors.amber,
                     labelStyle: TextStyle(
                       color: Colors.amber,
@@ -258,7 +263,7 @@ class _LoginState extends State<Login> {
 
                 TextField(
                   cursorColor: Colors.amber,
-                  controller: passwordController,
+                  controller: confirmPasswordController,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -306,9 +311,13 @@ class _LoginState extends State<Login> {
                         emailController.text +
                         ' ' +
                         passwordController.text);
+                        if(passwordController.text != confirmPasswordController.text){
+                          _showError(context, 'Password and Confirm Password are not the same.');
+                        }else{
+                          _signupUser(emailController.text, passwordController.text, confirmPasswordController.text);
+                        }
 
-                    _signupUser(emailController.text, passwordController.text);
-
+                    
                     /*Navigator.of(context).pushReplacementNamed(
                                     _isSignedIn ? '/home' : '/confirm',
                                     arguments: _loginData);*/
@@ -316,6 +325,131 @@ class _LoginState extends State<Login> {
                   child: Text('Signup'),
                 ),
                 SizedBox(height: 20.0),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 25),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Back to "),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 1.0),
+                        child: InkWell(
+                            onTap: () {
+                              print('Login Pressed');
+                              setState(() {
+                                method = 'Login';
+                              });
+                            },
+                            child: Text(
+                              'Login',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.amber,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        //)
+      ]);
+    } else {
+      return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  cursorColor: Colors.amber,
+                  controller: verifCodeController,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: 'Enter Verification Code',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 20,
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    //labelText: 'Email/Username/Phone Number',
+                    focusColor: Colors.amber,
+                    labelStyle: TextStyle(
+                      color: Colors.amber,
+                      fontSize: 20,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(10.0),
+                      ),
+                      borderSide: BorderSide(color: Colors.black12, width: 1.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(10.0),
+                      ),
+                      borderSide: BorderSide(color: Colors.black12, width: 1.0),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20.0),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    textStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                    primary: Colors.white,
+                    minimumSize: const Size.fromHeight(50),
+                    side: BorderSide(width: 1.0),
+                  ),
+                  onPressed: () {
+                    debugPrint('Verify Code: ' +
+                        verifCodeController.text);
+
+                    _verifyCode(context, globalEmail, globalPassword, verifCodeController.text);
+
+                    /*Navigator.of(context).pushReplacementNamed(
+                                    _isSignedIn ? '/home' : '/confirm',
+                                    arguments: _loginData);*/
+                  },
+                  child: Text('Verify'),
+                ),
+                SizedBox(height: 20.0),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 25),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 1.0),
+                        child: InkWell(
+                            onTap: () {
+                              print('Resend Code Pressed');
+                              _resendCode(context, globalEmail);
+                            },
+                            child: Text(
+                              'Resend Code',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.amber,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      )
+                    ],
+                  ),
+                ),
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 25),
                   child: Row(
@@ -362,16 +496,32 @@ class _LoginState extends State<Login> {
           username: name.toString(),
           password: password,
         );
-        _isSignedIn = res.isSignedIn;
-        //_loginData = data;
-        //method = 'Login';
-        _createUser(name);
-        Navigator.pushReplacement(
+        debugPrint('res: ' + res.toString());
+        var userConfirmationNeeded;
+        if(res.nextStep.signInStep == AuthSignInStep.confirmSignUp){
+          //userConfirmationNeeded = true;
+          _resendCode(context, name);
+          setState(() {
+            method = 'Verify';
+            globalEmail = name;
+            globalPassword = password;
+          });
+        }else if (res.nextStep.signInStep == AuthSignInStep.done) {
+          //userConfirmationNeeded = false;
+          Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => NavigationContainer()),
         );
+        }
+    
+        
+        
+        
+        //_handleSignInResult(res);
+        
       } on AuthException catch (e) {
         debugPrint('Error: ' + e.toString());
+        _showError(context, e.message.toString());
         if (e.message.toString() == 'Failed since user is not authorized.') {
           return 'Incorrect username or password.';
         }
@@ -390,44 +540,81 @@ class _LoginState extends State<Login> {
     });
   }
 
-  Future<void> _createUser(String name) async {
-    /*try {
-      final post = User(
-          username: 'Marcius',
-          email: name.toString(),
-          phoneNumber: '09190612407');
-      await Amplify.DataStore.save(post);
+  void _verifyCode(BuildContext context, String name, String password, String code) async {
+    try {
+      debugPrint(name.toString());
+      final res = await Amplify.Auth.confirmSignUp(
+        username: name.toString(),
+        confirmationCode: code,
+      );
 
-      // Post created successfully, navigate to the next screen or show a success message
-    } catch (e) {
-      // Handle the error (e.g., display an error message)
-      print('Error creating post: $e');
-    }*/
+      if (res.isSignUpComplete) {
+        //Login user
+        final user = await Amplify.Auth.signIn(
+            username: name.toString(), password: password.toString());
+
+        if (user.isSignedIn) {
+          //Navigator.pushReplacementNamed(context, '/home');
+         Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => NavigationContainer()),);
+        }
+      }else{
+        method = 'Verify';
+      }
+    } on AuthException catch (e) {
+      debugPrint(e.toString());
+      _showError(context, e.message.toString());
+      return null;
+    }
   }
 
-  Future<String?> _signupUser(String name, String password) {
+  void _resendCode(BuildContext context, String name) async {
+    try {
+      debugPrint('sending new code to: ' + name.toString());
+      await Amplify.Auth.resendSignUpCode(username: name.toString());
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.blueAccent,
+          content: Text(
+            'Confirmation code resent. Check your email',
+            style: TextStyle(fontSize: 15),
+          )));
+    } on AuthException catch (e) {
+      _showError(context, e.message.toString());
+    }
+  }
+
+
+  Future<String?> _signupUser(String name, String password, String confirmpass) {
     final userAttributes = <AuthUserAttributeKey, String>{
-      AuthUserAttributeKey.email: 'test@example.com',
-      //AuthUserAttributeKey.phoneNumber: '+18885551234',
-    };
-    return Future.delayed(loginTime).then((_) async {
-      try {
-        await Amplify.Auth.signUp(
-            username: name.toString(),
-            password: password,
-            options: SignUpOptions(userAttributes: userAttributes));
+        AuthUserAttributeKey.email: name,
+        //AuthUserAttributeKey.phoneNumber: '+18885551234',
+      };
+      return Future.delayed(loginTime).then((_) async {
+        try {
+          await Amplify.Auth.signUp(
+              username: name.toString(),
+              password: password,
+              options: SignUpOptions(userAttributes: userAttributes));
+          setState(() {
+              globalEmail = name;
+              globalPassword = password;
+              method = 'verify';
+            });
+          //_signUpData = data;
+          //method = 'Signup';
+        } on AuthException catch (e) {
+          debugPrint('Error: ' + e.message.toString());
+          _showError(context, e.message.toString());
+          if (e.message.toString() == 'Username already exists in the system.') {
+            return 'Username already exists.';
+          }
 
-        //_signUpData = data;
-        //method = 'Signup';
-      } on AuthException catch (e) {
-        debugPrint('Error: ' + e.message.toString());
-        if (e.message.toString() == 'Username already exists in the system.') {
-          return 'Username already exists.';
+          return 'There was a problem signing up. Please try again';
         }
-
-        return 'There was a problem signing up. Please try again';
-      }
-    });
+      });
+   
   }
 
   Future<String?> _recoverPassword(BuildContext context, String email) async {
@@ -447,5 +634,16 @@ class _LoginState extends State<Login> {
       }
     }
     return null;
+  }
+
+
+
+  void _showError(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.redAccent,
+        content: Text(
+          message.toString(),
+          style: TextStyle(fontSize: 15),
+        )));
   }
 }

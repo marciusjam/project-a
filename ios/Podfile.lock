@@ -42,6 +42,9 @@ PODS:
   - Flutter (1.0.0)
   - flutter_native_image (0.0.1):
     - Flutter
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
   - image_picker_ios (0.0.1):
     - Flutter
   - libphonenumber_plugin (0.0.1):
@@ -67,6 +70,9 @@ PODS:
     - Flutter
     - FlutterMacOS
   - ReachabilitySwift (5.0.0)
+  - sqflite (0.0.3):
+    - Flutter
+    - FMDB (>= 2.7.5)
   - SQLite.swift (0.13.2):
     - SQLite.swift/standard (= 0.13.2)
   - SQLite.swift/standard (0.13.2)
@@ -93,6 +99,7 @@ DEPENDENCIES:
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
 
@@ -106,6 +113,7 @@ SPEC REPOS:
     - BSGridCollectionViewLayout
     - BSImagePicker
     - BSImageView
+    - FMDB
     - PhoneNumberKit
     - ReachabilitySwift
     - SQLite.swift
@@ -142,6 +150,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   photo_manager:
     :path: ".symlinks/plugins/photo_manager/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   video_player_avfoundation:
@@ -164,6 +174,7 @@ SPEC CHECKSUMS:
   device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_native_image: 9c0b7451838484458e5b0fae007b86a4c2d4bdfe
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_picker_ios: 99dfe1854b4fa34d0364e74a78448a0151025425
   libphonenumber_plugin: 48bf4078546377eedaab4aa54978cd0f6fa23072
   multi_image_picker: 443e776a762d7901641854043b60abf88a85d5ef
@@ -173,6 +184,7 @@ SPEC CHECKSUMS:
   PhoneNumberKit: 3c68a822bad955ffcefc72a52df72b6596498555
   photo_manager: 4f6810b7dfc4feb03b461ac1a70dacf91fba7604
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   SQLite.swift: 4fc2be46c36392e3b87afe6fe7f1801c1daa07ef
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
   url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812

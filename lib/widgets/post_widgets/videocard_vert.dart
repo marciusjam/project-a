@@ -5,7 +5,11 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class VideoCardVert extends StatelessWidget {
-  const VideoCardVert({Key? key}) : super(key: key);
+  final String description;
+  final String username;
+  final String? profilepicture;
+  final Map<String, String> content;
+  const VideoCardVert(this.description, this.content, this.username, this.profilepicture, {Key? key}) : super(key: key);
   final double elavationVal = 3;
 
   @override
@@ -22,8 +26,8 @@ class VideoCardVert extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const CustomVideoPlayer(
-                    'vertical', 'assets/vertvideo.mp4', 9 / 16),
+                CustomVideoPlayer(
+                    'vertical', content.entries.first.value, 9 / 16, description, username, profilepicture),
               ],
             )
           ])),

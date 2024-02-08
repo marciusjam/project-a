@@ -1,15 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:video_player/video_player.dart';
 
 class CustomVideoPlayer extends StatefulWidget {
-  const CustomVideoPlayer(this.videotype, this.video, this.size, {Key? key})
-      : super(key: key);
-
   final String videotype;
   final String video;
   final double size;
+  final String description;
+  final String username;
+  final String? profilepicture;
+
+  const CustomVideoPlayer(this.videotype, this.video, this.size, this.description, this.username, this.profilepicture, {Key? key})
+      : super(key: key);
+
+  
 
   @override
   State<CustomVideoPlayer> createState() => _CustomVideoPlayerState();
@@ -17,13 +23,13 @@ class CustomVideoPlayer extends StatefulWidget {
 
 class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   late VideoPlayerController _controller;
-
+  
   @override
   void initState() {
     super.initState();
-
-    _controller = VideoPlayerController.asset(
-      widget.video,
+    Uri videoUrl = Uri.parse(widget.video.toString());
+    _controller = VideoPlayerController.networkUrl(
+      videoUrl,
       //'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
       //'https://www.tiktok.com/@redbedonia_/video/7034010235475987739',
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
@@ -120,9 +126,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                                   width: 40,
                                                   child: CircleAvatar(
                                                     radius: 50,
-                                                    backgroundImage: AssetImage(
-                                                        'assets/profile-jam.jpg'),
-                                                  ),
+                                                    backgroundImage: CachedNetworkImageProvider(widget.profilepicture!)),
                                                 ),
                                               ),
                                             ),
@@ -141,7 +145,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  'Marcius',
+                                                  widget.username,
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -155,7 +159,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                                   text: TextSpan(
                                                     children: <TextSpan>[
                                                       TextSpan(
-                                                        text: 'Back burning',
+                                                        text: widget.description,
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontWeight:

@@ -1,27 +1,25 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-agilay-dev-40209-authRole",
-      "UnauthRoleArn": "arn:aws:iam::306971405788:role/amplify-agilay-dev-40209-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::306971405788:role/amplify-agilay-dev-40209-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-agilay-dev-40209-deployment",
-      "UnauthRoleName": "amplify-agilay-dev-40209-unauthRole",
-      "StackName": "amplify-agilay-dev-40209",
-      "StackId": "arn:aws:cloudformation:us-east-1:306971405788:stack/amplify-agilay-dev-40209/72d8c970-444b-11ee-b774-0e0527f064a5",
-      "AmplifyAppId": "d1s7negsr6a4b"
+      "AuthRoleName": "amplify-makulay-dev-210358-authRole",
+      "UnauthRoleArn": "arn:aws:iam::306971405788:role/amplify-makulay-dev-210358-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::306971405788:role/amplify-makulay-dev-210358-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-makulay-dev-210358-deployment",
+      "UnauthRoleName": "amplify-makulay-dev-210358-unauthRole",
+      "StackName": "amplify-makulay-dev-210358",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:306971405788:stack/amplify-makulay-dev-210358/b5e95e50-b926-11ee-bf50-067d5fa9eb92",
+      "AmplifyAppId": "d2r70pg8y89wfe"
     },
     "categories": {
-      "auth": {
-        "agilayfb7d5c21": {},
-        "agilayac82fd6f": {},
-        "agilay6a5aabdd": {}
+      "api": {
+        "makulay": {}
       },
       "storage": {
-        "s328525ba1": {}
+        "makulaydb1": {}
       },
-      "api": {
-        "agilay": {}
+      "auth": {
+        "makulay95ebd6d0": {}
       }
     }
   }

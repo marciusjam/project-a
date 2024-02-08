@@ -1,78 +1,24 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class ImageCardHoriz extends StatefulWidget {
+class ImageCardHoriz extends StatelessWidget {
   final String description;
-  final List<String> content;
-  const ImageCardHoriz(this.description, this.content, {Key? key}) : super(key: key);
+  final Map<String, String> content;
+  final String username;
+  final String? profilepicture;
+  const ImageCardHoriz(this.description, this.content, this.username, this.profilepicture, {Key? key}) : super(key: key);
 
-  @override
-  State<ImageCardHoriz> createState() => _ImageCardHorizState();
-}
-
-class _ImageCardHorizState extends State<ImageCardHoriz> {
   final double elavationVal = 3;
-  String? globalImageUrl;
-
-  Future<String> getFileUrl(String fileKey) async {
-      try {
-        final result = await Amplify.Storage.getUrl(key: fileKey).result;
-        debugPrint('result ' + result.url.toString());
-        return result.url.toString();
-      } catch (e) {
-        throw e;
-      }
-    }
-
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getFileUrl(widget.content.first).then((value) {
-      setState(() {
-        globalImageUrl = value;
-      });
-    });
-    debugPrint('globalImageUrl ' + globalImageUrl.toString());
-  }
 
   @override
   Widget build(BuildContext context) {
-    
-    /*for(var key in content){
-
-    }*/
-
     return Container(
         child: Column(
       children: [
-        /*Card(
-            elevation: elavationVal,
-            shape: ContinuousRectangleBorder(
-              borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
-            ),
-            child: Column(
-              children: [
-                AspectRatio(
-                    aspectRatio: 4 / 3,
-                    child: Stack(alignment: Alignment.bottomCenter, children: [
-                      ClipRRect(
-                        borderRadius:
-                            new BorderRadius.all(const Radius.circular(5.0)),
-                        child: Image.network(
-                            'https://scontent.fmnl17-2.fna.fbcdn.net/v/t1.6435-9/78563221_10215679511648949_4317568491948343296_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=e3f864&_nc_eui2=AeFMuKilzn9h3KO48fFTMlF1Z6PB8bneBn5no8Hxud4GfjnO3kFIT3Ki7ezD0lantms&_nc_ohc=ajS-PJd3eiUAX-bzl1z&_nc_ht=scontent.fmnl17-2.fna&oh=00_AT99csXJD5VzCOFSTDA8fMaALXkwwETIlo1Mx346pBDiaA&oe=61E48B41',
-                            height: double.infinity,
-                            //height: 600,
-                            width: double.infinity,
-                            fit: BoxFit.cover),
-                      ),
-                    ]))
-              ],
-            )),*/
         Card(
             elevation: elavationVal,
             surfaceTintColor: Colors.white, //IOS
@@ -92,12 +38,29 @@ class _ImageCardHorizState extends State<ImageCardHoriz> {
                           borderRadius: new BorderRadius.only(
                               topRight: Radius.circular(10),
                               topLeft: Radius.circular(10)),
-                          child: Image.network(
+                          child: CachedNetworkImage(
+                            //key: globalImageKey,
+       imageUrl: content.entries.first.value,
+       progressIndicatorBuilder:
+                          (context, url, downloadProgress) => Container(
+                            height: double.infinity,
+                            //height: 600,
+                            width: double.infinity,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.white,
+                        ),
+                      ),
+       errorWidget: (context, url, error) => Icon(Icons.error), height: double.infinity,
+                            //height: 600,
+                            width: double.infinity,
+                            fit: BoxFit.cover
+    ),/*Image.network(
                               globalImageUrl.toString(),
                               height: double.infinity,
                               //height: 600,
                               width: double.infinity,
-                              fit: BoxFit.cover),
+                              fit: BoxFit.cover),*/
                         ),
                       ])),
                 ),
@@ -130,9 +93,9 @@ class _ImageCardHorizState extends State<ImageCardHoriz> {
                                               width: 40,
                                               child: CircleAvatar(
                                                 radius: 50,
-                                                backgroundImage: AssetImage(
+                                                backgroundImage: CachedNetworkImageProvider(profilepicture!)),/*AssetImage(
                                                     'assets/profile-jam.jpg'),
-                                              ),
+                                              ),*/
                                             ),
                                           ),
                                         ),
@@ -152,7 +115,7 @@ class _ImageCardHorizState extends State<ImageCardHoriz> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              'Marcius',
+                                              username,
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   //color: Colors.white,
@@ -166,7 +129,8 @@ class _ImageCardHorizState extends State<ImageCardHoriz> {
                                               text: TextSpan(
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text:widget.description,
+                                                    text:
+                                                    description,
                                                         style: TextStyle(
                                                         color: Colors.black,
                                                         //color: Colors.white,

@@ -20,7 +20,51 @@ import 'screens/auth_page.dart';
 import 'screens/confirm.dart';
 import 'screens/confirm_reset.dart';
 
-main() => runApp(new MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _configureAmplify();
+  runApp(const MyApp());
+}
+
+Future<void> _configureAmplify() async {
+    // await Amplify.addPlugin(AmplifyAPI()); // UNCOMMENT this line after backend is deployed
+    final AmplifyDataStore _dataStorePlugin =
+        AmplifyDataStore(modelProvider: ModelProvider.instance);
+    final AmplifyStorageS3 _storagePlugin = AmplifyStorageS3();
+    final AmplifyAPI _apiPlugin =
+        AmplifyAPI(modelProvider: ModelProvider.instance);
+    final AmplifyAuthCognito _authPlugin = AmplifyAuthCognito();
+
+    if (!Amplify.isConfigured) {
+      await Amplify.addPlugins([
+        _apiPlugin, // must have
+        _authPlugin,
+        _storagePlugin,
+        _dataStorePlugin
+      ]);
+      try {
+        
+        await Amplify.configure(amplifyconfig);
+        safePrint('Successfully configured');
+      } on Exception catch (e) {
+        safePrint('Error configuring Amplify: $e');
+      }
+      
+      
+    }
+    
+    /*await Amplify.addPlugins([_authPlugin, _dataStorePlugin, _apiPlugin, _storagePlugin]);
+    
+
+    // Once Plugins are added, configure Amplify
+    //await Amplify.configure(amplifyconfig);
+    await Amplify.configure(amplifyconfig).then((value) => {
+      
+    });*/
+    
+  }
+
+
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -40,36 +84,7 @@ class _MyAppState extends State<MyApp> {
     _configureAmplify();
   }
 
-  void _configureAmplify() async {
-    // await Amplify.addPlugin(AmplifyAPI()); // UNCOMMENT this line after backend is deployed
-    final AmplifyDataStore _dataStorePlugin =
-        AmplifyDataStore(modelProvider: ModelProvider.instance);
-    final AmplifyStorageS3 _storagePlugin = AmplifyStorageS3();
-    final AmplifyAPI _apiPlugin =
-        AmplifyAPI(modelProvider: ModelProvider.instance);
-    final AmplifyAuthCognito _authPlugin = AmplifyAuthCognito();
-    await Amplify.addPlugins([_authPlugin, _dataStorePlugin, _apiPlugin, _storagePlugin]);
-    debugPrint('_dataStorePlugin');
-    debugPrint(_dataStorePlugin.toString());
-    debugPrint('_apiPlugin');
-    debugPrint(_apiPlugin.toString());
-    debugPrint('_authPlugin');
-    debugPrint(_authPlugin.toString());
-    debugPrint('_storagePlugin');
-    debugPrint(_storagePlugin.toString());
-
-    // Once Plugins are added, configure Amplify
-    //await Amplify.configure(amplifyconfig);
-    await Amplify.configure(amplifyconfig);
-    debugPrint('Done configure Amplify');
-    try {
-      setState(() {
-        _amplifyConfigured = true;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {

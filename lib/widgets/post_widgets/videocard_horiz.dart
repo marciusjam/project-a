@@ -1,11 +1,16 @@
 import 'package:Makulay/widgets/custom_videoplayer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class VideoCardHoriz extends StatelessWidget {
-  const VideoCardHoriz({Key? key}) : super(key: key);
+  final String description;
+  final Map<String, String> content;
+  final String username;
+  final String? profilepicture;
+  const VideoCardHoriz(this.description, this.content, this.username, this.profilepicture, {Key? key}) : super(key: key);
   final double elavationVal = 3;
 
   @override
@@ -23,8 +28,8 @@ class VideoCardHoriz extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const CustomVideoPlayer(
-                    'horizontal', 'assets/horizvideo.mp4', 16 / 9),
+                CustomVideoPlayer(
+                    'horizontal', content.entries.first.value, 16 / 9, '', username, profilepicture),
                 Padding(
                     padding: const EdgeInsets.all(15),
                     child: Stack(
@@ -54,9 +59,7 @@ class VideoCardHoriz extends StatelessWidget {
                                               width: 40,
                                               child: CircleAvatar(
                                                 radius: 50,
-                                                backgroundImage: AssetImage(
-                                                    'assets/profile-jam.jpg'),
-                                              ),
+                                                backgroundImage: CachedNetworkImageProvider(profilepicture!)),
                                             ),
                                           ),
                                         ),
@@ -76,7 +79,7 @@ class VideoCardHoriz extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              'Marcius',
+                                              username,
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   //color: Colors.white,
@@ -90,7 +93,7 @@ class VideoCardHoriz extends StatelessWidget {
                                               text: TextSpan(
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text: '1v4 EZ!!!!',
+                                                    text: description,
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         //color: Colors.white,

@@ -1,0 +1,16 @@
+{
+  "resourceName": "makulaydb1",
+  "policyUUID": "7fbcd853",
+  "bucketName": "makulay8bf74d2dc76d4f068d2db770d437b058",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "READ",
+    "CREATE_AND_UPDATE",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

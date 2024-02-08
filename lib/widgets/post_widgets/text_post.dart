@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -5,7 +6,9 @@ import 'package:flutter/src/widgets/framework.dart';
 
 class TextPost extends StatelessWidget {
   final String description;
-  const TextPost(this.description, {Key? key}) : super(key: key);
+  final String username;
+  final String? profilepicture;
+  const TextPost(this.description, this.username, this.profilepicture, {Key? key}) : super(key: key);
   final double elavationVal = 3;
 
   @override
@@ -46,9 +49,7 @@ class TextPost extends StatelessWidget {
                                       width: 40,
                                       child: CircleAvatar(
                                         radius: 50,
-                                        backgroundImage: AssetImage(
-                                            'assets/profile-jam.jpg'),
-                                      ),
+                                        backgroundImage: CachedNetworkImageProvider(profilepicture!)),
                                     ),
                                   ),
                                 ),
@@ -64,7 +65,7 @@ class TextPost extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Marcius',
+                                      username,
                                       style: TextStyle(
                                           color: Colors.black,
                                           //color: Colors.white,

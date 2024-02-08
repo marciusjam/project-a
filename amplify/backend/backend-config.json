@@ -1,6 +1,6 @@
 {
   "api": {
-    "agilay": {
+    "makulay": {
       "dependsOn": [],
       "output": {
         "authConfig": {
@@ -23,7 +23,7 @@
     }
   },
   "auth": {
-    "agilay6a5aabdd": {
+    "makulay95ebd6d0": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -51,8 +51,9 @@
       "service": "Cognito"
     }
   },
+  "function": {},
   "storage": {
-    "s328525ba1": {
+    "makulaydb1": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

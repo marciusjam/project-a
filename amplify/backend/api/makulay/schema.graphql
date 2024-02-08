@@ -1,0 +1,73 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+# FOR TESTING ONLY! input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } 
+
+type User @model @searchable @auth(rules: [{ allow: public }]) {
+  id: ID! @primaryKey
+  userId: ID! @index
+  username: String! @index
+  email: String 
+  phoneNumber: String 
+  bio: String
+  profilePicture: String
+  backgroundContent: String
+  followers: [FollowLink] @hasMany(indexName: "byFollowers", fields: ["userId"])
+  following: [FollowLink] @hasMany(indexName: "byFollowing", fields: ["userId"])
+  posts: [Post] @hasMany(indexName: "byUserPost", fields: ["userId"])
+  comments: [Comment] @hasMany(indexName: "byUserComment", fields: ["userId"])
+  likes: [LikeLink] @hasMany(indexName: "byLikeLink", fields: ["userId"])
+  createdOn: AWSDateTime
+  updatedOn: AWSDateTime
+}
+
+enum RecordStatus {
+  ACTIVE
+  INACTIVE
+}
+
+
+type Post @model @searchable @auth(rules: [{ allow: public }]) {
+  id: ID! @primaryKey
+  postId: ID! @index
+  description: String! @index
+  content: String
+  orientation: String
+  contenttype: String
+  status: RecordStatus!
+  comments: [Comment] @hasMany(indexName: "byPost", fields: ["postId"])
+  likes: [LikeLink] @hasMany(indexName: "byPostLikeLink", fields: ["postId"])
+  user: User @belongsTo(fields: ["userId"])
+  userId: ID @index(name: "byUserPost")
+  createdOn: AWSDateTime
+  updatedOn: AWSDateTime
+}
+
+
+type Comment @model @auth(rules: [{ allow: public }]) {
+  id: ID! @primaryKey
+  commentId: ID! @index
+  likes: [LikeLink] @hasMany(indexName: "byCommentLikeLink", fields: ["commentId"])
+  content: String!
+  user: User @belongsTo(fields: ["userId"])
+  userId: ID @index(name: "byUserComment")
+  post: Post @belongsTo(fields: ["postId"])
+  postId: ID @index(name: "byPost")
+  createdOn: AWSDateTime
+  updatedOn: AWSDateTime
+}
+
+type FollowLink @model @auth(rules: [{ allow: public }]) {
+  followerId: ID! @index(name: "byFollowers")
+  followingId: ID! @index(name: "byFollowing")
+  follower: User @belongsTo(fields: ["followerId"])
+  following: User @belongsTo(fields: ["followingId"])
+}
+
+type LikeLink @model @auth(rules: [{ allow: public }]) {
+  user: User @belongsTo(fields: ["userId"])
+  userId: ID! @index(name: "byLikeLink")
+  post: Post @belongsTo(fields: ["postId"])
+  postId: ID @index(name: "byPostLikeLink")
+  comment: Comment @belongsTo(fields: ["commentId"])
+  commentId: ID @index(name: "byCommentLikeLink")
+}

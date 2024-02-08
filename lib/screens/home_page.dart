@@ -1,5 +1,6 @@
 import 'package:Makulay/screens/chat_page.dart';
 import 'package:Makulay/screens/discover_page.dart';
+import 'package:Makulay/screens/following_page.dart';
 import 'package:Makulay/screens/interests_page.dart';
 import 'package:Makulay/screens/new_post_page.dart';
 import 'package:Makulay/screens/profile_page.dart';
@@ -37,7 +38,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String profilePicKey, username, userid;
+  const HomePage(this.profilePicKey,this.username,this.userid, {Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -46,21 +48,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late List<CameraDescription> cameras;
-  int _selectedPageIndex = 0;
+  int _selectedPageIndex = 2;
 
-  final List<Widget> _pages = [
-    //SideMenuPage(),
-    ChatPage(),
-    InterestsPage(),
-    ProfilePage(),
-    SideMenuPage(),
-    DiscoverPage(),
-    //NewPostPage(cameras: cameras),
-    //DiscoverPage(),
-    //ProfilePage(),
-  ];
 
-  var _scrollController, _tabController;
+  var  _tabController;
+  var _scrollController;
 
   SliverList _getSlivers(List myList, BuildContext context) {
     return SliverList(
@@ -83,10 +75,18 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     _scrollController = ScrollController();
-    _tabController = TabController(vsync: this, length: 5);
+    _tabController = TabController(vsync: this, length: 5, initialIndex: 0);
+    _tabController.addListener(() {
+      setState(() {
+        _selectedPageIndex = _tabController.index;
+      });
+      print("Selected Index: " + _tabController.index.toString());
+    });
     initializeCameras();
     super.initState();
   }
+
+
 
   Future<void> initializeCameras() async {
     cameras = await availableCameras();
@@ -100,15 +100,39 @@ class _HomePageState extends State<HomePage>
       controller: _scrollController,
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
-          HomeBar(
+       
+            HomeBar(
             _tabController,
             onIconTap: onIconTap,
             selectedPageIndex: _selectedPageIndex,
             cameras: cameras,
+            profilepicture: widget.profilePicKey,
+            username: widget.username,
+            userid: widget.userid,
           ),
+          
+        
+          
+          
         ];
       },
-      body: _pages[_selectedPageIndex],
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+    //SideMenuPage(),
+   
+    ChatPage(),
+    InterestsPage(),
+    DiscoverPage(),
+    //ProfilePage(),
+    SideMenuPage(),
+    DiscoverPage(),
+    //NewPostPage(cameras: cameras),
+    //DiscoverPage(),
+    //ProfilePage(),
+  ],
+),
+//_pages[_selectedPageIndex]
     );
   }
 }

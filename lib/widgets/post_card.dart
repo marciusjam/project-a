@@ -15,8 +15,10 @@ import 'package:provider/provider.dart';
 class PostCard extends StatefulWidget {
   final String type;
   final String description;
-  final List<String> content;
-  const PostCard(this.type, this.description, this.content, {Key? key}) : super(key: key);
+  final Map<String, String> content;
+  final String username;
+  final String? profilepicture;
+  const PostCard(this.type, this.description, this.content, this.username, this.profilepicture, {Key? key}) : super(key: key);
  
 
   @override
@@ -59,11 +61,11 @@ class _PostCardState extends State<PostCard> {
     final double height = MediaQuery.of(context).size.height;
     if (widget.type == 'series') {
       return _seriesContainer(
-          context, MediaQuery.of(context).size.height, seriesList);
+          context, MediaQuery.of(context).size.height, seriesList, widget.username, widget.profilepicture);
     } else {
       return Column(
         children: [
-          _mainContainer(context, double.maxFinite, widget.description, widget.content)
+          _mainContainer(context, double.maxFinite, widget.description, widget.content, widget.username, widget.profilepicture)
 
           /*Container(
           decoration: BoxDecoration(
@@ -79,7 +81,7 @@ class _PostCardState extends State<PostCard> {
     }
   }
 
-  Container _mainContainer(BuildContext context, double widthToUse, String description, List<String> content) {
+  Container _mainContainer(BuildContext context, double widthToUse, String description, Map<String, String> content, String username, String? profilepicture) {
     return Container(
         padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
         //height: 250,
@@ -125,11 +127,11 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           key: Key('1'),*/
-        child: _buildChild(context, description, content) //),
+        child: _buildChild(context, description, content, username, profilepicture) //),
         );
   }
 
-  _seriesContainer(BuildContext context, double heigtToUse, List seriesList) {
+  _seriesContainer(BuildContext context, double heigtToUse, List seriesLis, String username, String? profilepicture) {
     return Container(
         color: Colors.white,
         //height: (heigtToUse / 1.47),
@@ -254,27 +256,28 @@ class _PostCardState extends State<PostCard> {
                   padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
                   itemBuilder: (BuildContext context, int index) {
                     return Series(
-                        seriesList: seriesList[index], indexLine: index); //),
+                        seriesList: seriesList[index], indexLine: index, username: username, profilepicture: profilepicture); //),
                   },
                 ))
           ],
         ));
   }
 
-  Widget _buildChild(BuildContext context, String description, List<String> content) {
+  Widget _buildChild(BuildContext context, String description, Map<String, String> content, String username, String? profilepicture) {
     debugPrint('postType: ' + widget.type);
+    debugPrint('_buildChild profilepic: ' + profilepicture!);
     if (widget.type == 'image-Horizontal') {
-      return ImageCardHoriz(description, content);
+      return ImageCardHoriz(description, content, username, profilepicture);
     } else if (widget.type == 'image-Vertical') {
-      return ImageCardVert(description, content);
+      return ImageCardVert(description, content, username, profilepicture);
     } else if (widget.type == 'textPost') {
-      return TextPost(description);
+      return TextPost(description, username, profilepicture);
     } else if (widget.type == 'video-Horizontal') {
-      return const VideoCardHoriz();
+      return VideoCardHoriz(description, content, username, profilepicture);
     } else if (widget.type == 'video-Vertical') {
-      return const VideoCardVert();
+      return VideoCardVert(description, content, username, profilepicture);
     } else {
-      return TextPost(description);
+      return TextPost(description, username, profilepicture);
     }
   }
 }

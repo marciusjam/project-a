@@ -9,7 +9,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import '../custom_videoplayer.dart';
 
 class Series extends StatelessWidget {
-  const Series({required this.seriesList, required this.indexLine, Key? key})
+
+  final String username;
+  final String? profilepicture;
+  const Series({required this.seriesList, required this.indexLine, required this.username, required this.profilepicture, Key? key})
       : super(key: key);
   final double elavationVal = 3;
   final SeriesModel seriesList;
@@ -222,7 +225,7 @@ class Series extends StatelessWidget {
                 )),
           ]));
     } else {
-      return CustomVideoPlayer('series', seriesList.media.toString(), 9 / 16);
+      return CustomVideoPlayer('series', seriesList.media.toString(), 9 / 16, '', username, profilepicture);
     }
   }
 

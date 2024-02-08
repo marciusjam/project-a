@@ -92,8 +92,7 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
       // Obtain assets using the path entity.
       final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(
         hasAll: true,
-        type: RequestType.image,
-        filterOption: _filterOptionGroup,
+        //filterOption: _filterOptionGroup,
       );
 
       debugPrint('paths list ' + paths.toString());
@@ -199,6 +198,7 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
               });
             },
             child: Stack(
+              //fit: StackFit.expand,
               children: [
                 /*Image(
                   image: AssetEntityImageProvider(entity),
@@ -312,7 +312,7 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
                     child:*/
                     SizedBox(
                   height: 400,
-                  child: Expanded(child: _buildBody(context)),
+                  child:  _buildBody(context),
                 ),
                 //),
               ),

@@ -23,14 +23,12 @@ import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
 
-/** This is an auto generated class representing the Upvote type in your schema. */
-class Upvote extends amplify_core.Model {
-  static const classType = const _UpvoteModelType();
+/** This is an auto generated class representing the FollowLink type in your schema. */
+class FollowLink extends amplify_core.Model {
+  static const classType = const _FollowLinkModelType();
   final String id;
-  final User? _user;
-  final String? _userId;
-  final Post? _post;
-  final String? _postId;
+  final User? _follower;
+  final User? _following;
   final amplify_core.TemporalDateTime? _createdAt;
   final amplify_core.TemporalDateTime? _updatedAt;
 
@@ -41,26 +39,18 @@ class Upvote extends amplify_core.Model {
   @override
   String getId() => id;
   
-  UpvoteModelIdentifier get modelIdentifier {
-      return UpvoteModelIdentifier(
+  FollowLinkModelIdentifier get modelIdentifier {
+      return FollowLinkModelIdentifier(
         id: id
       );
   }
   
-  User? get user {
-    return _user;
+  User? get follower {
+    return _follower;
   }
   
-  String? get userId {
-    return _userId;
-  }
-  
-  Post? get post {
-    return _post;
-  }
-  
-  String? get postId {
-    return _postId;
+  User? get following {
+    return _following;
   }
   
   amplify_core.TemporalDateTime? get createdAt {
@@ -71,15 +61,13 @@ class Upvote extends amplify_core.Model {
     return _updatedAt;
   }
   
-  const Upvote._internal({required this.id, user, userId, post, postId, createdAt, updatedAt}): _user = user, _userId = userId, _post = post, _postId = postId, _createdAt = createdAt, _updatedAt = updatedAt;
+  const FollowLink._internal({required this.id, follower, following, createdAt, updatedAt}): _follower = follower, _following = following, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Upvote({String? id, User? user, String? userId, Post? post, String? postId}) {
-    return Upvote._internal(
+  factory FollowLink({String? id, User? follower, User? following}) {
+    return FollowLink._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
-      user: user,
-      userId: userId,
-      post: post,
-      postId: postId);
+      follower: follower,
+      following: following);
   }
   
   bool equals(Object other) {
@@ -89,12 +77,10 @@ class Upvote extends amplify_core.Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Upvote &&
+    return other is FollowLink &&
       id == other.id &&
-      _user == other._user &&
-      _userId == other._userId &&
-      _post == other._post &&
-      _postId == other._postId;
+      _follower == other._follower &&
+      _following == other._following;
   }
   
   @override
@@ -104,10 +90,10 @@ class Upvote extends amplify_core.Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("Upvote {");
+    buffer.write("FollowLink {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("userId=" + "$_userId" + ", ");
-    buffer.write("postId=" + "$_postId" + ", ");
+    buffer.write("follower=" + (_follower != null ? _follower!.toString() : "null") + ", ");
+    buffer.write("following=" + (_following != null ? _following!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -115,97 +101,89 @@ class Upvote extends amplify_core.Model {
     return buffer.toString();
   }
   
-  Upvote copyWith({User? user, String? userId, Post? post, String? postId}) {
-    return Upvote._internal(
+  FollowLink copyWith({User? follower, User? following}) {
+    return FollowLink._internal(
       id: id,
-      user: user ?? this.user,
-      userId: userId ?? this.userId,
-      post: post ?? this.post,
-      postId: postId ?? this.postId);
+      follower: follower ?? this.follower,
+      following: following ?? this.following);
   }
   
-  Upvote copyWithModelFieldValues({
-    ModelFieldValue<User?>? user,
-    ModelFieldValue<String?>? userId,
-    ModelFieldValue<Post?>? post,
-    ModelFieldValue<String?>? postId
+  FollowLink copyWithModelFieldValues({
+    ModelFieldValue<User?>? follower,
+    ModelFieldValue<User?>? following
   }) {
-    return Upvote._internal(
+    return FollowLink._internal(
       id: id,
-      user: user == null ? this.user : user.value,
-      userId: userId == null ? this.userId : userId.value,
-      post: post == null ? this.post : post.value,
-      postId: postId == null ? this.postId : postId.value
+      follower: follower == null ? this.follower : follower.value,
+      following: following == null ? this.following : following.value
     );
   }
   
-  Upvote.fromJson(Map<String, dynamic> json)  
+  FollowLink.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _user = json['user']?['serializedData'] != null
-        ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
+      _follower = json['follower']?['serializedData'] != null
+        ? User.fromJson(new Map<String, dynamic>.from(json['follower']['serializedData']))
         : null,
-      _userId = json['userId'],
-      _post = json['post']?['serializedData'] != null
-        ? Post.fromJson(new Map<String, dynamic>.from(json['post']['serializedData']))
+      _following = json['following']?['serializedData'] != null
+        ? User.fromJson(new Map<String, dynamic>.from(json['following']['serializedData']))
         : null,
-      _postId = json['postId'],
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'user': _user?.toJson(), 'userId': _userId, 'post': _post?.toJson(), 'postId': _postId, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'follower': _follower?.toJson(), 'following': _following?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
     'id': id,
-    'user': _user,
-    'userId': _userId,
-    'post': _post,
-    'postId': _postId,
+    'follower': _follower,
+    'following': _following,
     'createdAt': _createdAt,
     'updatedAt': _updatedAt
   };
 
-  static final amplify_core.QueryModelIdentifier<UpvoteModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<UpvoteModelIdentifier>();
+  static final amplify_core.QueryModelIdentifier<FollowLinkModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<FollowLinkModelIdentifier>();
   static final ID = amplify_core.QueryField(fieldName: "id");
-  static final USER = amplify_core.QueryField(
-    fieldName: "user",
+  static final FOLLOWER = amplify_core.QueryField(
+    fieldName: "follower",
     fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'User'));
-  static final USERID = amplify_core.QueryField(fieldName: "userId");
-  static final POST = amplify_core.QueryField(
-    fieldName: "post",
-    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Post'));
-  static final POSTID = amplify_core.QueryField(fieldName: "postId");
+  static final FOLLOWING = amplify_core.QueryField(
+    fieldName: "following",
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'User'));
   static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Upvote";
-    modelSchemaDefinition.pluralName = "Upvotes";
+    modelSchemaDefinition.name = "FollowLink";
+    modelSchemaDefinition.pluralName = "FollowLinks";
+    
+    modelSchemaDefinition.authRules = [
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PUBLIC,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
+        ])
+    ];
+    
+    modelSchemaDefinition.indexes = [
+      amplify_core.ModelIndex(fields: const ["followerId"], name: "byFollowers"),
+      amplify_core.ModelIndex(fields: const ["followingId"], name: "byFollowing")
+    ];
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
-      key: Upvote.USER,
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
+      key: FollowLink.FOLLOWER,
       isRequired: false,
-      ofModelName: 'User',
-      associatedKey: User.ID
+      targetNames: ['followerId'],
+      ofModelName: 'User'
     ));
     
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Upvote.USERID,
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
+      key: FollowLink.FOLLOWING,
       isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
-      key: Upvote.POST,
-      isRequired: false,
-      ofModelName: 'Post',
-      associatedKey: Post.ID
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Upvote.POSTID,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+      targetNames: ['followingId'],
+      ofModelName: 'User'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
@@ -224,29 +202,29 @@ class Upvote extends amplify_core.Model {
   });
 }
 
-class _UpvoteModelType extends amplify_core.ModelType<Upvote> {
-  const _UpvoteModelType();
+class _FollowLinkModelType extends amplify_core.ModelType<FollowLink> {
+  const _FollowLinkModelType();
   
   @override
-  Upvote fromJson(Map<String, dynamic> jsonData) {
-    return Upvote.fromJson(jsonData);
+  FollowLink fromJson(Map<String, dynamic> jsonData) {
+    return FollowLink.fromJson(jsonData);
   }
   
   @override
   String modelName() {
-    return 'Upvote';
+    return 'FollowLink';
   }
 }
 
 /**
  * This is an auto generated class representing the model identifier
- * of [Upvote] in your schema.
+ * of [FollowLink] in your schema.
  */
-class UpvoteModelIdentifier implements amplify_core.ModelIdentifier<Upvote> {
+class FollowLinkModelIdentifier implements amplify_core.ModelIdentifier<FollowLink> {
   final String id;
 
-  /** Create an instance of UpvoteModelIdentifier using [id] the primary key. */
-  const UpvoteModelIdentifier({
+  /** Create an instance of FollowLinkModelIdentifier using [id] the primary key. */
+  const FollowLinkModelIdentifier({
     required this.id});
   
   @override
@@ -264,7 +242,7 @@ class UpvoteModelIdentifier implements amplify_core.ModelIdentifier<Upvote> {
   String serializeAsString() => serializeAsMap().values.join('#');
   
   @override
-  String toString() => 'UpvoteModelIdentifier(id: $id)';
+  String toString() => 'FollowLinkModelIdentifier(id: $id)';
   
   @override
   bool operator ==(Object other) {
@@ -272,7 +250,7 @@ class UpvoteModelIdentifier implements amplify_core.ModelIdentifier<Upvote> {
       return true;
     }
     
-    return other is UpvoteModelIdentifier &&
+    return other is FollowLinkModelIdentifier &&
       id == other.id;
   }
   

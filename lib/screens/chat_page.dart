@@ -46,6 +46,8 @@ class MessageUsersListScreen extends State<ChatPage> {
   }
 }
 
+
+
 class MessageUsersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class MessageUsersList extends StatelessWidget {
 }
 
 class MessageUserItem extends StatelessWidget {
-  final User user;
+  final ChatUsers user;
 
   MessageUserItem({required this.user});
 
@@ -82,13 +84,13 @@ class MessageUserItem extends StatelessWidget {
   }
 }
 
-class User {
+class ChatUsers {
   final String username;
   final String profilePicture;
   final String lastMessage;
   final String timestamp;
 
-  User({
+  ChatUsers({
     required this.username,
     required this.profilePicture,
     required this.lastMessage,
@@ -97,20 +99,20 @@ class User {
 }
 
 // Sample user data
-final List<User> _users = [
-  User(
+final List<ChatUsers> _users = [
+  ChatUsers(
     username: 'user1',
     profilePicture: 'assets/story_image_2.jpg',
     lastMessage: 'Hello there!',
     timestamp: '2h ago',
   ),
-  User(
+  ChatUsers(
     username: 'user2',
     profilePicture: 'assets/story_image_4.jpg',
     lastMessage: 'Hi!',
     timestamp: '4h ago',
   ),
-  User(
+  ChatUsers(
     username: 'user3',
     profilePicture: 'assets/story_image_5.jpg',
     lastMessage: 'How are you?',

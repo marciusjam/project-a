@@ -21,17 +21,18 @@
 
 import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart' as amplify_core;
+import 'package:collection/collection.dart';
 
 
 /** This is an auto generated class representing the Comment type in your schema. */
 class Comment extends amplify_core.Model {
   static const classType = const _CommentModelType();
   final String id;
+  final String? _commentId;
+  final List<LikeLink>? _likes;
   final String? _content;
   final User? _user;
-  final String? _userId;
   final Post? _post;
-  final String? _postId;
   final amplify_core.TemporalDateTime? _createdOn;
   final amplify_core.TemporalDateTime? _updatedOn;
   final amplify_core.TemporalDateTime? _createdAt;
@@ -40,9 +41,31 @@ class Comment extends amplify_core.Model {
   @override
   getInstanceType() => classType;
   
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() {
-    return id;
+  String getId() => id;
+  
+  CommentModelIdentifier get modelIdentifier {
+      return CommentModelIdentifier(
+        id: id
+      );
+  }
+  
+  String get commentId {
+    try {
+      return _commentId!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
+  List<LikeLink>? get likes {
+    return _likes;
   }
   
   String get content {
@@ -62,16 +85,8 @@ class Comment extends amplify_core.Model {
     return _user;
   }
   
-  String? get userId {
-    return _userId;
-  }
-  
   Post? get post {
     return _post;
-  }
-  
-  String? get postId {
-    return _postId;
   }
   
   amplify_core.TemporalDateTime? get createdOn {
@@ -90,16 +105,16 @@ class Comment extends amplify_core.Model {
     return _updatedAt;
   }
   
-  const Comment._internal({required this.id, required content, user, userId, post, postId, createdOn, updatedOn, createdAt, updatedAt}): _content = content, _user = user, _userId = userId, _post = post, _postId = postId, _createdOn = createdOn, _updatedOn = updatedOn, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Comment._internal({required this.id, required commentId, likes, required content, user, post, createdOn, updatedOn, createdAt, updatedAt}): _commentId = commentId, _likes = likes, _content = content, _user = user, _post = post, _createdOn = createdOn, _updatedOn = updatedOn, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Comment({String? id, required String content, User? user, String? userId, Post? post, String? postId, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
+  factory Comment({String? id, required String commentId, List<LikeLink>? likes, required String content, User? user, Post? post, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
     return Comment._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
+      commentId: commentId,
+      likes: likes != null ? List<LikeLink>.unmodifiable(likes) : likes,
       content: content,
       user: user,
-      userId: userId,
       post: post,
-      postId: postId,
       createdOn: createdOn,
       updatedOn: updatedOn);
   }
@@ -113,11 +128,11 @@ class Comment extends amplify_core.Model {
     if (identical(other, this)) return true;
     return other is Comment &&
       id == other.id &&
+      _commentId == other._commentId &&
+      DeepCollectionEquality().equals(_likes, other._likes) &&
       _content == other._content &&
       _user == other._user &&
-      _userId == other._userId &&
       _post == other._post &&
-      _postId == other._postId &&
       _createdOn == other._createdOn &&
       _updatedOn == other._updatedOn;
   }
@@ -131,9 +146,10 @@ class Comment extends amplify_core.Model {
     
     buffer.write("Comment {");
     buffer.write("id=" + "$id" + ", ");
+    buffer.write("commentId=" + "$_commentId" + ", ");
     buffer.write("content=" + "$_content" + ", ");
-    buffer.write("userId=" + "$_userId" + ", ");
-    buffer.write("postId=" + "$_postId" + ", ");
+    buffer.write("user=" + (_user != null ? _user!.toString() : "null") + ", ");
+    buffer.write("post=" + (_post != null ? _post!.toString() : "null") + ", ");
     buffer.write("createdOn=" + (_createdOn != null ? _createdOn!.format() : "null") + ", ");
     buffer.write("updatedOn=" + (_updatedOn != null ? _updatedOn!.format() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -143,35 +159,34 @@ class Comment extends amplify_core.Model {
     return buffer.toString();
   }
   
-  Comment copyWith({String? id, String? content, User? user, String? userId, Post? post, String? postId, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
+  Comment copyWith({String? commentId, List<LikeLink>? likes, String? content, User? user, Post? post, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
     return Comment._internal(
-      id: id ?? this.id,
+      id: id,
+      commentId: commentId ?? this.commentId,
+      likes: likes ?? this.likes,
       content: content ?? this.content,
       user: user ?? this.user,
-      userId: userId ?? this.userId,
       post: post ?? this.post,
-      postId: postId ?? this.postId,
       createdOn: createdOn ?? this.createdOn,
       updatedOn: updatedOn ?? this.updatedOn);
   }
   
   Comment copyWithModelFieldValues({
-    ModelFieldValue<String>? id,
+    ModelFieldValue<String>? commentId,
+    ModelFieldValue<List<LikeLink>?>? likes,
     ModelFieldValue<String>? content,
     ModelFieldValue<User?>? user,
-    ModelFieldValue<String?>? userId,
     ModelFieldValue<Post?>? post,
-    ModelFieldValue<String?>? postId,
     ModelFieldValue<amplify_core.TemporalDateTime?>? createdOn,
     ModelFieldValue<amplify_core.TemporalDateTime?>? updatedOn
   }) {
     return Comment._internal(
-      id: id == null ? this.id : id.value,
+      id: id,
+      commentId: commentId == null ? this.commentId : commentId.value,
+      likes: likes == null ? this.likes : likes.value,
       content: content == null ? this.content : content.value,
       user: user == null ? this.user : user.value,
-      userId: userId == null ? this.userId : userId.value,
       post: post == null ? this.post : post.value,
-      postId: postId == null ? this.postId : postId.value,
       createdOn: createdOn == null ? this.createdOn : createdOn.value,
       updatedOn: updatedOn == null ? this.updatedOn : updatedOn.value
     );
@@ -179,58 +194,93 @@ class Comment extends amplify_core.Model {
   
   Comment.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
+      _commentId = json['commentId'],
+      _likes = json['likes'] is List
+        ? (json['likes'] as List)
+          .where((e) => e?['serializedData'] != null)
+          .map((e) => LikeLink.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+          .toList()
+        : null,
       _content = json['content'],
       _user = json['user']?['serializedData'] != null
         ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
         : null,
-      _userId = json['userId'],
       _post = json['post']?['serializedData'] != null
         ? Post.fromJson(new Map<String, dynamic>.from(json['post']['serializedData']))
         : null,
-      _postId = json['postId'],
       _createdOn = json['createdOn'] != null ? amplify_core.TemporalDateTime.fromString(json['createdOn']) : null,
       _updatedOn = json['updatedOn'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedOn']) : null,
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'content': _content, 'user': _user?.toJson(), 'userId': _userId, 'post': _post?.toJson(), 'postId': _postId, 'createdOn': _createdOn?.format(), 'updatedOn': _updatedOn?.format(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'commentId': _commentId, 'likes': _likes?.map((LikeLink? e) => e?.toJson()).toList(), 'content': _content, 'user': _user?.toJson(), 'post': _post?.toJson(), 'createdOn': _createdOn?.format(), 'updatedOn': _updatedOn?.format(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
     'id': id,
+    'commentId': _commentId,
+    'likes': _likes,
     'content': _content,
     'user': _user,
-    'userId': _userId,
     'post': _post,
-    'postId': _postId,
     'createdOn': _createdOn,
     'updatedOn': _updatedOn,
     'createdAt': _createdAt,
     'updatedAt': _updatedAt
   };
 
+  static final amplify_core.QueryModelIdentifier<CommentModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<CommentModelIdentifier>();
   static final ID = amplify_core.QueryField(fieldName: "id");
+  static final COMMENTID = amplify_core.QueryField(fieldName: "commentId");
+  static final LIKES = amplify_core.QueryField(
+    fieldName: "likes",
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'LikeLink'));
   static final CONTENT = amplify_core.QueryField(fieldName: "content");
   static final USER = amplify_core.QueryField(
     fieldName: "user",
     fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'User'));
-  static final USERID = amplify_core.QueryField(fieldName: "userId");
   static final POST = amplify_core.QueryField(
     fieldName: "post",
     fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Post'));
-  static final POSTID = amplify_core.QueryField(fieldName: "postId");
   static final CREATEDON = amplify_core.QueryField(fieldName: "createdOn");
   static final UPDATEDON = amplify_core.QueryField(fieldName: "updatedOn");
   static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Comment";
     modelSchemaDefinition.pluralName = "Comments";
     
+    modelSchemaDefinition.authRules = [
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PUBLIC,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
+        ])
+    ];
+    
     modelSchemaDefinition.indexes = [
-      amplify_core.ModelIndex(fields: const ["postId", "createdOn"], name: "byPost")
+      amplify_core.ModelIndex(fields: const ["id"], name: null),
+      amplify_core.ModelIndex(fields: const ["commentId"], name: "commentsByCommentId"),
+      amplify_core.ModelIndex(fields: const ["userId"], name: "byUserComment"),
+      amplify_core.ModelIndex(fields: const ["postId"], name: "byPost")
     ];
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Comment.COMMENTID,
+      isRequired: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
+      key: Comment.LIKES,
+      isRequired: false,
+      ofModelName: 'LikeLink',
+      associatedKey: LikeLink.COMMENT
+    ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Comment.CONTENT,
@@ -238,30 +288,18 @@ class Comment extends amplify_core.Model {
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: Comment.USER,
       isRequired: false,
-      ofModelName: 'User',
-      associatedKey: User.ID
+      targetNames: ['userId'],
+      ofModelName: 'User'
     ));
     
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Comment.USERID,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: Comment.POST,
       isRequired: false,
-      ofModelName: 'Post',
-      associatedKey: Post.COMMENTS
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Comment.POSTID,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+      targetNames: ['postId'],
+      ofModelName: 'Post'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
@@ -304,4 +342,47 @@ class _CommentModelType extends amplify_core.ModelType<Comment> {
   String modelName() {
     return 'Comment';
   }
+}
+
+/**
+ * This is an auto generated class representing the model identifier
+ * of [Comment] in your schema.
+ */
+class CommentModelIdentifier implements amplify_core.ModelIdentifier<Comment> {
+  final String id;
+
+  /** Create an instance of CommentModelIdentifier using [id] the primary key. */
+  const CommentModelIdentifier({
+    required this.id});
+  
+  @override
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'id': id
+  });
+  
+  @override
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
+  @override
+  String serializeAsString() => serializeAsMap().values.join('#');
+  
+  @override
+  String toString() => 'CommentModelIdentifier(id: $id)';
+  
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    
+    return other is CommentModelIdentifier &&
+      id == other.id;
+  }
+  
+  @override
+  int get hashCode =>
+    id.hashCode;
 }
