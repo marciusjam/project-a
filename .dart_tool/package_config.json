@@ -206,6 +206,12 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "carousel_slider",
+      "rootUri": "file:///Users/Jam/.pub-cache/hosted/pub.dev/carousel_slider-4.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "characters",
       "rootUri": "file:///Users/Jam/.pub-cache/hosted/pub.dev/characters-1.3.0",
       "packageUri": "lib/",
@@ -318,6 +324,12 @@
       "rootUri": "file:///Users/Jam/.pub-cache/hosted/pub.dev/expandable_text-2.3.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "extended_nested_scroll_view",
+      "rootUri": "file:///Users/Jam/.pub-cache/hosted/pub.dev/extended_nested_scroll_view-6.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "fading_edge_scrollview",
@@ -534,6 +546,12 @@
       "rootUri": "file:///Users/Jam/.pub-cache/hosted/pub.dev/image_picker_windows-0.2.1+1",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "image_stack",
+      "rootUri": "file:///Users/Jam/.pub-cache/hosted/pub.dev/image_stack-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "intl",
@@ -1058,6 +1076,12 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "visibility_detector",
+      "rootUri": "file:///Users/Jam/.pub-cache/hosted/pub.dev/visibility_detector-0.4.0+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "web",
       "rootUri": "file:///Users/Jam/.pub-cache/hosted/pub.dev/web-0.3.0",
       "packageUri": "lib/",
@@ -1112,7 +1136,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2024-01-30T23:59:41.165244Z",
+  "generated": "2024-02-26T06:01:25.546307Z",
   "generator": "pub",
   "generatorVersion": "3.2.5"
 }

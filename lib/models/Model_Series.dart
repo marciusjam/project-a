@@ -1,10 +1,10 @@
 class SeriesModel {
-  final String media;
+  final List<String> media;
   final String username;
-  final bool series_cover;
+  final String profilepicture;
 
   SeriesModel(
       {required this.media,
       required this.username,
-      required this.series_cover});
+      required this.profilepicture});
 }

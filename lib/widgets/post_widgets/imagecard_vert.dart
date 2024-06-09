@@ -4,13 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 
 class ImageCardVert extends StatelessWidget {
   final String description;
   final Map<String, String> content;
   final String username;
   final String? profilepicture;
-  ImageCardVert(this.description, this.content, this.username, this.profilepicture, {Key? key}) : super(key: key);
+  final int postage;
+  final bool preview;
+  final AssetEntity? previewcontent;
+  const ImageCardVert(this.description, this.content, this.username, this.profilepicture, this.postage, this.preview, this.previewcontent, {Key? key}) : super(key: key);
 
   final double elavationVal = 3;
   @override
@@ -21,23 +26,27 @@ class ImageCardVert extends StatelessWidget {
         Card(
             elevation: elavationVal,
             surfaceTintColor: Colors.white, //IOS
+            color: Colors.white,
             shape: new RoundedRectangleBorder(
-              side: new BorderSide(color: Colors.white, width: .3),
+              side: new BorderSide(color: Colors.white12, width: .3),
               borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
             ),
             child: Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: AspectRatio(
-                      aspectRatio: 2 / 3,
+                  child: /*AspectRatio(
+                      aspectRatio: 2/3, //2/3*/
+                      Container(
+                        height: MediaQuery.sizeOf(context).height / 1.7,
+                      
                       child:
                           Stack(alignment: Alignment.bottomCenter, children: [
                         ClipRRect(
                           borderRadius: new BorderRadius.only(
                               topRight: Radius.circular(10),
                               topLeft: Radius.circular(10)),
-                          child: CachedNetworkImage(
+                          child: preview == false ? CachedNetworkImage(
          //key: globalImageKey,
        imageUrl: content.entries.first.value,
        progressIndicatorBuilder:
@@ -54,7 +63,15 @@ class ImageCardVert extends StatelessWidget {
                             //height: 600,
                             width: double.infinity,
                             fit: BoxFit.cover
-    ),/*Image.network(
+    ) : Image(
+                  image: AssetEntityImageProvider(previewcontent!),
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+    
+    
+    /*Image.network(
                               globalImageUrl.toString(),
                               height: double.infinity,
                               //height: 600,
@@ -114,8 +131,8 @@ class ImageCardVert extends StatelessWidget {
                                             Text(
                                               username,
                                               style: TextStyle(
+                                                  //color: Colors.black,
                                                   color: Colors.black,
-                                                  //color: Colors.white,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 15),
                                             ),
@@ -129,8 +146,8 @@ class ImageCardVert extends StatelessWidget {
                                                     text:
                                                         description,
                                                     style: TextStyle(
+                                                        //color: Colors.black,
                                                         color: Colors.black,
-                                                        //color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.normal,
                                                         fontSize: 15),
@@ -143,10 +160,10 @@ class ImageCardVert extends StatelessWidget {
                                                   const EdgeInsets.fromLTRB(
                                                       0, 3, 0, 0),
                                               child: Text(
-                                                '3 hours ago',
+                                                postage.toString() + ' days ago',
                                                 style: TextStyle(
+                                                    //color: Colors.grey,
                                                     color: Colors.grey,
-                                                    //color: Colors.white,
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     fontSize: 11),
@@ -171,6 +188,7 @@ class ImageCardVert extends StatelessWidget {
                         ),*/
 
                             //Spacer(),
+                            preview == false ?
                             Container(
                                 height: 40,
 
@@ -205,9 +223,8 @@ class ImageCardVert extends StatelessWidget {
                                                           child: Icon(
                                                             Icons
                                                                 .chat_bubble_outline,
-                                                            color:
-                                                                Colors.black12,
-                                                            //color: Colors.white,
+                                                            //color:Colors.black12,
+                                                            color: Colors.black12,
                                                           ),
                                                         ),
                                                         Padding(
@@ -239,9 +256,8 @@ class ImageCardVert extends StatelessWidget {
                                                           child: Icon(
                                                             Icons
                                                                 .favorite_outline,
-                                                            color:
-                                                                Colors.black12,
-                                                            //color: Colors.white,
+                                                            //color:Colors.black12,
+                                                            color: Colors.black12,
                                                           ),
                                                         ),
                                                         Padding(
@@ -250,8 +266,8 @@ class ImageCardVert extends StatelessWidget {
                                                                     5, 0, 0, 0),
                                                             child: Text('20',
                                                                 style: TextStyle(
+                                                                    //color: Colors.grey,
                                                                     color: Colors.grey,
-                                                                    //color: Colors.white,
                                                                     fontWeight: FontWeight.normal,
                                                                     fontSize: 15))),
                                                       ],
@@ -278,9 +294,8 @@ class ImageCardVert extends StatelessWidget {
                                                               child: Icon(
                                                                 Icons
                                                                     .swap_horiz_outlined,
-                                                                color: Colors
-                                                                    .black12,
-                                                                //color: Colors.white,
+                                                                //color: Colors.black12,
+                                                                color: Colors.black12,
                                                               ),
                                                             ),
                                                             Padding(
@@ -294,14 +309,14 @@ class ImageCardVert extends StatelessWidget {
                                                                 child: Text(
                                                                     '1.2k',
                                                                     style: TextStyle(
+                                                                        //color: Colors.grey,
                                                                         color: Colors.grey,
-                                                                        //color: Colors.white,
                                                                         fontWeight: FontWeight.normal,
                                                                         fontSize: 15))),
                                                           ],
                                                         ))),
                                               ]))
-                                    ])),
+                                    ])): Container()
                           ],
                         ),
                       ],

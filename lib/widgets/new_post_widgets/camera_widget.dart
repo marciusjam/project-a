@@ -132,40 +132,27 @@ class _CameraWidgetState extends State<CameraWidget> {
     if (scale < 1) scale = 1 / scale;
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.black,
-              //statusBarColor: Colors.black,
-              statusBarIconBrightness:
-                  Brightness.light, // For Android (dark icons)
-              statusBarBrightness: Brightness.dark),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context, true),
-              child: Icon(Icons.close_rounded),
-            ),
-          ),
-        ),
+        
         body: Stack(
           children: [
+            
+            
             Transform.scale(
               scale: scale,
               child: Center(
                 child: CameraPreview(_controller!),
               ),
             ),
-            /*Align(
+            Align(
                 alignment: Alignment.topCenter,
                 child: Container(
                     width: double.infinity,
-                    height: 80.0,
-                    padding: EdgeInsets.all(20.0),
-                    color: Color.fromRGBO(00, 00, 00, 0.7),
+                    height: 105,
+                    padding: EdgeInsets.all(13.0),
+                    color: Colors.transparent,
                     child: Stack(children: <Widget>[
-                      Align(
+                      Padding(padding: EdgeInsets.fromLTRB(0, 40, 0, 0), 
+                      child: Align(
                         alignment: Alignment.centerLeft,
                         child: Material(
                           color: Colors.transparent,
@@ -177,10 +164,12 @@ class _CameraWidgetState extends State<CameraWidget> {
                             },
                             child: Container(
                                 padding: EdgeInsets.all(4.0),
-                                child: Icon(
-                                  Icons.arrow_back,
+                                child: Row(children: [
+                                  Icon(
+                                  Icons.close,
                                   color: Colors.white,
-                                )
+                                ), 
+                                ],) 
                                 /*Image.asset(
                             'assets/images/shutter_1.png',
                             width: 72.0,
@@ -189,8 +178,9 @@ class _CameraWidgetState extends State<CameraWidget> {
                                 ),
                           ),
                         ),
-                      ),
-                    ]))),*/
+                      ),)
+                      
+                    ]))),
             Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(

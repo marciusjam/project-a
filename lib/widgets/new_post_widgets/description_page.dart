@@ -1,13 +1,20 @@
 import 'package:Makulay/models/Post.dart';
+import 'package:Makulay/screens/new_post_page.dart';
+import 'package:Makulay/widgets/new_post_widgets/media_widget.dart';
 import 'package:Makulay/widgets/new_post_widgets/preview_widget.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:photo_manager/src/types/entity.dart';
 
 class DescriptionPage extends StatefulWidget {
+    final List<CameraDescription> cameras;
   final List<AssetEntity> selectedAssets;
-  const DescriptionPage(this.selectedAssets, {super.key});
+  final String username, profilepicture;
+  final List<String> entitypaths;
+  final TextEditingController descriptionController;
+  const DescriptionPage(this.username, this.profilepicture, this.selectedAssets, this.cameras, this.entitypaths, this.descriptionController, {super.key});
 
   @override
   State<DescriptionPage> createState() => _DescriptionPageState();
@@ -30,7 +37,9 @@ class _DescriptionPageState extends State<DescriptionPage> {
     // Fetch gallery images
     debugPrint('Description page');
     debugPrint('slected LISTS ' + widget.selectedAssets.toString());
-    
+    if(widget.descriptionController.text != null || widget.descriptionController.text != ''){
+        _descriptionController.text = widget.descriptionController.text;
+      }
     
   }
 
@@ -60,12 +69,20 @@ class _DescriptionPageState extends State<DescriptionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text(
-          'Write something about it',
+          'Description',
           style: TextStyle(
             color: Colors.black, // 3
           ),
@@ -77,15 +94,46 @@ class _DescriptionPageState extends State<DescriptionPage> {
             statusBarIconBrightness:
                 Brightness.dark, // For Android (dark icons)
             statusBarBrightness: Brightness.light),
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
         actionsIconTheme: IconThemeData(color: Colors.black),
-        /*leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context, true),
-            child: Icon(Icons.close_rounded),
+        leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: (){
+                if(_descriptionController.text.isNotEmpty){
+                  _descriptionController.clear();
+                }
+                Navigator.pop(context, true);
+                Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              
+                                  NewPostPage(username: widget.username, profilepicture: widget.profilepicture,  cameras: widget.cameras, preselectedAssets: widget.selectedAssets, preentityPaths: widget.entitypaths, descriptionController: _descriptionController, onIconTap: null,
+                                            selectedPageIndex: null,)
+                               
+                                  
+                          ),
+                                  );
+              } ,
+              child: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black,),
           ),
-        ),*/
+        ),
+        actions: [Padding(
+            padding: const EdgeInsets.fromLTRB(0,0,20,0),
+            child: GestureDetector(
+              onTap: (){
+                        Navigator.pop(context, true);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PreviewPage(
+                                  descriptionController:
+                                      _descriptionController, selectedAssetsController: widget.selectedAssets, widget.username, widget.profilepicture, widget.cameras, widget.entitypaths)),
+                        );
+              },
+              child: Text('Next', style: TextStyle(color: Colors.amber, fontSize: 15)),
+          ),)]
       ),
       body: Container(
         color: Colors.white,
@@ -100,10 +148,11 @@ class _DescriptionPageState extends State<DescriptionPage> {
                         color: Colors.white, //Dark Mode
                         elevation: 3,
                         shape: new RoundedRectangleBorder(
-                          side: new BorderSide(color: Colors.white, width: .3),
+                          side: new BorderSide(color: Colors.grey.shade300, width: .3),
                           borderRadius:
                               new BorderRadius.all(const Radius.circular(10.0)),
                         ),
+                        surfaceTintColor: Colors.white,
                         child: Padding(
                             padding: const EdgeInsets.all(15),
                             child: Stack(children: [
@@ -143,7 +192,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
 
               //),
 
-              SizedBox(
+              /*SizedBox(
                 height: 200,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -154,17 +203,19 @@ class _DescriptionPageState extends State<DescriptionPage> {
                     buildRadioButton('Option 3', 'Option 3'),
                   ],
                 ),
-              ),
-              Align(
+              ),*/
+              /*Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
                   child: Container(
                     width: 100,
                     child: ElevatedButton(
-                      /*style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 20)
-                          ),*/
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white, 
+                          
+                          ),
                       onPressed: () {
                         //Navigator.pop(context, true);
                         Navigator.push(
@@ -172,14 +223,14 @@ class _DescriptionPageState extends State<DescriptionPage> {
                           MaterialPageRoute(
                               builder: (context) => PreviewPage(
                                   descriptionController:
-                                      _descriptionController, selectedAssetsController: widget.selectedAssets,)),
+                                      _descriptionController, selectedAssetsController: widget.selectedAssets, widget.username, widget.profilepicture, widget.cameras, widget.entitypaths)),
                         );
                       },
                       child: const Text('Next'),
                     ),
                   ),
                 ),
-              )
+              )*/
             ],
           ),
         ),
@@ -201,6 +252,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
         onPressed: _requestAssets,
         child: const Icon(Icons.developer_board),
       ),*/
+      )
     );
   }
 }

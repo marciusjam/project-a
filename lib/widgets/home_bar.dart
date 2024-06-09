@@ -1,33 +1,22 @@
+import 'package:Makulay/navigation_container.dart';
+import 'package:Makulay/screens/activities_page.dart';
 import 'package:Makulay/screens/auth_page.dart';
 import 'package:Makulay/screens/chat_page.dart';
 import 'package:Makulay/screens/new_post_page.dart';
 import 'package:Makulay/screens/profile_page.dart';
+import 'package:Makulay/screens/search_page.dart';
+import 'package:Makulay/widgets/custom_videoplayer.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
-void _signOutAndNavigateToLogin(BuildContext context) async {
-  try {
-    await Amplify.Auth.signOut();
-    // Navigate to the login page
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AuthPage(),
-      ),
-    );
-  } catch (e) {
-    print('Error during sign-out: $e');
-  }
-}
-
 class HomeBar extends StatelessWidget {
-   final List<CameraDescription> cameras;
+  final List<CameraDescription> cameras;
 
-  final TabController _tabController;
   final int selectedPageIndex;
   final Function onIconTap;
 
@@ -35,24 +24,40 @@ class HomeBar extends StatelessWidget {
   final String username;
   final String userid;
 
-  
+  HomeBar(
+    {
+    Key? key,
+    required this.selectedPageIndex,
+    required this.onIconTap,
+    required this.cameras,
+    required this.profilepicture,
+    required this.username,
+    required this.userid,
+  }) : super(key: key);
 
-  HomeBar(this._tabController,
-   
-      {Key? key,
-      required this.selectedPageIndex,
-      required this.onIconTap,
-      required this.cameras,
-      required this.profilepicture,
-      required this.username,
-      required this.userid,
-      })
-      : super(key: key);
-  
-  final List<Widget> _dropdownValues = [
-    
+  final List<Widget> _dropdownValues = [];
+
+  final List<Widget> titleBar = [
+
     
   ];
+
+  String? _selectedItem1 = 'Following';
+  final list = ['Following', 'Trends', 'Streams', 'Podcasts'];
+List<DropdownMenuItem<String>> _createList() {
+  return list
+      .map<DropdownMenuItem<String>>(
+        (e) => DropdownMenuItem(
+          value: e,
+          child: Text(e, style: new TextStyle(
+                      color: Colors.black,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),),
+        ),
+      )
+      .toList();
+}
+
 
   void _onTabClick(int index) {
     int finalIndex = index;
@@ -102,382 +107,482 @@ class HomeBar extends StatelessWidget {
   }
 
   @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+
+  Widget navHeader(BuildContext context) {
+    return Container(
+      //color: Colors.transparent,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              
+              Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 13, 0, 0),
+                    child: GestureDetector(
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ActivitiesPage()),
+                        )
+                      },
+                      child: Icon(Icons.messenger_outline_rounded,
+                          size: 27.0, color: Colors.grey.shade900),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
+                    child: Stack(
+                      children: <Widget>[
+                        Icon(Icons.brightness_1,
+                            size: 20.0, color: Colors.amber),
+                        Positioned(
+                            top: 3.0,
+                            left: 7.0,
+                            child: Center(
+                              child: Text(
+                                '9',
+                                style: new TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11.0,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            )),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              /*Padding(
+                padding: EdgeInsets.fromLTRB(0, 13, 10, 0),
+                child: Text(
+                  'Feed',
+                  style: new TextStyle(
+                      color: Colors.black,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),*/
+              /*Stack(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 13, 0, 0),
+                        child: GestureDetector(
+                          onTap: () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ActivitiesPage()),
+                            )
+                          },
+                          child:
+                              Icon(Icons.local_fire_department_rounded, size: 27.0, color: Colors.grey.shade900),
+                        ),
+                      ),
+                      /*Padding(
+                        padding: EdgeInsets.fromLTRB(13, 5, 20, 0),
+                        child: Stack(
+                          children: <Widget>[
+                            Icon(Icons.brightness_1,
+                                size: 20.0, color: Colors.amber),
+                            Positioned(
+                                top: 3.0,
+                                left: 7.0,
+                                child: Center(
+                                  child: Text(
+                                    '9',
+                                    style: new TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 11.0,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      )*/
+                    ],
+                  ),*/
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child:DropdownButtonHideUnderline(
+ child:
+              DropdownButton(
+                hint: Text(_selectedItem1!, style: new TextStyle(
+                      color: Colors.black,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),),
+                items: _createList(),
+                onChanged: (String? value) => 
+                  _selectedItem1 = value ?? "",)
+              ),)
+               /*Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 13, 0, 0),
+                    child: GestureDetector(
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ActivitiesPage()),
+                        )
+                      },
+                      child: Icon(Icons.travel_explore_rounded,
+                          size: 27.0, color: Colors.grey.shade900),
+                    ),
+                  ),
+                  /*Padding(
+                    padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                    child: Stack(
+                      children: <Widget>[
+                        Icon(Icons.brightness_1,
+                            size: 20.0, color: Colors.amber),
+                        Positioned(
+                            top: 3.0,
+                            left: 7.0,
+                            child: Center(
+                              child: Text(
+                                '9',
+                                style: new TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11.0,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            )),
+                      ],
+                    ),
+                  )*/
+                ],
+              ),*/
+            ]));
+  }
+
+  @override
   Widget build(BuildContext context) {
     final TextEditingController postController = TextEditingController();
 
-   var colorToUse = Colors.grey[300];
-   if(selectedPageIndex == 1 || selectedPageIndex == 0){
+    var colorToUse = Colors.grey[300];
+    if (selectedPageIndex == 1 || selectedPageIndex == 0) {
       colorToUse = Colors.black;
-   }else{
+    } else {
       colorToUse = Colors.grey[300];
-   }
+    }
+    //print("Selected Index123: " + _tabController.index.toString());
 
     return SliverAppBar(
-      
-      excludeHeaderSemantics: true,
-      toolbarHeight: 0,
-      //expandedHeight: 100,
-      //toolbarHeight: 50,
-      //collapsedHeight: 50,
-      backgroundColor: Colors.white,
-      //centerTitle: true,
-      pinned: true,
-      elevation: 0,
-      floating: true,
-      surfaceTintColor: Colors.white,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.white,
-        //statusBarColor: Colors.black,
-        statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
-        statusBarBrightness: Brightness.light,
-      ),
-      bottom: TabBar(
-        padding: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width / 2, 0),
-        isScrollable: true,
-        onTap: (value) => _onTabClick(value),
-        enableFeedback: false,
-        overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
-        indicatorColor: Colors.transparent,
-        indicatorSize: TabBarIndicatorSize.label,
-        tabAlignment: TabAlignment.start,
-        dividerColor: Colors.transparent,
-        //indicatorPadding: EdgeInsets.fromLTRB(12, 0, 0, 0),
-        controller: _tabController,
-        unselectedLabelColor: Colors.black12,
-        //labelPadding: EdgeInsets.fromLTRB(12, 0, 0, 0),
-        labelStyle: TextStyle(
-          color: Colors.black,
-          fontSize: 15,
-          //fontFamily: 'Gotham-Black',
-          fontWeight: FontWeight.bold,
+        //excludeHeaderSemantics: true,
+        toolbarHeight: 75,
+        //expandedHeight: 100,
+        //toolbarHeight: 0,
+        centerTitle: true,
+        //collapsedHeight: 50,
+        backgroundColor: Colors.white,
+         //selectedPageIndex == 0 ? Colors.transparent: Colors.black,
+        //centerTitle: true,
+        pinned: false,
+        surfaceTintColor: Colors.white,
+        floating: false,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          //statusBarColor: Colors.black,
+          statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
+          statusBarBrightness: Brightness.light,
         ),
-        tabs: [
-          /*Tab(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Row(children: [
-                  Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
-                  child: Stack(
-                    children: <Widget>[
-                      Icon(Icons.brightness_1, size: 20.0, color: Colors.amber),
-                      Positioned(
-                          top: 4.0,
-                          right: 6.0,
-                          child: Center(
-                            child: Text(
-                              '3',
-                              style: new TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
-                Text(
-                  'Activities',
-                ),
-                /*SvgPicture.asset(
-                  'assets/chat.svg',
-                  height: 20,
-                  width: 20,
-                  fit: BoxFit.fitHeight,
-                  color: colorToUse,
-                ),*/
-                //Icon(Icons.chat, size: 25.0, color: colorToUse),
-                
-                ])),
-              ],
-            ),
-          ),*/
-
-          /*Tab(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Row(children: [
-                  Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
-                  child: Stack(
-                    children: <Widget>[
-                      Icon(Icons.brightness_1, size: 20.0, color: Colors.amber),
-                      Positioned(
-                          top: 4.0,
-                          right: 6.0,
-                          child: Center(
-                            child: Text(
-                              '3',
-                              style: new TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
-                Text(
-                  'Messages',
-                ),
-                /*SvgPicture.asset(
-                  'assets/chat.svg',
-                  height: 20,
-                  width: 20,
-                  fit: BoxFit.fitHeight,
-                  color: colorToUse,
-                ),*/
-                //Icon(Icons.chat, size: 25.0, color: colorToUse),
-                
-                ])),
-              ],
-            ),
-          ),*/
-          
-          
-          Tab(
-            child: Container(padding: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width / 2, 0),
-            //width: 200,
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                 Row(children: [
-                 
-                          Image.asset(
-                            //'assets/agila-logo.png',
-                            'assets/makulay.png',
-                            height:
-                                40, //widget._tabController.index == 1 ? 16 : 12,
-                            width:
-                                40, //widget._tabController.index == 1 ? 16 : 12,
-                            filterQuality: FilterQuality.medium,
-                          ),
-                      profilepicture != '' ?    Container(
+        /*bottom: new PreferredSize(
+            preferredSize: new Size(0,0.0),
+            child: new Container(
+              child: new TabBar(
+          //MediaQuery.of(context).size.width / 2
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        
-            child: /*DropdownButtonHideUnderline(
-          child: DropdownButton(
-            items: _dropdownValues
-                .map((value) => DropdownMenuItem(
-                      child: value,
-                      value: value,
-                    ))
-                .toList(),
-            onChanged: ( value) {},
-            isExpanded: false,
-            value: _dropdownValues.first,
+          //isScrollable: true,
+          //tabAlignment: TabAlignment.fill,
+          onTap: (value) => _onTabClick(value),
+          enableFeedback: false,
+          overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
+          indicatorColor: Colors.transparent,
+          indicatorSize: TabBarIndicatorSize.label,
+dividerHeight: 0,
+          dividerColor: Colors.transparent,
+          //indicatorPadding: EdgeInsets.fromLTRB(75, 0, 0, 0),
+          controller: _tabController,
+          unselectedLabelColor: Colors.grey.shade300,
+          //labelPadding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+          labelStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 17,
+            //fontFamily: 'Gotham-Black',
+            fontWeight: FontWeight.bold,
           ),
+          tabs: [
+            //if (userid != '')
+             
+            
+            if (userid != '')
+              Tab(
+                  child: Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Messages',
+                    )
+                  ],
+                ),
+              )),
+            if (userid == '')
+              Tab(
+                  child: Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Login',
+                    )
+                  ],
+                ),
+              )),
+            if (userid != '')
+              Tab(
+                  child: Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Following',
+                    )
+                  ],
+                ),
+              )),
+            /*if (userid != '')
+              Tab(
+                  child: Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Streams',
+                    )
+                  ],
+                ),
+              )),
+            if (userid != '')
+              Tab(
+                  child: Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Podcasts',
+                    )
+                  ],
+                ),
+              )),*/
+            Tab(
+                child: Container(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Discover',
+                  )
+                ],
+              ),
+            )),
+          ],
         ),
-      ),*/
-      new GestureDetector(
-      onTap: (){
-        //Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => new ProfilePage()));
-
-        Navigator.push(
-          context, 
-          MaterialPageRoute(builder: (context) => ProfilePage(username)),
-        );
-      },
-      child:  Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [SizedBox(
-                                      width: 30,
-                                      height: 30,
-                                      child: InkWell(
-                                        onTap: () => {},
-                                        child: Container(
-                                          height: 30,
-                                          width: 30,
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.amber,
-                                            child: Container(
-                                              height: 25,
-                                              width: 25,
-                                              child: CircleAvatar(
-                                                radius: 50,
-                                                backgroundImage: CachedNetworkImageProvider(profilepicture)/*AssetImage(
-                                                    'assets/profile-jam.jpg'),*/
+        ))*/
+      title: 
+      Container(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                
+                      Container(
+                        width: MediaQuery.sizeOf(context).width - 40,
+                          child: Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        child: Padding(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Column(
+                              children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                                padding:
+                                                    //faves[index].chatType == 'group'
+                                                    //?  profileindex == 0 ? EdgeInsets.fromLTRB(10, 0, 0, 0) : EdgeInsets.fromLTRB(0, 0, 0, 0)
+                                                    //:
+                                                    EdgeInsets.fromLTRB(
+                                                        0, 0, 10, 0),
+                                                child: SizedBox(
+                                                  width: 50,
+                                                  height: 50,
+                                                  child: InkWell(
+                                                    onTap: () => {},
+                                                    child: Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      child: CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.amber,
+                                                        child: Container(
+                                                          height: 45,
+                                                          width: 45,
+                                                          child: CircleAvatar(
+                                                            radius: 50,
+                                                            backgroundImage:
+                                                                CachedNetworkImageProvider(
+                                                                    profilepicture),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0, 0, 5, 5),
+                                                child: Text(
+                                                  username,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                              Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      0, 0, 5, 5),
+                                                  child: Icon(
+                                                    Icons.verified,
+                                                    size: 16,
+                                                    color: Colors.amber,
+                                                  )),
+                                            ],
                                           ),
+                                          Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  0, 0, 0, 0),
+                                              child: Container(
+                                                child: Row(
+                                                  children: [
+                                                    Card(
+                                                        margin:
+                                                            EdgeInsets.zero,
+                                                        clipBehavior:
+                                                            Clip.antiAlias,
+                                                        shape:
+                                                            new RoundedRectangleBorder(
+                                                          side: new BorderSide(
+                                                              color: Colors.grey.shade300,
+                                                              width: .5),
+                                                          borderRadius:
+                                                              new BorderRadius
+                                                                  .all(
+                                                                  const Radius
+                                                                      .circular(
+                                                                      50)),
+                                                        ),
+                                                        color: Colors.transparent,
+                                                        elevation: 0,
+                                                        surfaceTintColor:
+                                                            Colors.transparent,
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                          10,
+                                                                          5,
+                                                                          10,
+                                                                          5),
+                                                              child: Text(
+                                                                //'How are you feeling today?',
+                                                                'I kinda feel bad today 😭',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 15,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Padding(
+                                        padding: EdgeInsets.fromLTRB(0, 10, 5, 0),
+                                        child: GestureDetector(
+                                          onTap: () => {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => ActivitiesPage()),
+                                            )
+                                          },
+                                          child: Icon(Icons.qr_code_2_rounded,
+                                              size: 35.0, color: Colors.grey.shade900),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                child:Text(
-                  username, style: TextStyle(
-          color: Colors.black,
-          fontSize: 17,
-          //fontFamily: 'Gotham-Black',
-          fontWeight: FontWeight.bold,
-        ), 
-                ))])
-      ),
-    ) : Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child:Text(
-                  'Makulay',style: TextStyle(
-          color: Colors.black,
-          fontSize: 17,
-          fontFamily: 'Gotham-Black',
-          fontWeight: FontWeight.bold,
-        ), )),
-                          
-
-                ]),
-         
-
+                                          /*Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(15, 0, 0, 5),
+                                          child: Container(
+                                              width: 50,
+                                              child: CustomVideoPlayer(
+                                                  'fade',
+                                                  'assets/series_2.mp4',
+                                                  9 / 16,
+                                                  'description',
+                                                  'username',
+                                                  'profilepicture',
+                                                  2,
+                                                  null,
+                                                  false))),*/
+                                    ]),
+                              ],
+                            )),
+                      )),
+                    
               
               ],
-            ),)
-          ),
-          
-          
-          Tab(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                /*Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                  child: SvgPicture.asset(
-                  'assets/globe.svg',
-                  height: 15,
-                  width: 15,
-                  fit: BoxFit.fitHeight,
-                  //color: Colors.amber,
-                ),),*/
-                /*Padding
-                  padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
-                  child: Stack(
-                    children: <Widget>[
-                      Icon(Icons.local_fire_department_sharp, size: 25.0, color: Colors.red),
-                      
-                    ],
-                  ),
-                ),*/
-                Text(
-                  'Interests',
-                )
-                /*SvgPicture.asset(
-                                  'assets/chat.svg',
-                                  height: 20,
-                                  width: 20,
-                                  fit: BoxFit.fitHeight,
-                                  color: Colors.grey,
-                                ),*/
-            ],
-            ),
-          ),
-          Tab(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                /*Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                  child: SvgPicture.asset(
-                  'assets/globe.svg',
-                  height: 15,
-                  width: 15,
-                  fit: BoxFit.fitHeight,
-                  //color: Colors.amber,
-                ),),*/
-                /*Padding
-                  padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
-                  child: Stack(
-                    children: <Widget>[
-                      Icon(Icons.local_fire_department_sharp, size: 25.0, color: Colors.red),
-                      
-                    ],
-                  ),
-                ),*/
-                Text(
-                  'World',
-                )
-                /*SvgPicture.asset(
-                                  'assets/chat.svg',
-                                  height: 20,
-                                  width: 20,
-                                  fit: BoxFit.fitHeight,
-                                  color: Colors.grey,
-                                ),*/
-            ],
-            ),
-          ),
-          
-          Tab(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                /*Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                  child: Stack(
-                    children: <Widget>[
-                      Icon(Icons.live_tv_rounded, size: 18.0, color: Colors.red),
-                      
-                    ],
-                  ),
-                ),*/
-                Text(
-                  'Streams',
-                )
-                /*SvgPicture.asset(
-                                  'assets/chat.svg',
-                                  height: 20,
-                                  width: 20,
-                                  fit: BoxFit.fitHeight,
-                                  color: Colors.grey,
-                                ),*/
-            ],
-            ),
-          ),
+            ))
 
-          Tab(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                /*Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                  child: Stack(
-                    children: <Widget>[
-                      Icon(Icons.music_video_rounded, size: 20.0, color: Colors.green),
-                      
-                    ],
-                  ),
-                ),*/
-                Text(
-                  'Podcasts',
-                )
-                /*SvgPicture.asset(
-                                  'assets/chat.svg',
-                                  height: 20,
-                                  width: 20,
-                                  fit: BoxFit.fitHeight,
-                                  color: Colors.grey,
-                                ),*/
-            ],
-            ),
-          ),
-        ],
-      ),
-      title: Padding(
-        padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-             
-              
-            ]),
-      ),
-      actions: [],
-    );
+        );
   }
 }

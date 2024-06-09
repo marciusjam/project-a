@@ -1,14 +1,21 @@
+import 'dart:async';
+
+import 'package:Makulay/models/CustomGraphQL.dart';
 import 'package:Makulay/navigation_container.dart';
 import 'package:Makulay/screens/confirm.dart';
 import 'package:Makulay/screens/auth_page.dart';
 import 'package:Makulay/screens/home_page.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 // Amplify Flutter Packages
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_login/flutter_login.dart';
 // import 'package:amplify_api/amplify_api.dart'; // UNCOMMENT this line after backend is deployed
 
@@ -23,7 +30,8 @@ import 'screens/confirm_reset.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _configureAmplify();
-  runApp(const MyApp());
+  final cameras = await availableCameras();
+  runApp(MyApp(cameras));
 }
 
 Future<void> _configureAmplify() async {
@@ -67,7 +75,8 @@ Future<void> _configureAmplify() async {
 
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  late List<CameraDescription> cameras;
+  MyApp(this.cameras, {Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -76,21 +85,148 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   bool _amplifyConfigured = false;
+static final customCacheManager = CacheManager(Config('customCacheKey',
+    stalePeriod: const Duration(days: 15),maxNrOfCacheObjects: 100,));
+   late  String globalEmail;
+    String? globalUsername;
+   late String globalId;
+ late  String globalKey;
+ late  bool newUser;
 
   @override
   initState() {
     super.initState();
     debugPrint('running configure Amplify');
     _configureAmplify();
+    fetchCurrentUserAttributes();
+    
   }
 
+Future<void> getFileUrl(String fileKey) async {
+      try {
+        await Amplify.Storage.getUrl(
+      key: fileKey,
+      options: const StorageGetUrlOptions(
+        accessLevel: StorageAccessLevel.guest,
+        pluginOptions: S3GetUrlPluginOptions(
+          expiresIn: Duration(days: 1),
+        ),
+      ),
+    ).result.then((value) => {
+      //debugPrint('result ' + result.url.toString());
+        _precacheImage(value.url.toString(), fileKey),
+        setState(() {
+          globalKey = value.url.toString();
+          }),
+    });
+        
+      } catch (e) {
+        throw e;
+      }
+    }
+
+  Future<void> _precacheImage(String imageUrl, String key) async {
+    
+    /*await DefaultCacheManager().putFile(
+      {key,
+
+      }
+    )*/
+    final imageProvider = CachedNetworkImageProvider(imageUrl, cacheKey: key, cacheManager: customCacheManager);
+    precacheImage(imageProvider, context);
+    //_preloadedImages.add(imageProvider);
+  }
+
+Future<void> getUserByIdFunction(String id, String email) async {
+    await getUserById(id).then((value) async {
+    
+    debugPrint('getUserByIdFunction Response: ' + value.data.toString());
+    
+    if(value.data != null){
+      User? userdata = value.data;
+
+      String username = userdata!.username.toString();
+      
+      debugPrint('username :' + username);
+
+      String profilePicture = userdata.profilePicture.toString();
+      setState(() {
+          newUser = false;
+          globalUsername = username;
+          globalKey = '';
+          globalId = id;
+          globalEmail = email;
+      });
+        
+      await getFileUrl(profilePicture);
+      debugPrint('profilepicture :' + profilePicture);
+
+      
+      
+    }else{
+      setState(() {
+        newUser = true;
+        globalUsername = '';
+        globalKey = '';
+      });
+    }
+    });
+    
   
+  }
+
+  Future<void> fetchCurrentUserAttributes() async {
+  try {
+    late String subid;
+    late String email;
+    final result = await Amplify.Auth.fetchUserAttributes().then((value) async {
+      for (final element in value) {
+      safePrint('key: ${element.userAttributeKey}; value: ${element.value}');
+      if(element.userAttributeKey.toString() == 'email'){
+        //setState(() {
+          email = element.value.toString();
+          /*globalUsername = '';
+          globalKey = '';
+          newUser = false;
+      })*/
+      }else if(element.userAttributeKey.toString() == 'sub'){
+        //setState(() {
+          subid = element.value.toString();
+          
+        //})
+      }
+    }
+
+      await getUserByIdFunction(subid, email);
+    });
+        
+    
+  } on AuthException catch (e) {
+    safePrint('Error fetching user attributes: ${e.message}');
+    if(e.message == 'No user is currently signed in'){
+      
+     
+      setState(() {
+        newUser = false;
+        globalEmail = '';
+        globalUsername = '';
+        globalKey = '';
+        globalId = '';
+      });
+    }
+    
+  }
+}
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Agilay',
+      title: 'Makulay',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -107,7 +243,8 @@ class _MyAppState extends State<MyApp> {
       ),
       //home: const MyHomePage(title: 'Flutter Demo Home Page'),
       home: //AuthPage(),
-          NavigationContainer(),
+          globalUsername != null ?
+          NavigationContainer(widget.cameras, globalUsername!, globalId, globalKey, globalEmail, newUser) : Container(color: Colors.white, child: Center( child: CircularProgressIndicator(backgroundColor: Colors.amber.shade900, color: Colors.amber,),),) ,
       onGenerateRoute: (settings) {
         if (settings.name == '/confirm') {
           return PageRouteBuilder(
@@ -127,12 +264,12 @@ class _MyAppState extends State<MyApp> {
 
         if (settings.name == '/home') {
           return PageRouteBuilder(
-            pageBuilder: (_, __, ___) => NavigationContainer(),
+            pageBuilder: (_, __, ___) => NavigationContainer(widget.cameras, globalUsername!, globalId, globalKey, globalEmail, newUser),
             //HomePage(),
             transitionsBuilder: (_, __, ___, child) => child,
           );
         }
-        return MaterialPageRoute(builder: (_) => AuthPage());
+        return MaterialPageRoute(builder: (_) => AuthPage(widget.cameras));
       },
     );
   }

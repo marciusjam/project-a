@@ -113,19 +113,14 @@ Future<GraphQLResponse<dynamic>> getPostsByUserId(String userId) async {
     document: '''query GetPostsByUserId(\$userId: ID!) {
   postsByUserId(userId: \$userId) {
     items {
+      userId
       content
       contenttype
       description
-      likes {
-        items {
-          userId
-          id
-        }
-      }
       id
       postId
-      userId
       orientation
+      createdAt
     }
   }
 }''',
@@ -187,6 +182,82 @@ Future<GraphQLResponse<dynamic>> getUsersByUsername(String username) async {
     
     final response = await Amplify.API.query(request: searchUsersRequest).response;
     safePrint('searchByUsername Response: $response');
+    return response;
+    
+  }
+
+  Future<GraphQLResponse<dynamic>> searchPostsByUserId(String userId) async {
+    safePrint('searchPostsByUserId userId: $userId');
+
+    final searchPostsRequest = GraphQLRequest(
+    document: '''query searchUsersByUsername(\$userId: ID!) {
+  searchPosts(
+    sort: {direction: desc, field: createdAt}
+    filter: {userId: {eq: \$userId}}
+  ) {
+    items {
+      id
+      userId
+      postId
+      status
+      contenttype
+      description
+      orientation
+      content
+      user {
+        id
+        userId
+        profilePicture
+        username
+      }
+      createdAt
+    }
+  }
+}''',
+    modelType: const PaginatedModelType(Post.classType),
+    variables: <String, dynamic>{'userId': userId},
+    decodePath: 'searchPosts',
+  );
+    
+    final response = await Amplify.API.query(request: searchPostsRequest).response;
+    //safePrint('searchPostsByUserId Response: $response');
+    return response;
+    
+  }
+
+  Future<GraphQLResponse<dynamic>> searchPostSortByDate() async {
+    safePrint('searchPostSortByDate ');
+
+    final searchPostsRequest = GraphQLRequest(
+    document: '''query MyQuery {
+  searchPosts(sort: {direction: desc, field: createdAt}) {
+    items {
+      id
+      userId
+      postId
+      status
+      contenttype
+      description
+      orientation
+      content
+      createdAt
+      _version
+      user {
+        id
+        profilePicture
+        username
+      }
+    }
+    total
+  }
+}
+''',
+    modelType: const PaginatedModelType(Post.classType),
+    decodePath: 'searchPosts',
+  );
+    
+    final response = await Amplify.API.query(request: searchPostsRequest).response;
+    //safePrint('searchPostSortByDate Response: $response');
     return response;
     
   }

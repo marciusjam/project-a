@@ -1,5 +1,6 @@
 import 'package:Makulay/models/ModelProvider.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 // Amplify Flutter Packages
 
@@ -11,7 +12,8 @@ import '../amplifyconfiguration.dart';
 import '../widgets/login.dart';
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+  final List<CameraDescription> cameras;
+  const AuthPage(this.cameras, {Key? key}) : super(key: key);
 
   @override
   _AuthPageState createState() => _AuthPageState();
@@ -53,7 +55,7 @@ class _AuthPageState extends State<AuthPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: _amplifyConfigured ? Login() : CircularProgressIndicator(),
+          child: _amplifyConfigured ? Login(widget.cameras) : CircularProgressIndicator(),
         ));
   }
 }

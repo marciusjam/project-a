@@ -1577,7 +1577,6 @@ layout thumb_item
 menu dev_menu_logs_menu
 menu menu_photo_album
 mipmap ic_launcher
-mipmap launcher_icon
 navigation dev_menu_nav_graph
 string abc_action_bar_home_description
 string abc_action_bar_up_description

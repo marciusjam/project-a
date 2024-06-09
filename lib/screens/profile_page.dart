@@ -5,30 +5,17 @@ import 'package:Makulay/widgets/home_bar.dart';
 import 'package:Makulay/widgets/login.dart';
 import 'package:Makulay/widgets/post_card.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
-void _signOutAndNavigateToLogin(BuildContext context) async {
-  try {
-    await Amplify.Auth.signOut();
-    // Navigate to the login page
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AuthPage(),
-      ),
-    );
-  } catch (e) {
-    print('Error during sign-out: $e');
-  }
-}
 
 class ProfilePage extends StatefulWidget {
-  final String username;
-  const ProfilePage(this.username, {Key? key}) : super(key: key);
+  final String username, profilepicture;
+  const ProfilePage(this.username, this.profilepicture, {Key? key}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -58,69 +45,73 @@ class _ProfilePageState extends State<ProfilePage>
         throw e;
       }
     }
+  
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    return (to.difference(from).inHours / 24).round();
+  }
 
   Future<void> getPostsByUser() async {
     final result = await Amplify.Auth.getCurrentUser();
-    var postsData = await getPostsByUserId(result.userId);
-    debugPrint('getPostsByUserId Response: ' + postsData.data.toString());
+    var postsData = await searchPostsByUserId(result.userId);
+    debugPrint('searchPostsByUserId Response: ' + postsData.data.toString());
     
     if(postsData.data != null){
       PaginatedResult<Post>? gatheredPosts = postsData.data;
       for (var eachPosts in gatheredPosts!.items) {
         debugPrint('eachPosts :' + eachPosts.toString());
         debugPrint('eachPosts description :' + eachPosts!.description);
-      String description = eachPosts!.description;
+        String description = eachPosts!.description;
         String? orientation = eachPosts.orientation;
         String? contenttype = eachPosts.contenttype;
-        String? username = eachPosts.user!.username;
-        String? profilepicture = eachPosts.user!.profilePicture;
-        String profilepictureUrl ='';
-        getFileUrl(profilepicture.toString()).then((value) {
-            profilepictureUrl = value;
-        });
+        
+        TemporalDateTime? createddate = eachPosts!.createdAt;
+        final datecreated = DateTime.parse(createddate.toString());
+        final datenow = DateTime.now();
+        int postage = daysBetween(datecreated, datenow); // Works!
+        debugPrint('postage '+ postage.toString());
+
         String? content = eachPosts.content;
         Map<String, String> contentList = {};
-        if(content != '' && content != "null" && content != null){
-          
-          getFileUrl(content.toString()).then((value) {
-            //_precacheImage(value, content);
-            contentList[content] = value;
+        await getFileUrl(eachPosts.user!.profilePicture.toString()).then((value) => {
+          if(content != '' && content != "null" && content != null){
+            
+            getFileUrl(content.toString()).then((contentvalue) {
+              //_precacheImage(value, content);
+              contentList[content] = contentvalue;
 
-            if(orientation == 'vertical'){
+              if(orientation == 'vertical'){
             if(contenttype == 'image'){
               setState(() {
-                allPosts.add(PostCard('image-Vertical', description, contentList, username, profilepictureUrl));
+                allPosts.add(PostCard('image-Vertical', description, contentList, widget.username, value, postage, false, null, null));
               });
             }else{
               setState(() {
-                allPosts.add(PostCard('video-Vertical', description, contentList, username, profilepictureUrl));
+                allPosts.add(PostCard('video-Vertical', description, contentList, widget.username, value, postage, false, null, null));
               });
             }
           }else{
             if(contenttype == 'image'){
               setState(() {
-                allPosts.add(PostCard('image-Horizontal', description, contentList, username, profilepictureUrl));
+                allPosts.add(PostCard('image-Horizontal', description, contentList, widget.username, value, postage, false, null, null));
               });
             }else{
               setState(() {
-                allPosts.add(PostCard('video-Horizontal', description, contentList, username, profilepictureUrl));
+                allPosts.add(PostCard('video-Horizontal', description, contentList, widget.username, value, postage, false, null, null));
               });
             }
           }
-          });
-          //var contentList = json.decode(content).cast<String>().toList();
-          //if S3 data == photo > Check resolution > If vert == Image Vert
-          //if S3 data == photo > Check resolution > If horiz == Image Horizontal
-          //if S3 data == video > Check resolution > If vert == Video Horizontal
-          //if S3 data == video > Check resolution > If horiz == Video Horizontal 
-          //if S3 data == multiple vert videos == Series
+          })
           
-          
-        }else{ //if S3 data == null == Text Post
+        }else{ 
           setState(() {
-            allPosts.add(PostCard('textPost', description, {}, username, profilepictureUrl));
-          });
+            allPosts.add(PostCard('textPost', description, {}, widget.username, value, postage, false, null, null));
+          })
         }
+        });
+
+
       }
     }
     
@@ -128,6 +119,7 @@ class _ProfilePageState extends State<ProfilePage>
 
   _pageView(List myList) {
     return Container(
+      color: Colors.black,
         child: ListView.builder(
       itemCount: myList.length,
       padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -208,8 +200,7 @@ class _ProfilePageState extends State<ProfilePage>
                               width: 95,
                               child: CircleAvatar(
                                 radius: 50,
-                                backgroundImage:
-                                    AssetImage('assets/profile-jam.jpg'),
+                                backgroundImage: CachedNetworkImageProvider(widget.profilepicture),
                               ),
                             ),
                           ),
@@ -223,7 +214,7 @@ class _ProfilePageState extends State<ProfilePage>
               Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: Text(
-                      'Marcius',
+                      widget.username,
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -299,19 +290,19 @@ class _ProfilePageState extends State<ProfilePage>
     Scaffold(
         appBar: AppBar(
           scrolledUnderElevation: 0,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.black,
           elevation: 0,
           systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.white,
+              statusBarColor: Colors.black,
               //statusBarColor: Colors.black,
               statusBarIconBrightness:
-                  Brightness.dark, // For Android (dark icons)
-              statusBarBrightness: Brightness.light),
+                  Brightness.light, // For Android (dark icons)
+              statusBarBrightness: Brightness.dark),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () => Navigator.pop(context, true),
-              child: Icon(Icons.arrow_back_ios),
+              child: Icon(Icons.arrow_back_ios, color: Colors.white,),
             ),
           ),
           actions: <Widget>[
@@ -322,7 +313,7 @@ class _ProfilePageState extends State<ProfilePage>
         child: Icon(
           Icons.qr_code_2_rounded,
           size: 30.0,
-          color: Colors.black,
+          color: Colors.white,
         ),
       )
     ),
@@ -333,7 +324,7 @@ class _ProfilePageState extends State<ProfilePage>
         child: Icon(
             Icons.settings,
             size: 30.0,
-            color: Colors.black,
+            color: Colors.white,
         ),
       )
     ),

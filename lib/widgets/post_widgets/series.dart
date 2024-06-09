@@ -12,14 +12,16 @@ class Series extends StatelessWidget {
 
   final String username;
   final String? profilepicture;
-  const Series({required this.seriesList, required this.indexLine, required this.username, required this.profilepicture, Key? key})
+  final int postage;
+  final bool preview;
+  const Series(this.postage, this.preview, {required this.seriesList, required this.indexLine, required this.username, required this.profilepicture, Key? key})
       : super(key: key);
   final double elavationVal = 3;
   final SeriesModel seriesList;
   final int indexLine;
 
   _perEpisodeView(BuildContext context, int index) {
-    if (index == 0) {
+    /*if (index == 0) {
       return AspectRatio(
           aspectRatio: 9 / 16,
           /*Container(
@@ -224,9 +226,9 @@ class Series extends StatelessWidget {
                   ],
                 )),
           ]));
-    } else {
-      return CustomVideoPlayer('series', seriesList.media.toString(), 9 / 16, '', username, profilepicture);
-    }
+    } else {*/
+      return CustomVideoPlayer('series', seriesList.media.toString(), 9 / 16, '', username, profilepicture, postage, null, preview, null);
+    //}
   }
 
   @override
@@ -245,7 +247,7 @@ class Series extends StatelessWidget {
     debugPrint('aspectRatio ' + aspectRatio.toString());
     debugPrint('widthToUse ' + widthToUse.toString());
     return Container(
-        width: ((MediaQuery.of(context).size.width) / 1.7),
+        width: ((MediaQuery.of(context).size.width) / 1.5),
         child: Column(
           children: [
             Padding(

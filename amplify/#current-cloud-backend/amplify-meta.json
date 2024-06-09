@@ -36,12 +36,12 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2024-02-05T17:26:22.589Z",
+      "lastPushTimeStamp": "2024-06-01T18:24:37.792Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-makulay-dev-210358-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apimakulay"
       },
-      "lastPushDirHash": "ioQfYNc1ny4JmRb97rC6lOl4kj4="
+      "lastPushDirHash": "AezZNmUwuMB6vDPFs8gYrra1U60="
     }
   },
   "auth": {
@@ -80,7 +80,7 @@
         "IdentityPoolName": "makulay95ebd6d0_identitypool_95ebd6d0__dev",
         "UserPoolName": "makulay95ebd6d0_userpool_95ebd6d0"
       },
-      "lastPushTimeStamp": "2024-02-05T17:26:21.981Z",
+      "lastPushTimeStamp": "2024-06-01T18:24:37.047Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-makulay-dev-210358-deployment/amplify-cfn-templates/auth/makulay95ebd6d0-cloudformation-template.json",
         "logicalId": "authmakulay95ebd6d0"
@@ -97,7 +97,7 @@
         "BucketName": "makulay8bf74d2dc76d4f068d2db770d437b058210358-dev",
         "Region": "ap-southeast-1"
       },
-      "lastPushTimeStamp": "2024-02-05T17:26:21.983Z",
+      "lastPushTimeStamp": "2024-06-01T18:24:37.048Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-makulay-dev-210358-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storagemakulaydb1"

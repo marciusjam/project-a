@@ -1,19 +1,29 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Makulay/main.dart';
 import 'package:Makulay/models/CustomGraphQL.dart';
 import 'package:Makulay/screens/chat_page.dart';
+import 'package:Makulay/screens/discover_page.dart';
 import 'package:Makulay/screens/home_page.dart';
+import 'package:Makulay/screens/interests_page.dart';
 import 'package:Makulay/screens/new_post_page.dart';
 import 'package:Makulay/screens/profile_page.dart';
 import 'package:Makulay/screens/search_page.dart';
+import 'package:Makulay/screens/sidemenu_page.dart';
+import 'package:Makulay/screens/trending_page.dart';
+import 'package:Makulay/widgets/home_bar.dart';
+import 'package:Makulay/widgets/login.dart';
 import 'package:Makulay/widgets/navigation_bar.dart';
+import 'package:Makulay/widgets/post_card.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
@@ -24,30 +34,31 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:aws_common/vm.dart';
 
 import 'amplifyconfiguration.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
-String globalEmail = '';
-String globalUsername = '';
-String globalId = '';
-XFile? globalFile;
-String globalKey = '';
+
+
 
 class NavigationContainer extends StatefulWidget {
-  const NavigationContainer({Key? key}) : super(key: key);
+  final List<CameraDescription> cameras;
+  final String username, userid, profilepicture, email;
+  final bool newUser;
+  const NavigationContainer(this.cameras, this.username, this.userid, this.profilepicture, this.email, this.newUser, {Key? key}) : super(key: key);
 
   @override
   _NavigationContainerState createState() => _NavigationContainerState();
 }
 
 class _NavigationContainerState extends State<NavigationContainer> with TickerProviderStateMixin{
-  late List<CameraDescription> cameras;
+  
   int _selectedBottomTabIndex = 0;
   bool _amplifyConfigured = false;
-  bool newUser = false;
+  
   bool isLoading = false;
   bool fileHasBeenPicked = false;
   
-  static final customCacheManager = CacheManager(Config('customCacheKey',
-    stalePeriod: const Duration(days: 15),maxNrOfCacheObjects: 100,));
+  bool _showAppBar = true;
+  
 
   final TextEditingController maxWidthController = TextEditingController();
   final TextEditingController maxHeightController = TextEditingController();
@@ -65,7 +76,23 @@ class _NavigationContainerState extends State<NavigationContainer> with TickerPr
 
   String? _retrieveDataError;
 
-  late TabController _tabController;
+
+  late XFile? globalFile;
+
+  var  _tabController;
+  int _selectedPageIndex = 0;
+
+  final int lengthSignedIn = 2;
+  final int lengthNotSignedIn = 2;
+
+  var _scrollController;
+
+var tabBarHeight = 60;
+      var pinnedHeaderHeight =
+          //statusBar height
+          20 +
+              //pinned SliverAppBar height in header
+              kToolbarHeight;
 
 
   void _setImageFileListFromFile(XFile? value) {
@@ -74,43 +101,65 @@ class _NavigationContainerState extends State<NavigationContainer> with TickerPr
 
   dynamic _pickImageError;
 
-  Future<void> initializeCameras() async {
-    cameras = await availableCameras();
-    setState(() {}); // Trigger a rebuild to display camera descriptions
+  void onIconTap(int index) {
+    debugPrint('index ' + index.toString());
+    setState(() {
+      _tabController.index = index;
+    });
   }
 
   @override
   initState() {
-    _tabController = TabController(
-      initialIndex: 0,
-      length: 3,
-      vsync: this,
-    );
-    initializeCameras();
+    _scrollController = ScrollController();
     super.initState();
-    fetchCurrentUserAttributes();
+    _tabController = TabController(vsync: this, length: widget.userid != '' ? lengthSignedIn : lengthNotSignedIn, initialIndex: widget.userid != '' ? 0 : 1);
+    _tabController.addListener(() {
+      setState(() {
+        _selectedPageIndex = _tabController.index;
+      });
+      print("Selected Index: " + _tabController.index.toString());
+      if(_selectedPageIndex == 0){
+        _showAppBar = false;
+      }else{
+        _showAppBar = true;
+      }
+    });
+    if(widget.userid != ''){
+      setState(() {
+        _selectedPageIndex = 0;
+      });
+    }else{
+      setState(() {
+        _selectedPageIndex = 1;
+      });
+    }
     //_configureAmplify();
   }
 
   void _onIconTapped(int index) {
     
     setState(() {
-      _selectedBottomTabIndex = index;
+      _selectedPageIndex = index;
     });
 
-    if(index == 0){
+    /*f(index == 0){
       Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SearchPage(globalUsername)),
+          MaterialPageRoute(builder: (context) => SearchPage(widget.username)),
         );
     }
 
     if(index == 1){
       Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NewPostPage(cameras: cameras,)),
+          MaterialPageRoute(builder: (context) => NewPostPage(username: widget.username, 
+                                            profilepicture: widget.profilepicture,
+                                            cameras: widget.cameras,
+                                            preentityPaths: [],
+                                            preselectedAssets: [],
+                                            descriptionController: new TextEditingController())),
         );
-    }
+    }*/
 
     /*if(index == 2){
       Navigator.push(
@@ -127,94 +176,10 @@ class _NavigationContainerState extends State<NavigationContainer> with TickerPr
     debugPrint('getUserByUserIdFunction Response: ' + userData.toString());
   }
 
-  Future<void> getUserByIdFunction(String id) async {
-    var userData = await getUserById(id);
-    debugPrint('getUserByIdFunction Response: ' + userData.data.toString());
-    /*globalUsername = 'shayecrispo';
-    globalId = 'id';
-    getFileUrl('DEV1/2024-02-01T03:53:58.102735');*/
-    
-    if(userData.data != null){
-      User? userdata = userData.data;
-
-      String username = userdata!.username.toString();
-      globalUsername = username;
-      debugPrint('username :' + username);
-
-      String profilePicture = userdata.profilePicture.toString();
-      getFileUrl(profilePicture);
-      debugPrint('profilepicture :' + profilePicture);
-
-          setState(() {
-            newUser = false;
-          });
-        }else{
-          setState(() {
-            newUser = true;
-          });
-        }
-    
-    
-  }
-
-  Future<void> fetchCurrentUserAttributes() async {
-  try {
-    final result = await Amplify.Auth.fetchUserAttributes();
-    //String userEmail = result[2].value.toString();
-    for (final element in result) {
-      safePrint('key: ${element.userAttributeKey}; value: ${element.value}');
-      if(element.userAttributeKey.toString() == 'email'){
-        globalEmail = element.value.toString();
-      }else if(element.userAttributeKey.toString() == 'sub'){
-        globalId = element.value.toString();
-      }
-    }
-    getUserByUserIdFunction(globalId);
-    getUserByIdFunction(globalId);
-  } on AuthException catch (e) {
-    safePrint('Error fetching user attributes: ${e.message}');
-    if(e.message == 'No user is currently signed in'){
-      setState(() {
-        newUser = false;
-        globalUsername = '';
-        globalKey = '';
-      });
-    }
-    
-  }
-}
+  
 
 
-Future<void> getFileUrl(String fileKey) async {
-      try {
-        final result = await Amplify.Storage.getUrl(
-      key: fileKey,
-      options: const StorageGetUrlOptions(
-        accessLevel: StorageAccessLevel.guest,
-        pluginOptions: S3GetUrlPluginOptions(
-          expiresIn: Duration(days: 1),
-        ),
-      ),
-    ).result;
-        //debugPrint('result ' + result.url.toString());
-        _precacheImage(result.url.toString(), fileKey);
-        globalKey = result.url.toString();
-      } catch (e) {
-        throw e;
-      }
-    }
 
-  Future<void> _precacheImage(String imageUrl, String key) async {
-    
-    /*await DefaultCacheManager().putFile(
-      {key,
-
-      }
-    )*/
-    final imageProvider = CachedNetworkImageProvider(imageUrl, cacheKey: key, cacheManager: customCacheManager);
-    precacheImage(imageProvider, context);
-    //_preloadedImages.add(imageProvider);
-  }
 
   Future<void> _createUser(String usernameText, File? imageFile, bool skip) async {
     
@@ -244,10 +209,10 @@ Future<void> getFileUrl(String fileKey) async {
       
       
       final userData = User(
-          id: globalId,
-          userId: globalId,
+          id: widget.username,
+          userId: widget.userid,
           username: usernameText,
-          email: globalEmail,
+          email: widget.email,
           //phoneNumber: '09190612407',
           //bio:'',
           profilePicture: keyName,
@@ -262,11 +227,10 @@ Future<void> getFileUrl(String fileKey) async {
         isLoading = true;
       });
 
-      getFileUrl(keyName);
       Future.delayed(const Duration(seconds: 10), () {
         Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => NavigationContainer()),
+            MaterialPageRoute(builder: (context) => MyApp(widget.cameras)),
           );
       });
     } on DataStoreException catch (e) {
@@ -566,13 +530,77 @@ Widget setProfilePicture(File? imagen) {
 
   @override
   Widget build(BuildContext context) {
-    return newUser ? setUsername() : Scaffold(
-resizeToAvoidBottomInset: false,
+    /*debugPrint('widget.profilepicture ' + widget.profilepicture);
+    debugPrint('widget.username ' + widget.username);
+    debugPrint('widget.userid ' + widget.userid);
+    debugPrint('widget.cameras ' + widget.cameras.toString());*/
+    return 
+    widget.newUser ? setUsername() : Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      extendBody: true,
-      extendBodyBehindAppBar: true,
-      body: HomePage(globalKey, globalUsername, globalId),
-      bottomNavigationBar: NavigationBottomBar(_tabController ,selectedPageIndex: _selectedBottomTabIndex, onIconTap: _onIconTapped)
+      extendBody: false,
+      
+      //extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        //expandedHeight: 100,
+        centerTitle: true,
+        //collapsedHeight: 50,
+        backgroundColor: Colors.transparent,
+         //selectedPageIndex == 0 ? Colors.transparent: Colors.black,
+        //centerTitle: true,
+        //pinned: false,
+        surfaceTintColor: Colors.transparent,
+        //floating: true,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          //statusBarColor: Colors.black,
+          statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
+          statusBarBrightness: Brightness.light,
+        ),),
+      body: //NestedScrollView(
+      
+      TabBarView(
+        controller: _tabController,
+        children: [
+    
+        /*if(widget.userid != '')
+        
+          NewPostPage(
+                                          username: widget.username, 
+                                                profilepicture: widget.profilepicture,
+                                                cameras: widget.cameras,
+                                                preselectedAssets: [],
+                                                preentityPaths: [],
+                                                descriptionController: new TextEditingController(),
+                                        ),*/
+        if(widget.userid != '')
+          SideMenuPage(widget.profilepicture, widget.username, widget.userid, widget.cameras, selectedPageIndex: _selectedPageIndex, onIconTap:onIconTap),
+      
+        if(widget.userid == '')
+          Login(widget.cameras),
+
+        if(widget.userid != '')
+          InterestsPage(profilepicture: widget.profilepicture, username: widget.username, userid: widget.userid, cameras: widget.cameras, selectedPageIndex: _selectedPageIndex, onIconTap:onIconTap),
+
+          /*TrendingPage(),
+          TrendingPage(),*/
+
+          //DiscoverPage(widget.profilepicture, widget.username, widget.userid, widget.cameras),
+        ],  
+      ),
+      
+      
+      
+
+
+    /*if(widget.userid != '')
+      ChatPage(widget.cameras),*/
+  
+      bottomNavigationBar: widget.userid != '' ? //Visibility(visible: _showAppBar, child: 
+      NavigationBottomBar(selectedPageIndex: _selectedBottomTabIndex, onIconTap: _onIconTapped, widget.username, widget.profilepicture, widget.cameras)
+      //) 
+      : null
     );
     //bottomNavigationBar: NavigationBottomBar( selectedPageIndex: _selectedPageIndex, onIconTap: _onIconTapped));
   }

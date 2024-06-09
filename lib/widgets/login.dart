@@ -1,7 +1,9 @@
+import 'package:Makulay/main.dart';
 import 'package:Makulay/models/ModelProvider.dart';
 import 'package:Makulay/navigation_container.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Makulay/screens/home_page.dart';
@@ -14,7 +16,9 @@ var globalEmail;
 var globalPassword;
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  final List<CameraDescription> cameras;
+
+  const Login(this.cameras, {Key? key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -41,7 +45,7 @@ class _LoginState extends State<Login> {
             child: Column(
               children: <Widget>[
                 TextField(
-                  cursorColor: Colors.amber,
+                  cursorColor: Colors.red,
                   controller: emailController,
                   style: TextStyle(
                     color: Colors.black,
@@ -54,9 +58,9 @@ class _LoginState extends State<Login> {
                       fontSize: 20,
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.never,
-                    focusColor: Colors.amber,
+                    focusColor: Colors.red,
                     labelStyle: TextStyle(
-                      color: Colors.amber,
+                      color: Colors.red,
                       fontSize: 20,
                     ),
                     enabledBorder: OutlineInputBorder(
@@ -77,7 +81,7 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 5.0),
 
                 TextField(
-                  cursorColor: Colors.amber,
+                  cursorColor: Colors.red,
                   controller: passwordController,
                   style: TextStyle(
                     color: Colors.black,
@@ -140,9 +144,9 @@ class _LoginState extends State<Login> {
                   alignment: Alignment.center,
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      primary: Colors.amber,
+                      primary: Colors.red,
                       textStyle: TextStyle(
-                        color: Colors.amber,
+                        color: Colors.red,
                         fontSize: 15,
                       ),
                     ),
@@ -174,7 +178,7 @@ class _LoginState extends State<Login> {
                               'Sign Up',
                               style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.amber,
+                                  color: Colors.red,
                                   fontWeight: FontWeight.bold),
                             )),
                       )
@@ -195,7 +199,7 @@ class _LoginState extends State<Login> {
             child: Column(
               children: <Widget>[
                 TextField(
-                  cursorColor: Colors.amber,
+                  cursorColor: Colors.red,
                   controller: emailController,
                   style: TextStyle(
                     color: Colors.black,
@@ -208,9 +212,9 @@ class _LoginState extends State<Login> {
                       fontSize: 20,
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.never,
-                    focusColor: Colors.amber,
+                    focusColor: Colors.red,
                     labelStyle: TextStyle(
-                      color: Colors.amber,
+                      color: Colors.red,
                       fontSize: 20,
                     ),
                     enabledBorder: OutlineInputBorder(
@@ -231,7 +235,7 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 5.0),
 
                 TextField(
-                  cursorColor: Colors.amber,
+                  cursorColor: Colors.red,
                   controller: passwordController,
                   style: TextStyle(
                     color: Colors.black,
@@ -262,7 +266,7 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 5.0),
 
                 TextField(
-                  cursorColor: Colors.amber,
+                  cursorColor: Colors.red,
                   controller: confirmPasswordController,
                   style: TextStyle(
                     color: Colors.black,
@@ -344,7 +348,7 @@ class _LoginState extends State<Login> {
                               'Login',
                               style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.amber,
+                                  color: Colors.red,
                                   fontWeight: FontWeight.bold),
                             )),
                       )
@@ -365,7 +369,7 @@ class _LoginState extends State<Login> {
             child: Column(
               children: <Widget>[
                 TextField(
-                  cursorColor: Colors.amber,
+                  cursorColor: Colors.red,
                   controller: verifCodeController,
                   style: TextStyle(
                     color: Colors.black,
@@ -379,9 +383,9 @@ class _LoginState extends State<Login> {
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     //labelText: 'Email/Username/Phone Number',
-                    focusColor: Colors.amber,
+                    focusColor: Colors.red,
                     labelStyle: TextStyle(
-                      color: Colors.amber,
+                      color: Colors.red,
                       fontSize: 20,
                     ),
                     enabledBorder: OutlineInputBorder(
@@ -443,7 +447,7 @@ class _LoginState extends State<Login> {
                               'Resend Code',
                               style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.amber,
+                                  color: Colors.red,
                                   fontWeight: FontWeight.bold),
                             )),
                       )
@@ -469,7 +473,7 @@ class _LoginState extends State<Login> {
                               'Login',
                               style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.amber,
+                                  color: Colors.red,
                                   fontWeight: FontWeight.bold),
                             )),
                       )
@@ -510,7 +514,7 @@ class _LoginState extends State<Login> {
           //userConfirmationNeeded = false;
           Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => NavigationContainer()),
+          MaterialPageRoute(builder: (context) => MyApp(widget.cameras)),
         );
         }
     
@@ -557,7 +561,7 @@ class _LoginState extends State<Login> {
           //Navigator.pushReplacementNamed(context, '/home');
          Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => NavigationContainer()),);
+          MaterialPageRoute(builder: (context) => MyApp(widget.cameras)),);
         }
       }else{
         method = 'Verify';

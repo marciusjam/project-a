@@ -1,14 +1,23 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:photo_manager/photo_manager.dart';
+
+
 
 class TextPost extends StatelessWidget {
   final String description;
   final String username;
   final String? profilepicture;
-  const TextPost(this.description, this.username, this.profilepicture, {Key? key}) : super(key: key);
+  final int postage;
+  final bool preview;
+  final AssetEntity? previewcontent;
+  const TextPost(this.description, this.username, this.profilepicture, this.postage, this.preview, this.previewcontent, {Key? key}) : super(key: key);
+
   final double elavationVal = 3;
 
   @override
@@ -18,8 +27,9 @@ class TextPost extends StatelessWidget {
       Card(
           surfaceTintColor: Colors.white, //IOS
           elevation: elavationVal,
+          color: Colors.white,
           shape: new RoundedRectangleBorder(
-            side: new BorderSide(color: Colors.white, width: .3),
+            side: new BorderSide(color: Colors.white12, width: .3),
             borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
           ),
           child: Padding(
@@ -81,8 +91,8 @@ class TextPost extends StatelessWidget {
                                             text:
                                                 description,
                                             style: TextStyle(
+                                                //color: Colors.black,
                                                 color: Colors.black,
-                                                //color: Colors.white,
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 15),
                                           ),
@@ -93,10 +103,10 @@ class TextPost extends StatelessWidget {
                                       padding:
                                           const EdgeInsets.fromLTRB(0, 3, 0, 0),
                                       child: Text(
-                                        '10 mins ago',
+                                        postage.toString() + ' days ago',
                                         style: TextStyle(
+                                            //color: Colors.grey,
                                             color: Colors.grey,
-                                            //color: Colors.white,
                                             fontWeight: FontWeight.normal,
                                             fontSize: 11),
                                       ),
@@ -105,6 +115,7 @@ class TextPost extends StatelessWidget {
                                 ),
                               )),
                         ]),
+                    preview == false ?
                     Container(
                         height: 40,
 
@@ -136,8 +147,8 @@ class TextPost extends StatelessWidget {
                                                       0, 0, 0, 0),
                                                   child: Icon(
                                                     Icons.chat_bubble_outline,
+                                                    //color: Colors.black12,
                                                     color: Colors.black12,
-                                                    //color: Colors.white,
                                                   ),
                                                 ),
                                                 Padding(
@@ -146,8 +157,8 @@ class TextPost extends StatelessWidget {
                                                             5, 0, 0, 0),
                                                     child: Text('300',
                                                         style: TextStyle(
+                                                            //color: Colors.grey,
                                                             color: Colors.grey,
-                                                            //color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .normal,
@@ -169,8 +180,8 @@ class TextPost extends StatelessWidget {
                                                       0, 0, 0, 0),
                                                   child: Icon(
                                                     Icons.favorite_outline,
+                                                    //color: Colors.black12,
                                                     color: Colors.black12,
-                                                    //color: Colors.white,
                                                   ),
                                                 ),
                                                 Padding(
@@ -179,8 +190,8 @@ class TextPost extends StatelessWidget {
                                                             5, 0, 0, 0),
                                                     child: Text('1.2m',
                                                         style: TextStyle(
+                                                            //color: Colors.grey,
                                                             color: Colors.grey,
-                                                            //color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .normal,
@@ -204,8 +215,8 @@ class TextPost extends StatelessWidget {
                                                       child: Icon(
                                                         Icons
                                                             .swap_horiz_outlined,
+                                                        //color: Colors.black12,
                                                         color: Colors.black12,
-                                                        //color: Colors.white,
                                                       ),
                                                     ),
                                                     Padding(
@@ -214,9 +225,8 @@ class TextPost extends StatelessWidget {
                                                                 5, 0, 0, 0),
                                                         child: Text('25',
                                                             style: TextStyle(
-                                                                color:
-                                                                    Colors.grey,
-                                                                //color: Colors.white,
+                                                                //color: Colors.grey,
+                                                                color: Colors.grey,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,
@@ -224,7 +234,7 @@ class TextPost extends StatelessWidget {
                                                   ],
                                                 ))),
                                       ]))
-                            ])),
+                            ])): Container()
                   ],
                 )
               ]))),

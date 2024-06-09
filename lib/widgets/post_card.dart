@@ -6,8 +6,11 @@ import 'package:Makulay/widgets/post_widgets/series.dart';
 import 'package:Makulay/widgets/post_widgets/text_post.dart';
 import 'package:Makulay/widgets/post_widgets/videocard_horiz.dart';
 import 'package:Makulay/widgets/post_widgets/videocard_vert.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +20,11 @@ class PostCard extends StatefulWidget {
   final String description;
   final Map<String, String> content;
   final String username;
-  final String? profilepicture;
-  const PostCard(this.type, this.description, this.content, this.username, this.profilepicture, {Key? key}) : super(key: key);
+  final String? profilepicture, previewvideopath;
+  final int postage;
+  final bool preview;
+  final AssetEntity? previewcontent;
+  const PostCard(this.type, this.description, this.content, this.username, this.profilepicture, this.postage, this.preview, this.previewcontent, this.previewvideopath, {Key? key}) : super(key: key);
  
 
   @override
@@ -34,38 +40,79 @@ class _PostCardState extends State<PostCard> {
   late VideoPlayerController _controller;
   final double _iconSize = 20;
 
+  late String profileUrl;
+
   final double elavationVal = 3;
 
-  final List<SeriesModel> seriesList = [
+   final List<SeriesModel> seriesList = [
+    /*SeriesModel(
+        media: 'assets/series_cover.jpg', username: 'John', series_cover: true),*/
     SeriesModel(
-        media: 'assets/series_cover.jpg', username: 'John', series_cover: true),
+        media: ['assets/series_1.mp4',
+        'assets/series_2.mp4','assets/series_3.mp4',
+        'assets/series_4.mp4'], username: 'marciusjam', profilepicture: 'assets/profile-jam.jpg'),
     SeriesModel(
-        media: 'assets/series_1.mp4', username: 'John', series_cover: true),
+        media: ['assets/series_1.mp4',
+        'assets/series_2.mp4','assets/series_3.mp4',
+        'assets/series_4.mp4'], username: 'shayecrispo', profilepicture: 'assets/profile-shaye.jpg'),
     SeriesModel(
-        media: 'assets/series_2.mp4', username: 'Naruto', series_cover: false),
+        media: ['assets/series_1.mp4',
+        'assets/series_2.mp4','assets/series_3.mp4',
+        'assets/series_4.mp4'], username: 'Sasuke', profilepicture: 'assets/profile-shaye.jpg'),
+   SeriesModel(
+        media: ['assets/series_1.mp4',
+        'assets/series_2.mp4','assets/series_3.mp4',
+        'assets/series_4.mp4'], username: 'Goku', profilepicture: 'assets/profile-shaye.jpg'),
     SeriesModel(
-        media: 'assets/series_3.mp4', username: 'Sasuke', series_cover: false),
-    SeriesModel(
-        media: 'assets/series_4.mp4', username: 'Goku', series_cover: false),
-    SeriesModel(
-        media: 'assets/series_5.mp4', username: 'Luffy', series_cover: false),
+        media: ['assets/series_1.mp4',
+        'assets/series_2.mp4','assets/series_3.mp4',
+        'assets/series_4.mp4'], username: 'Luffy', profilepicture: 'assets/profile-shaye.jpg'),
   ];
 
   @override
   void initState() {
     super.initState();
+    debugPrint('Widget Checker!!');
+    debugPrint('widget.type : ' + widget.type);
+    debugPrint('widget.description : ' + widget.description);
+    debugPrint('widget.content : ' + widget.content.toString());
+    debugPrint('widget.username : ' + widget.username);
+    debugPrint('widget.profilepicture : ' + widget.profilepicture.toString());
+    debugPrint('widget.postage : ' + widget.postage.toString());
+    debugPrint('widget.preview : ' + widget.preview.toString());
   }
+
+
+Future<void> getFileUrl(String fileKey) async {
+      try {
+        final result = await Amplify.Storage.getUrl(
+      key: fileKey,
+      options: const StorageGetUrlOptions(
+        accessLevel: StorageAccessLevel.guest,
+        pluginOptions: S3GetUrlPluginOptions(
+          expiresIn: Duration(days: 1),
+        ),
+      ),
+    ).result;
+        //debugPrint('result ' + result.url.toString());
+        setState(() {
+                profileUrl = result.url.toString();
+              });
+      } catch (e) {
+        throw e;
+      }
+    }
 
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     if (widget.type == 'series') {
       return _seriesContainer(
-          context, MediaQuery.of(context).size.height, seriesList, widget.username, widget.profilepicture);
+          context, MediaQuery.of(context).size.height, seriesList, widget.username, widget.profilepicture, widget.postage, widget.preview);
     } else {
       return Column(
         children: [
-          _mainContainer(context, double.maxFinite, widget.description, widget.content, widget.username, widget.profilepicture)
+          _mainContainer(context, double.maxFinite, widget.description, widget.content, widget.username, widget.profilepicture, widget.postage, widget.preview, widget.previewcontent, widget.previewvideopath)
 
           /*Container(
           decoration: BoxDecoration(
@@ -81,11 +128,11 @@ class _PostCardState extends State<PostCard> {
     }
   }
 
-  Container _mainContainer(BuildContext context, double widthToUse, String description, Map<String, String> content, String username, String? profilepicture) {
+  Container _mainContainer(BuildContext context, double widthToUse, String description, Map<String, String> content, String username, String? profilepicture, int postage, bool preview, AssetEntity? previewcontent, String? previewvideopath) {
     return Container(
         padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
         //height: 250,
-        color: Color.fromARGB(255, 255, 255, 255),
+        color: Colors.white,
         width: widthToUse,
         //color: Colors.black,
         /*child: Dismissible(
@@ -127,11 +174,11 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           key: Key('1'),*/
-        child: _buildChild(context, description, content, username, profilepicture) //),
+        child: _buildChild(context, description, content, username, profilepicture, postage, preview, previewcontent, previewvideopath) //),
         );
   }
 
-  _seriesContainer(BuildContext context, double heigtToUse, List seriesLis, String username, String? profilepicture) {
+  _seriesContainer(BuildContext context, double heigtToUse, List seriesLis, String username, String? profilepicture, int postage, bool preview) {
     return Container(
         color: Colors.white,
         //height: (heigtToUse / 1.47),
@@ -233,7 +280,7 @@ class _PostCardState extends State<PostCard> {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
                                 child: Text(
-                                  '1 min ago',
+                                  postage.toString() + 'days ago',
                                   style: TextStyle(
                                       color: Colors.grey,
                                       //color: Colors.white,
@@ -256,28 +303,30 @@ class _PostCardState extends State<PostCard> {
                   padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
                   itemBuilder: (BuildContext context, int index) {
                     return Series(
-                        seriesList: seriesList[index], indexLine: index, username: username, profilepicture: profilepicture); //),
+                        seriesList: seriesList[index], indexLine: index, username: username, profilepicture: profilepicture, postage, preview); //),
                   },
                 ))
           ],
         ));
   }
 
-  Widget _buildChild(BuildContext context, String description, Map<String, String> content, String username, String? profilepicture) {
+  Widget _buildChild(BuildContext context, String description, Map<String, String> content, String username, String? profilepicture, int postage, bool preview, AssetEntity? previewcontent, String? previewvideopath) {
     debugPrint('postType: ' + widget.type);
     debugPrint('_buildChild profilepic: ' + profilepicture!);
     if (widget.type == 'image-Horizontal') {
-      return ImageCardHoriz(description, content, username, profilepicture);
+      return ImageCardHoriz(description, content, username, profilepicture, postage, preview, previewcontent);
     } else if (widget.type == 'image-Vertical') {
-      return ImageCardVert(description, content, username, profilepicture);
+      return ImageCardVert(description, content, username, profilepicture, postage, preview, previewcontent);
     } else if (widget.type == 'textPost') {
-      return TextPost(description, username, profilepicture);
+      debugPrint('profilepicture to use: ' + profilepicture);
+      
+      return TextPost(description, username, profilepicture, postage, preview, previewcontent);
     } else if (widget.type == 'video-Horizontal') {
-      return VideoCardHoriz(description, content, username, profilepicture);
+      return VideoCardHoriz(description, content, username, profilepicture, postage, preview, previewvideopath);
     } else if (widget.type == 'video-Vertical') {
-      return VideoCardVert(description, content, username, profilepicture);
+      return VideoCardVert(description, content, username, profilepicture, postage, preview, previewvideopath);
     } else {
-      return TextPost(description, username, profilepicture);
+      return TextPost(description, username, profilepicture, postage, preview, null);
     }
   }
 }

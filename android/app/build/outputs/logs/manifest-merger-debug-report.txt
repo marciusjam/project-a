@@ -12,6 +12,7 @@ MERGED from [:camera_android] /Users/Jam/Documents/project-a/build/camera_androi
 MERGED from [:image_picker_android] /Users/Jam/Documents/project-a/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-19:12
 MERGED from [:flutter_plugin_android_lifecycle] /Users/Jam/Documents/project-a/build/flutter_plugin_android_lifecycle/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:amplify_db_common] /Users/Jam/Documents/project-a/build/amplify_db_common/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
+MERGED from [:sqflite] /Users/Jam/Documents/project-a/build/sqflite/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:url_launcher_android] /Users/Jam/Documents/project-a/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-14:12
 MERGED from [:path_provider_android] /Users/Jam/Documents/project-a/build/path_provider_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_native_image] /Users/Jam/Documents/project-a/build/flutter_native_image/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
@@ -173,9 +174,9 @@ MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /Users/Jam/.gradl
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.10.1] /Users/Jam/.gradle/caches/transforms-3/3a20ad605fb5f4c72ef2735f193ec8d5/transformed/core-1.10.1/AndroidManifest.xml:28:18-86
 	android:label
-		ADDED from /Users/Jam/Documents/project-a/android/app/src/main/AndroidManifest.xml:14:9-31
+		ADDED from /Users/Jam/Documents/project-a/android/app/src/main/AndroidManifest.xml:14:9-32
 	android:icon
-		ADDED from /Users/Jam/Documents/project-a/android/app/src/main/AndroidManifest.xml:15:9-45
+		ADDED from /Users/Jam/Documents/project-a/android/app/src/main/AndroidManifest.xml:15:9-43
 activity#com.example.agilay.MainActivity
 ADDED from /Users/Jam/Documents/project-a/android/app/src/main/AndroidManifest.xml:17:9-45:20
 	android:launchMode
@@ -236,6 +237,8 @@ MERGED from [:flutter_plugin_android_lifecycle] /Users/Jam/Documents/project-a/b
 MERGED from [:flutter_plugin_android_lifecycle] /Users/Jam/Documents/project-a/build/flutter_plugin_android_lifecycle/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:amplify_db_common] /Users/Jam/Documents/project-a/build/amplify_db_common/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:amplify_db_common] /Users/Jam/Documents/project-a/build/amplify_db_common/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:sqflite] /Users/Jam/Documents/project-a/build/sqflite/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:sqflite] /Users/Jam/Documents/project-a/build/sqflite/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:url_launcher_android] /Users/Jam/Documents/project-a/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:url_launcher_android] /Users/Jam/Documents/project-a/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:path_provider_android] /Users/Jam/Documents/project-a/build/path_provider_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
