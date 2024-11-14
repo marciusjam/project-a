@@ -131,11 +131,12 @@ class _NewPostPageState extends State<NewPostPage> {
     ),
     child:
     Container(
+      height: 85,
       padding: EdgeInsets.fromLTRB(0,0,0,0),
       child: 
     BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         items: const <BottomNavigationBarItem>[
           /*BottomNavigationBarItem(
             icon: Icon(Icons.fiber_new_outlined),
@@ -167,9 +168,11 @@ class _NewPostPageState extends State<NewPostPage> {
         unselectedLabelStyle: TextStyle(fontSize: 15),
         selectedLabelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         selectedItemColor: Colors.amber,
-        unselectedItemColor: Colors.grey.shade400,
+        unselectedItemColor: Colors.white,
         onTap: _onItemTapped,
       ),
-    ))));
+    )))
+    )
+    ;
   }
 }

@@ -35,9 +35,9 @@ class VideoCardHoriz extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 preview == false ? CustomVideoPlayer(
-                    'horizontal', content.entries.first.value, MediaQuery.sizeOf(context).height / 2, '', username, profilepicture, postage, null, preview, null) : 
+                    'horizontal', content.entries.first.value, MediaQuery.sizeOf(context).height / 2, '', username, profilepicture, postage, null, preview, null, '20', '30', '50') : 
                     CustomVideoPlayer(
-                    'horizontal', null, MediaQuery.sizeOf(context).height / 2, '', username, profilepicture, postage, previewcontent, preview, null),
+                    'horizontal', null, MediaQuery.sizeOf(context).height / 2, '', username, profilepicture, postage, previewcontent, preview, null, '20', '30', '50'),
                 Padding(
                     padding: const EdgeInsets.all(15),
                     child: Stack(
@@ -52,36 +52,19 @@ class VideoCardHoriz extends StatelessWidget {
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    child: SizedBox(
-                                      width: 45,
-                                      height: 45,
-                                      child: InkWell(
-                                        onTap: () => {},
-                                        child: Container(
-                                          height: 45,
-                                          width: 45,
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.amber,
-                                            child: Container(
-                                              height: 40,
-                                              width: 40,
-                                              child: CircleAvatar(
-                                                radius: 50,
+                                    child:  CircleAvatar(
+                                                radius: 25,
                                                 backgroundImage: CachedNetworkImageProvider(profilepicture!)),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                            
                                   ),
 
                                   Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           10, 0, 0, 0),
                                       child: SizedBox(
-                                        width:
+                                        /*width:
                                             MediaQuery.of(context).size.width -
-                                                125,
+                                                125,*/
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,

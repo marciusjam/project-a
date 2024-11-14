@@ -33,9 +33,9 @@ class VideoCardVert extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 preview == false ? CustomVideoPlayer(
-                    'vertical', content.entries.first.value, MediaQuery.sizeOf(context).height / 1.5, description, username, profilepicture, postage, null, preview, null) :
+                    'vertical', content.entries.first.value, MediaQuery.sizeOf(context).height / 1.5, description, username, profilepicture, postage, null, preview, null, '20', '30', '50') :
                     CustomVideoPlayer(
-                    'vertical', null, MediaQuery.sizeOf(context).height / 1.5, description, username, profilepicture, postage, previewcontent, preview, null) 
+                    'vertical', null, MediaQuery.sizeOf(context).height / 1.5, description, username, profilepicture, postage, previewcontent, preview, null, '20', '30', '50') 
               ],
             )
           ])),

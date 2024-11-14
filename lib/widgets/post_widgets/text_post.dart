@@ -44,33 +44,16 @@ class TextPost extends StatelessWidget {
 
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: SizedBox(
-                              width: 45,
-                              height: 45,
-                              child: InkWell(
-                                onTap: () => {},
-                                child: Container(
-                                  height: 45,
-                                  width: 45,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.amber,
-                                    child: Container(
-                                      height: 40,
-                                      width: 40,
-                                      child: CircleAvatar(
-                                        radius: 50,
+                            child: CircleAvatar(
+                                        radius: 25,
                                         backgroundImage: CachedNetworkImageProvider(profilepicture!)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                                    
                           ),
 
                           Padding(
                               padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                               child: SizedBox(
-                                width: MediaQuery.of(context).size.width - 125,
+                                //width: MediaQuery.of(context).size.width - 125,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

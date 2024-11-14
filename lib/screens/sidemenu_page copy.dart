@@ -909,7 +909,7 @@ class _SideMenuPageState extends State<SideMenuPage>
                                                       'username',
                                                       'profilepicture',
                                                       2,
-                                                      null, false, null))
+                                                      null, false, null, '20', '30', '50'))
                                       
                                               
                     

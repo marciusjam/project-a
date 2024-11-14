@@ -19,7 +19,10 @@ class CustomVideoPlayer extends StatefulWidget {
   final String? videoFile;
   final bool preview;
   final AssetEntity? previewcontent;
-  const CustomVideoPlayer(this.videotype, this.video, this.size, this.description, this.username, this.profilepicture, this.postage, this.videoFile, this.preview, this.previewcontent, {Key? key})
+  final String? likes;
+  final String? comments;
+  final String? shares;
+  const CustomVideoPlayer(this.videotype, this.video, this.size, this.description, this.username, this.profilepicture, this.postage, this.videoFile, this.preview, this.previewcontent, this.likes, this.comments, this.shares ,{Key? key})
       : super(key: key);
 
   
@@ -81,7 +84,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     });
     _controller.setLooping(true);
     _controller.initialize().then((_) => setState(() {}));
-    _controller.play();
+    _controller.pause(); // SET TO PLAY
   }
 
   
@@ -115,6 +118,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       child: Column(
         children: <Widget>[
           Container(
+
             //height: widget.videotype == 'fade' ? MediaQuery.sizeOf(context).height - 150 : null,
             //width: MediaQuery.sizeOf(context).width,
             //padding: const EdgeInsets.all(20),
@@ -122,6 +126,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
               aspectRatio: widget.size,
               child:*/
               Container(
+
               height: widget.size,
               //width: MediaQuery.sizeOf(context).width,
               //aspectRatio: _controller.value.aspectRatio,
@@ -153,8 +158,13 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                     ),
                   if (widget.videotype == 'verts')
                     Positioned(
-            bottom: 35,
+            bottom: 0,
             child: 
+            Container(
+              color: Color.fromRGBO(00, 00, 00, 0.5),
+              padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+              //width: MediaQuery.sizeOf(context).width -40,
+              child:
             Column(
                           children: [
                             Row(
@@ -165,28 +175,12 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    child: SizedBox(
-                                      width: 45,
-                                      height: 45,
-                                      child: InkWell(
-                                        onTap: () => {},
-                                        child: Container(
-                                          height: 45,
-                                          width: 45,
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.amber,
-                                            child: Container(
-                                              height: 40,
-                                              width: 40,
-                                              child: CircleAvatar(
-                                                radius: 50,
-                                                backgroundImage: CachedNetworkImageProvider(widget.profilepicture!)),/*AssetImage(
-                                                    'assets/profile-jam.jpg'),
-                                              ),*/
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                    child: CircleAvatar(
+                                                radius: 25,
+                                                backgroundImage: //CachedNetworkImageProvider(widget.profilepicture!)),
+                                                AssetImage(
+                                                    widget.profilepicture!),
+                                           
                                     ),
                                   ),
 
@@ -202,7 +196,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              'marciusjam',
+                                              widget.username,
                                               style: TextStyle(
                                                   //color: Colors.black,
                                                   color: Colors.white,
@@ -216,8 +210,11 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                               text: TextSpan(
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text:
-                                                    'Crazy postsss!!!',
+                                                    text: widget.description.length > 85 ? widget.description.substring(0, 85) + '...' : widget.description,
+  //overflow: TextOverflow.ellipsis,
+  //maxLines: 1,
+ // softWrap: false,
+                                                   //widget.description,
                                                         style: TextStyle(
                                                         //color: Colors.black,
                                                         color: Colors.white,
@@ -249,7 +246,6 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
           Container(
             height: 40,
                                 width: MediaQuery.sizeOf(context).width,
-
                                 //color: Colors.black.withOpacity(0.5),
                                 padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
 
@@ -289,7 +285,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                                             padding: EdgeInsets
                                                                 .fromLTRB(
                                                                     5, 0, 0, 0),
-                                                            child: Text('32',
+                                                            child: Text(widget.comments!,
                                                                 style: TextStyle(
                                                                     color: Colors.white,
                                                                     //color: Colors.white,
@@ -322,7 +318,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                                             padding: EdgeInsets
                                                                 .fromLTRB(
                                                                     5, 0, 0, 0),
-                                                            child: Text('20',
+                                                            child: Text(widget.likes!,
                                                                 style: TextStyle(
                                                                     //color: Colors.grey,
                                                                     color: Colors.white,
@@ -365,7 +361,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                                                             0,
                                                                             0),
                                                                 child: Text(
-                                                                    '1.2k',
+                                                                    widget.shares!,
                                                                     style: TextStyle(
                                                                         //color: Colors.grey,
                                                                         color: Colors.white,
@@ -374,11 +370,14 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                                           ],
                                                         ))),
                                               ]))
-                                    ]))])),
+                                    ]))])
+                                    )
+                                    ),
 
                   if (widget.videotype == 'vertical' ||
                       widget.videotype == 'series')
                     Padding(
+                        
                         padding: const EdgeInsets.all(15),
                         child: Stack(
                           children: [
@@ -394,27 +393,10 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             0, 0, 0, 0),
-                                        child: SizedBox(
-                                          width: 45,
-                                          height: 45,
-                                          child: InkWell(
-                                            onTap: () => {},
-                                            child: Container(
-                                              height: 45,
-                                              width: 45,
-                                              child: CircleAvatar(
-                                                backgroundColor: Colors.amber,
-                                                child: Container(
-                                                  height: 40,
-                                                  width: 40,
-                                                  child: CircleAvatar(
-                                                    radius: 50,
+                                        child: CircleAvatar(
+                                                    radius: 25,
                                                     backgroundImage: CachedNetworkImageProvider(widget.profilepicture!)),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                               
                                       ),
 
                                       Padding(

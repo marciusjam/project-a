@@ -227,7 +227,7 @@ class Series extends StatelessWidget {
                 )),
           ]));
     } else {*/
-      return CustomVideoPlayer('series', seriesList.media.toString(), 9 / 16, '', username, profilepicture, postage, null, preview, null);
+      return CustomVideoPlayer('series', seriesList.media.toString(), 9 / 16, '', username, profilepicture, postage, null, preview, null, '20', '30', '50');
     //}
   }
 

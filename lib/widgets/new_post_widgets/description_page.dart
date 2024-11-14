@@ -78,24 +78,24 @@ class _DescriptionPageState extends State<DescriptionPage> {
         }
       },
       child: Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         title: const Text(
           'Description',
           style: TextStyle(
-            color: Colors.black, // 3
+            color: Colors.white, // 3
           ),
         ),
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            //statusBarColor: Colors.black,
+            //statusBarColor: Colors.white,
+            statusBarColor: Colors.black,
             statusBarIconBrightness:
-                Brightness.dark, // For Android (dark icons)
-            statusBarBrightness: Brightness.light),
+                Brightness.light, // For Android (dark icons)
+            statusBarBrightness: Brightness.dark),
         foregroundColor: Colors.white,
-        actionsIconTheme: IconThemeData(color: Colors.black),
+        actionsIconTheme: IconThemeData(color: Colors.white),
         leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
@@ -116,7 +116,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                           ),
                                   );
               } ,
-              child: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black,),
+              child: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white,),
           ),
         ),
         actions: [Padding(
@@ -136,7 +136,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
           ),)]
       ),
       body: Container(
-        color: Colors.white,
+        color: Colors.black,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

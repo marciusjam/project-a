@@ -48,6 +48,7 @@ class _PreviewPageState extends State<PreviewPage> {
   var _isLoading;
   late AssetType globalFileType;
   String? globalFileOrientation;
+  bool _isUploading = false;
 
   final hubSubscription =
       Amplify.Hub.listen(HubChannel.Auth, (AuthHubEvent hubEvent) async {
@@ -162,6 +163,11 @@ class _PreviewPageState extends State<PreviewPage> {
   
 
   Future<void> _createPost() async {
+
+    setState(() {
+      _isUploading = true;
+    });
+
     final description = this.descriptionController.text;
     final selectedAssets = this.selectedAssetsController;
     debugPrint('description: ' + description);
@@ -211,6 +217,7 @@ class _PreviewPageState extends State<PreviewPage> {
     
     
     try {
+      final dateTimeNow = DateTime.now(); 
       final post = Post(
           postId: userid + '-1',
           description: description,
@@ -218,12 +225,17 @@ class _PreviewPageState extends State<PreviewPage> {
           orientation: orientation,
           contenttype: fileType.name,
           user: User(id: userid,userId: userid, username: ''),
+          createdAt: TemporalDateTime(dateTimeNow),
+          updatedAt: TemporalDateTime(dateTimeNow),
             
           //content: '"'+ imageUrls.toString() +'"');
           content: keyName);
 
       await Amplify.DataStore.save(post).then((value) => {
-        Future.delayed(const Duration(seconds: 3), () {
+        Future.delayed(const Duration(seconds: 10), () {
+        setState(() {
+        _isUploading = false;
+      });
           Navigator.pushAndRemoveUntil<void>(
     context,
     MaterialPageRoute<void>(builder: (BuildContext context) => MyApp(widget.cameras)),
@@ -236,6 +248,11 @@ class _PreviewPageState extends State<PreviewPage> {
       // Post created successfully, navigate to the next screen or show a success message
     } on DataStoreException catch(e){
       debugPrint('Error ' + e.message);
+      setState(() {
+        _isUploading = false;
+      });
+      _showError(context, e.message);
+
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -281,14 +298,15 @@ class _PreviewPageState extends State<PreviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
+    return  _isUploading
+            ? Center( child:CircularProgressIndicator(color: Colors.amber, backgroundColor: Colors.white,)) : Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         title: const Text(
           'Preview',
           style: TextStyle(
-            color: Colors.black, // 3
+            color: Colors.white, // 3
           ),
         ),
         elevation: 0,
@@ -296,10 +314,10 @@ class _PreviewPageState extends State<PreviewPage> {
             statusBarColor: Colors.white,
             //statusBarColor: Colors.black,
             statusBarIconBrightness:
-                Brightness.dark, // For Android (dark icons)
-            statusBarBrightness: Brightness.light),
+                Brightness.light, // For Android (dark icons)
+            statusBarBrightness: Brightness.dark),
         foregroundColor: Colors.black,
-        actionsIconTheme: IconThemeData(color: Colors.black),
+        actionsIconTheme: IconThemeData(color: Colors.white),
         leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
@@ -321,7 +339,7 @@ class _PreviewPageState extends State<PreviewPage> {
                           ));
                 }
                 },
-              child: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black,),
+              child: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white,),
           ),
         ),
         actions: [Padding(
@@ -334,9 +352,12 @@ class _PreviewPageState extends State<PreviewPage> {
           ),)]
       ),
       body: 
-      Container(
+     
+            Container(
         color: Colors.white,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
       globalFileOrientation == 'vertical' && globalFileType == AssetType.image ?
         PostCard('image-Vertical', descriptionController.text, {}, widget.username, widget.profilepicture, 2, true, selectedAssetsController[0], null) :
@@ -519,5 +540,14 @@ class _PreviewPageState extends State<PreviewPage> {
         child: const Icon(Icons.developer_board),
       ),*/
     );
+  }
+
+  void _showError(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.redAccent,
+        content: Text(
+          message.toString(),
+          style: TextStyle(fontSize: 15),
+        )));
   }
 }

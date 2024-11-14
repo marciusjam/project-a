@@ -2,8 +2,11 @@ import 'package:Makulay/models/Model_Series.dart';
 import 'package:Makulay/screens/chat_page.dart';
 import 'package:Makulay/widgets/post_widgets/imagecard_horiz.dart';
 import 'package:Makulay/widgets/post_widgets/imagecard_vert.dart';
+import 'package:Makulay/widgets/post_widgets/live_horiz_card.dart';
+import 'package:Makulay/widgets/post_widgets/podcast_card.dart';
 import 'package:Makulay/widgets/post_widgets/series.dart';
 import 'package:Makulay/widgets/post_widgets/text_post.dart';
+import 'package:Makulay/widgets/post_widgets/trending_card.dart';
 import 'package:Makulay/widgets/post_widgets/videocard_horiz.dart';
 import 'package:Makulay/widgets/post_widgets/videocard_vert.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -72,14 +75,14 @@ class _PostCardState extends State<PostCard> {
   @override
   void initState() {
     super.initState();
-    debugPrint('Widget Checker!!');
+    /*debugPrint('Widget Checker!!');
     debugPrint('widget.type : ' + widget.type);
     debugPrint('widget.description : ' + widget.description);
     debugPrint('widget.content : ' + widget.content.toString());
     debugPrint('widget.username : ' + widget.username);
     debugPrint('widget.profilepicture : ' + widget.profilepicture.toString());
     debugPrint('widget.postage : ' + widget.postage.toString());
-    debugPrint('widget.preview : ' + widget.preview.toString());
+    debugPrint('widget.preview : ' + widget.preview.toString());*/
   }
 
 
@@ -130,7 +133,7 @@ Future<void> getFileUrl(String fileKey) async {
 
   Container _mainContainer(BuildContext context, double widthToUse, String description, Map<String, String> content, String username, String? profilepicture, int postage, bool preview, AssetEntity? previewcontent, String? previewvideopath) {
     return Container(
-        padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+        padding: EdgeInsets.fromLTRB(20, 5, 20, 15),
         //height: 250,
         color: Colors.white,
         width: widthToUse,
@@ -311,20 +314,26 @@ Future<void> getFileUrl(String fileKey) async {
   }
 
   Widget _buildChild(BuildContext context, String description, Map<String, String> content, String username, String? profilepicture, int postage, bool preview, AssetEntity? previewcontent, String? previewvideopath) {
-    debugPrint('postType: ' + widget.type);
-    debugPrint('_buildChild profilepic: ' + profilepicture!);
+    //debugPrint('postType: ' + widget.type);
+    //debugPrint('_buildChild profilepic: ' + profilepicture!);
     if (widget.type == 'image-Horizontal') {
       return ImageCardHoriz(description, content, username, profilepicture, postage, preview, previewcontent);
     } else if (widget.type == 'image-Vertical') {
       return ImageCardVert(description, content, username, profilepicture, postage, preview, previewcontent);
     } else if (widget.type == 'textPost') {
-      debugPrint('profilepicture to use: ' + profilepicture);
+      //debugPrint('profilepicture to use: ' + profilepicture);
       
       return TextPost(description, username, profilepicture, postage, preview, previewcontent);
     } else if (widget.type == 'video-Horizontal') {
       return VideoCardHoriz(description, content, username, profilepicture, postage, preview, previewvideopath);
     } else if (widget.type == 'video-Vertical') {
       return VideoCardVert(description, content, username, profilepicture, postage, preview, previewvideopath);
+    } else if (widget.type == 'trends') {
+      return TrendingCard(description, content, username, profilepicture, postage, preview, previewcontent);
+    } else if (widget.type == 'podcasts') {
+      return PodcastCard(description, content, username, profilepicture, postage, preview, previewcontent);
+    } else if (widget.type == 'live-horiz') {
+      return LiveHorizCard(description, content, username, profilepicture, postage, preview, previewcontent);
     } else {
       return TextPost(description, username, profilepicture, postage, preview, null);
     }

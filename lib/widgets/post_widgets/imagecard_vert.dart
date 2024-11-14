@@ -1,3 +1,4 @@
+import 'package:Makulay/screens/post_viewer.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,6 +24,16 @@ class ImageCardVert extends StatelessWidget {
     return Container(
         child: Column(
       children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PostViewer(imageUrl: content.entries.first.value, orientation: 'vertical'),
+              ),
+            );
+          },
+          child:
         Card(
             elevation: elavationVal,
             surfaceTintColor: Colors.white, //IOS
@@ -94,36 +105,19 @@ class ImageCardVert extends StatelessWidget {
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    child: SizedBox(
-                                      width: 45,
-                                      height: 45,
-                                      child: InkWell(
-                                        onTap: () => {},
-                                        child: Container(
-                                          height: 45,
-                                          width: 45,
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.amber,
-                                            child: Container(
-                                              height: 40,
-                                              width: 40,
-                                              child: CircleAvatar(
-                                                radius: 50,
+                                    child: CircleAvatar(
+                                                radius: 25,
                                                 backgroundImage: CachedNetworkImageProvider(profilepicture!)),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                            
                                   ),
 
                                   Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           10, 0, 0, 0),
                                       child: SizedBox(
-                                        width:
+                                        /*width:
                                             MediaQuery.of(context).size.width -
-                                                125,
+                                                125,*/
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -324,7 +318,7 @@ class ImageCardVert extends StatelessWidget {
               ],
             ))
         //Divider( thickness: 5, color: Colors.black12)
-      ],
+        )],
     ));
   }
 }

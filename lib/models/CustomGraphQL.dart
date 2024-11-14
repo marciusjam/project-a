@@ -262,6 +262,81 @@ Future<GraphQLResponse<dynamic>> getUsersByUsername(String username) async {
     
   }
 
+  Future<GraphQLResponse<dynamic>> listPostsByUserId() async {
+    safePrint('listPostsByUserId ');
+
+    final listPostsRequest = GraphQLRequest(
+    document: '''query MyQuery {
+  listPosts(filter: {userId: {contains: "4d2ffe48-8376-4d35-b061-1e6c68cb598e"}}) {
+    items {
+      id
+      userId
+      postId
+      status
+      contenttype
+      description
+      orientation
+      content
+      createdAt
+      _version
+      user {
+        id
+        profilePicture
+        username
+      }
+    }
+  }
+}
+''',
+    modelType: const PaginatedModelType(Post.classType),
+    decodePath: 'listPosts',
+  );
+    
+    final response = await Amplify.API.query(request: listPostsRequest).response;
+    //safePrint('searchPostSortByDate Response: $response');
+    return response;
+    
+  }
+
+  Future<GraphQLResponse<dynamic>> descendingByUserId() async {
+    safePrint('descendingByUser ');
+
+    final sortPostsRequest = GraphQLRequest(
+    document: '''query MyQuery {
+  byUserPost(userId: "4d2ffe48-8376-4d35-b061-1e6c68cb598e", sortDirection: DESC) {
+    items {
+      id
+      userId
+      postId
+      status
+      contenttype
+      description
+      orientation
+      content
+      createdAt
+      _version
+      user {
+        id
+        profilePicture
+        username
+      }
+    }
+  }
+}
+''',
+    modelType: const PaginatedModelType(Post.classType),
+    decodePath: 'byUserPost',
+  );
+    
+    final response = await Amplify.API.query(request: sortPostsRequest).response;
+    //safePrint('searchPostSortByDate Response: $response');
+    return response;
+    
+  }
+
+
+  
+
 
   Stream<GraphQLResponse<User>> subscribeToUser() {
   final subscriptionRequest = ModelSubscriptions.onCreate(User.classType);

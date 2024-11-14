@@ -1,3 +1,4 @@
+import 'package:Makulay/screens/post_viewer.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +16,10 @@ class ImageCardHoriz extends StatelessWidget {
   final int postage;
   final bool preview;
   final AssetEntity? previewcontent;
-  const ImageCardHoriz(this.description, this.content, this.username, this.profilepicture, this.postage, this.preview, this.previewcontent, {Key? key}) : super(key: key);
+  const ImageCardHoriz(this.description, this.content, this.username,
+      this.profilepicture, this.postage, this.preview, this.previewcontent,
+      {Key? key})
+      : super(key: key);
 
   final double elavationVal = 3;
 
@@ -24,6 +28,16 @@ class ImageCardHoriz extends StatelessWidget {
     return Container(
         child: Column(
       children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PostViewer(imageUrl: content.entries.first.value, orientation: 'horizontal'),
+              ),
+            );
+          },
+          child:
         Card(
             elevation: elavationVal,
             surfaceTintColor: Colors.white, //IOS
@@ -39,47 +53,51 @@ class ImageCardHoriz extends StatelessWidget {
                   child: /*AspectRatio(
                       aspectRatio: 2/1, //3/2*/
                       Container(
-                        height: MediaQuery.sizeOf(context).height / 3.5,
-                        
-                      child:
-                          Stack(alignment: Alignment.bottomCenter, children: [
-                        ClipRRect(
-                          borderRadius: new BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              topLeft: Radius.circular(10)),
-                          child: preview == false ? CachedNetworkImage(
-                            //key: globalImageKey,
-       imageUrl: content.entries.first.value,
-       progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Container(
-                            height: double.infinity,
-                            //height: 600,
-                            width: double.infinity,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Colors.white,
-                        ),
-                      ),
-       errorWidget: (context, url, error) => Icon(Icons.error), height: double.infinity,
-                            //height: 600,
-                            width: double.infinity,
-                            fit: BoxFit.cover
-    ) : Image(
-                  image: AssetEntityImageProvider(previewcontent!),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-    
-    
-    /*Image.network(
+                          height: MediaQuery.sizeOf(context).height / 3.5,
+                          child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: new BorderRadius.only(
+                                      topRight: Radius.circular(10),
+                                      topLeft: Radius.circular(10)),
+                                  child: preview == false
+                                      ? CachedNetworkImage(
+                                          //key: globalImageKey,
+                                          imageUrl: content.entries.first.value,
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              Container(
+                                                height: double.infinity,
+                                                //height: 600,
+                                                width: double.infinity,
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.rectangle,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
+                                          height: double.infinity,
+                                          //height: 600,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover)
+                                      : Image(
+                                          image: AssetEntityImageProvider(
+                                              previewcontent!),
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        ),
+
+                                  /*Image.network(
                               globalImageUrl.toString(),
                               height: double.infinity,
                               //height: 600,
                               width: double.infinity,
                               fit: BoxFit.cover),*/
-                        ),
-                      ])),
+                                ),
+                              ])),
                 ),
                 Padding(
                     padding: const EdgeInsets.all(15),
@@ -95,38 +113,21 @@ class ImageCardHoriz extends StatelessWidget {
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    child: SizedBox(
-                                      width: 45,
-                                      height: 45,
-                                      child: InkWell(
-                                        onTap: () => {},
-                                        child: Container(
-                                          height: 45,
-                                          width: 45,
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.amber,
-                                            child: Container(
-                                              height: 40,
-                                              width: 40,
-                                              child: CircleAvatar(
-                                                radius: 50,
-                                                backgroundImage: CachedNetworkImageProvider(profilepicture!)),/*AssetImage(
+                                    child: CircleAvatar(
+                                                  radius: 25,
+                                                  backgroundImage:
+                                                      CachedNetworkImageProvider(
+                                                          profilepicture!)), /*AssetImage(
                                                     'assets/profile-jam.jpg'),
                                               ),*/
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                           
                                   ),
 
                                   Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           10, 0, 0, 0),
                                       child: SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                125,
+                                        //width: MediaQuery.of(context).size.width - 125,
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -146,9 +147,8 @@ class ImageCardHoriz extends StatelessWidget {
                                               text: TextSpan(
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text:
-                                                    description,
-                                                        style: TextStyle(
+                                                    text: description,
+                                                    style: TextStyle(
                                                         //color: Colors.black,
                                                         color: Colors.black,
                                                         fontWeight:
@@ -163,7 +163,8 @@ class ImageCardHoriz extends StatelessWidget {
                                                   const EdgeInsets.fromLTRB(
                                                       0, 3, 0, 0),
                                               child: Text(
-                                                postage.toString() + ' days ago',
+                                                postage.toString() +
+                                                    ' days ago',
                                                 style: TextStyle(
                                                     //color: Colors.grey,
                                                     color: Colors.grey,
@@ -191,98 +192,33 @@ class ImageCardHoriz extends StatelessWidget {
                         ),*/
 
                             //Spacer(),
-                            preview == false ?
-                            Container(
-                                height: 40,
+                            preview == false
+                                ? Container(
+                                    height: 40,
 
-                                //color: Colors.black.withOpacity(0.5),
-                                //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                    //color: Colors.black.withOpacity(0.5),
+                                    //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
 
-                                child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      /**/
-                                      Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              10, 0, 10, 0),
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      10, 10, 0, 0),
-                                                  child: SizedBox(
-                                                    width: 70,
-                                                    child: Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding: EdgeInsets
-                                                              .fromLTRB(
-                                                                  0, 0, 0, 0),
-                                                          child: Icon(
-                                                            Icons
-                                                                .chat_bubble_outline,
-                                                            //color:Colors.black12,
-                                                            color: Colors.black12,
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                            padding: EdgeInsets
-                                                                .fromLTRB(
-                                                                    5, 0, 0, 0),
-                                                            child: Text('32',
-                                                                style: TextStyle(
-                                                                    //color: Colors.grey,
-                                                                    color: Colors.grey,
-                                                                    fontWeight: FontWeight.normal,
-                                                                    fontSize: 15))),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Spacer(),
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      10, 10, 0, 0),
-                                                  child: SizedBox(
-                                                    width: 70,
-                                                    child: Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding: EdgeInsets
-                                                              .fromLTRB(
-                                                                  0, 0, 0, 0),
-                                                          child: Icon(
-                                                            Icons
-                                                                .favorite_outline,
-                                                            //color:Colors.black12,
-                                                            color: Colors.black12,
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                            padding: EdgeInsets
-                                                                .fromLTRB(
-                                                                    5, 0, 0, 0),
-                                                            child: Text('20',
-                                                                style: TextStyle(
-                                                                    //color: Colors.grey,
-                                                                    color: Colors.white,
-                                                                    fontWeight: FontWeight.normal,
-                                                                    fontSize: 15))),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Spacer(),
-                                                Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            10, 10, 0, 0),
-                                                    child: SizedBox(
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          /**/
+                                          Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      10, 0, 10, 0),
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.fromLTRB(
+                                                              10, 10, 0, 0),
+                                                      child: SizedBox(
                                                         width: 70,
                                                         child: Row(
                                                           children: [
@@ -296,9 +232,10 @@ class ImageCardHoriz extends StatelessWidget {
                                                                           0),
                                                               child: Icon(
                                                                 Icons
-                                                                    .swap_horiz_outlined,
-                                                                //color: Colors.black12,
-                                                                color: Colors.black12,
+                                                                    .chat_bubble_outline,
+                                                                //color:Colors.black12,
+                                                                color: Colors
+                                                                    .black12,
                                                               ),
                                                             ),
                                                             Padding(
@@ -310,16 +247,103 @@ class ImageCardHoriz extends StatelessWidget {
                                                                             0,
                                                                             0),
                                                                 child: Text(
-                                                                    '1.2k',
+                                                                    '32',
                                                                     style: TextStyle(
                                                                         //color: Colors.grey,
                                                                         color: Colors.grey,
                                                                         fontWeight: FontWeight.normal,
                                                                         fontSize: 15))),
                                                           ],
-                                                        ))),
-                                              ]))
-                                    ])): Container()
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.fromLTRB(
+                                                              10, 10, 0, 0),
+                                                      child: SizedBox(
+                                                        width: 70,
+                                                        child: Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                          0,
+                                                                          0,
+                                                                          0,
+                                                                          0),
+                                                              child: Icon(
+                                                                Icons
+                                                                    .favorite_outline,
+                                                                //color:Colors.black12,
+                                                                color: Colors
+                                                                    .black12,
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .fromLTRB(
+                                                                            5,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                child: Text(
+                                                                    '20',
+                                                                    style: TextStyle(
+                                                                        //color: Colors.grey,
+                                                                        color: Colors.white,
+                                                                        fontWeight: FontWeight.normal,
+                                                                        fontSize: 15))),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    Padding(
+                                                        padding:
+                                                            EdgeInsets.fromLTRB(
+                                                                10, 10, 0, 0),
+                                                        child: SizedBox(
+                                                            width: 70,
+                                                            child: Row(
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsets
+                                                                      .fromLTRB(
+                                                                          0,
+                                                                          0,
+                                                                          0,
+                                                                          0),
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .swap_horiz_outlined,
+                                                                    //color: Colors.black12,
+                                                                    color: Colors
+                                                                        .black12,
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                    padding: EdgeInsets
+                                                                        .fromLTRB(
+                                                                            5,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                    child: Text(
+                                                                        '1.2k',
+                                                                        style: TextStyle(
+                                                                            //color: Colors.grey,
+                                                                            color: Colors.grey,
+                                                                            fontWeight: FontWeight.normal,
+                                                                            fontSize: 15))),
+                                                              ],
+                                                            ))),
+                                                  ]))
+                                        ]))
+                                : Container()
                           ],
                         ),
                       ],
@@ -327,7 +351,7 @@ class ImageCardHoriz extends StatelessWidget {
               ],
             ))
         //Divider( thickness: 5, color: Colors.black12)
-      ],
+        )],
     ));
   }
 }

@@ -121,7 +121,7 @@ class _LoginState extends State<Login> {
                         color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
-                    primary: Colors.white,
+                    //primary: Colors.white,
                     minimumSize: const Size.fromHeight(50),
                     side: BorderSide(width: 1.0),
                   ),
@@ -144,7 +144,7 @@ class _LoginState extends State<Login> {
                   alignment: Alignment.center,
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      primary: Colors.red,
+                      //primary: Colors.red,
                       textStyle: TextStyle(
                         color: Colors.red,
                         fontSize: 15,
@@ -306,7 +306,7 @@ class _LoginState extends State<Login> {
                         color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
-                    primary: Colors.white,
+                    //primary: Colors.white,
                     minimumSize: const Size.fromHeight(50),
                     side: BorderSide(width: 1.0),
                   ),
@@ -414,7 +414,7 @@ class _LoginState extends State<Login> {
                         color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
-                    primary: Colors.white,
+                    //primary: Colors.white,
                     minimumSize: const Size.fromHeight(50),
                     side: BorderSide(width: 1.0),
                   ),

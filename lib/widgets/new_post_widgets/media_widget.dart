@@ -376,13 +376,13 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
         }
       },
       child: Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         title: const Text(
           'New Post',
           style: TextStyle(
-            color: Colors.black, // 3
+            color: Colors.white, // 3
           ),
         ),
         elevation: 0,
@@ -390,15 +390,15 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
             statusBarColor: Colors.black,
             //statusBarColor: Colors.black,
             statusBarIconBrightness:
-                Brightness.dark, // For Android (dark icons)
-            statusBarBrightness: Brightness.light),
+                Brightness.light, // For Android (dark icons)
+            statusBarBrightness: Brightness.dark),
         foregroundColor: Colors.white,
-        actionsIconTheme: IconThemeData(color: Colors.black),
+        actionsIconTheme: IconThemeData(color: Colors.white),
         leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () => Navigator.pop(context, true),
-              child: Icon(Icons.close_rounded, color: Colors.black,),
+              child: Icon(Icons.close_rounded, color: Colors.white,),
           ),
         ),
         actions: [
@@ -427,7 +427,7 @@ class _TextMediaWidgetState extends State<TextMediaWidget> {
           ,],
       ),
       body:  Container(
-        color: Colors.white,
+        color: Colors.black,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -446,7 +446,9 @@ Stack(alignment: Alignment.bottomCenter, children: [
   /**/
 
         selectedAssets.length != 0 && entityPaths.length != 0 ? 
-        Container(height: MediaQuery.sizeOf(context).height - 210, width: double.maxFinite,
+        Container(
+          height: MediaQuery.sizeOf(context).height -210, 
+          width: double.maxFinite,
         child: AspectRatio(
               aspectRatio: selectedAssets[0].height > selectedAssets[0].width ? 9/16 : 16/9,
           child: CarouselSlider.builder(
@@ -471,7 +473,7 @@ Stack(alignment: Alignment.bottomCenter, children: [
                   width: double.infinity,
                   height: double.infinity,
                 ): 
-                CustomVideoPlayer(orientation.toString() + '-file', null, 9/16, 'description', 'username', 'profilepicture', 2, entityPaths[index], true, null)
+                CustomVideoPlayer(orientation.toString() + '-file', null, 9/16, 'description', 'username', 'profilepicture', 2, entityPaths[index], true, null, '20', '30', '50')
             )
           );
         },
@@ -480,8 +482,9 @@ Stack(alignment: Alignment.bottomCenter, children: [
         child:AspectRatio(
               aspectRatio: 3/2, child: Center(child: Text('Choose a content to use', style: TextStyle(color: Colors.white),),)),),*/
               Container(
-                height: MediaQuery.sizeOf(context).height - 210, width: double.maxFinite,
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
+                height: MediaQuery.sizeOf(context).height - 210, 
+                width: double.maxFinite,
+                  padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
                   child: Column(children: [
                     Card(
                         color: Colors.white, //Dark Mode
@@ -508,7 +511,7 @@ Stack(alignment: Alignment.bottomCenter, children: [
                                           isDense: true,
                                           contentPadding: EdgeInsets.symmetric(
                                               horizontal: 0, vertical: 0),
-                                          hintText: 'Got something in your mind?',
+                                          hintText: 'Your thoughts matter.',
                                           //hintStyle: TextStyle(fontSize: 20),
                                           border: InputBorder.none
                                           //UnderlineInputBorder(),
@@ -525,11 +528,11 @@ Stack(alignment: Alignment.bottomCenter, children: [
             title: Container(),
             //Text(selectedAssets.length.toString() + '/5', style: TextStyle(color: Colors.black),),
             initiallyExpanded: true,
-            leading: Padding(padding: EdgeInsets.fromLTRB(5,0,0,0), child: Icon(Icons.keyboard_arrow_up_rounded, color: Colors.black, size: 40,)),
+            leading: Padding(padding: EdgeInsets.fromLTRB(5,0,0,0), child: Icon(Icons.perm_media_sharp, color: Colors.white, size: 25,)),
             tilePadding: EdgeInsets.fromLTRB(5,0,5,0),
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.black,
             trailing: 
-            Padding(padding: EdgeInsets.fromLTRB(0,0,15,0), child: Text(selectedAssets.length.toString() + '/5', style: TextStyle(color: Colors.black, fontSize: 20),),),
+            Padding(padding: EdgeInsets.fromLTRB(0,0,15,0), child: Text(selectedAssets.length.toString() + '/5', style: TextStyle(color: Colors.white, fontSize: 20),),),
             
             
             /*Container(
@@ -592,7 +595,8 @@ Stack(alignment: Alignment.bottomCenter, children: [
             ],
               ),
             ],
-          ): 
+          )
+      :
           Container(),
 
           /*Align(

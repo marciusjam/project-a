@@ -17,6 +17,8 @@ type User @model @auth(rules: [{ allow: public }]) {
   posts: [Post] @hasMany(indexName: "byUserPost", fields: ["userId"])
   comments: [Comment] @hasMany(indexName: "byUserComment", fields: ["userId"])
   likes: [LikeLink] @hasMany(indexName: "byLikeLink", fields: ["userId"])
+  groups: [Group] @hasMany(indexName: "byUserGroup", fields: ["userId"])
+  messages: [Message] @hasMany(indexName: "byUserMessages", fields: ["userId"])
   createdOn: AWSDateTime
   updatedOn: AWSDateTime
 }
@@ -28,17 +30,23 @@ enum RecordStatus {
 
 
 type Post @model @auth(rules: [{ allow: public }]) {
-  id: ID! @primaryKey
+  id: ID! @primaryKey 
   postId: ID! @index
   description: String! @index
   content: String
   orientation: String
-  contenttype: String
+  contenttype: String 
   status: RecordStatus!
   comments: [Comment] @hasMany(indexName: "byPost", fields: ["postId"])
   likes: [LikeLink] @hasMany(indexName: "byPostLikeLink", fields: ["postId"])
   user: User @belongsTo(fields: ["userId"])
-  userId: ID @index(name: "byUserPost")
+  userId: ID @index(
+    name: "byUserPost"
+    queryField: "byUserPost"
+    sortKeyFields: ["createdAt"]
+    )
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
   createdOn: AWSDateTime
   updatedOn: AWSDateTime
 }
@@ -71,4 +79,19 @@ type LikeLink @model @auth(rules: [{ allow: public }]) {
   postId: ID @index(name: "byPostLikeLink")
   comment: Comment @belongsTo(fields: ["commentId"])
   commentId: ID @index(name: "byCommentLikeLink")
+}
+
+type Group @model @auth(rules: [{ allow: public }]) {
+  id: ID! @primaryKey
+  name: String!
+  users: [User] @belongsTo(fields: ["userId"])
+  messages: [Message] @belongsTo(fields: ["userId"])
+}
+
+type Message @model {
+  id: ID! @primaryKey
+  content: String! @index
+  timestamp: AWSDateTime!
+  sender: User @belongsTo(fields: ["userId"])
+  group: Group @belongsTo(fields: ["userId"])
 }
