@@ -61,6 +61,7 @@ class _NavigationContainerState extends State<NavigationContainer>
   int currentIndex = 1;
   PageController? controller;
 
+  String selectedMainCategory = 'Interests';
   String selectedCategory = "Following";
 
   final ScrollController _categoryScrollController = ScrollController();
@@ -588,6 +589,31 @@ class _NavigationContainerState extends State<NavigationContainer>
         });
   }
 
+  Route _routeToMessages() {
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => SideMenuPage(
+              widget.profilepicture,
+              widget.username,
+              widget.userid,
+              widget.cameras,
+              onIconTap: onIconTap,
+              selectedPageIndex: 0,
+            ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(-1, 0);
+          const end = Offset.zero;
+          const curve = Curves.ease;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        });
+  }
+
   Route _routeToDiscover() {
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => DiscoverPage(
@@ -611,7 +637,6 @@ class _NavigationContainerState extends State<NavigationContainer>
         });
   }
 
-
   @override
   Widget build(BuildContext context) {
     /*debugPrint('widget.profilepicture ' + widget.profilepicture);
@@ -621,6 +646,180 @@ class _NavigationContainerState extends State<NavigationContainer>
     return widget.newUser
         ? setUsername()
         : Scaffold(
+            bottomNavigationBar: Container(
+                height: 85,
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 25),
+                color: Colors.transparent,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Card(
+                        color: Colors.white,
+                        elevation: 4.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                            side: BorderSide(
+                                width: 0, color: Colors.grey.shade100)),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 8, 5, 8),
+                                child: ChoiceChip(
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  backgroundColor: Colors.grey.shade100,
+                                  label: Image.asset(
+                                    //'assets/agila-logo.png',
+                                    'assets/makulay.png',
+                                    height:
+                                        20, //widget._tabController.index == 1 ? 16 : 12,
+                                    width:
+                                        20, //widget._tabController.index == 1 ? 16 : 12,
+                                    filterQuality: FilterQuality.medium,
+                                  ),
+                                  /*Icon(
+                  Icons.play_circle_rounded,
+                  size: 18,
+                  color: selectedMainCategory == 'Interests'
+                      ? Colors.white
+                      : Colors.black,
+                ),*/
+                                  selected: selectedMainCategory == 'Interests',
+                                  selectedColor: Colors.black,
+                                  showCheckmark: false,
+                                  onSelected: (bool selected) {
+                                    // Handle 'Others' selection
+                                    print(selectedMainCategory);
+                                    setState(() {
+                                      selectedMainCategory = 'Interests';
+                                    });
+                                    //_tabController?.animateTo(2);
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    side: BorderSide(color: Colors.transparent),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                                child: ChoiceChip(
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  backgroundColor: Colors.grey.shade100,
+                                  label: Icon(
+                                    //Icons.content_copy_rounded,
+                                    Icons.star_rate_outlined,
+                                    size: 18,
+                                    color: selectedMainCategory == 'Posts'
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                  selected: selectedMainCategory == 'Posts',
+                                  selectedColor: Colors.black,
+                                  showCheckmark: false,
+                                  onSelected: (bool selected) {
+                                    // Handle 'Others' selection
+                                    print(selectedMainCategory);
+                                    setState(() {
+                                      selectedMainCategory = 'Posts';
+                                    });
+                                    //_tabController?.animateTo(2);
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    side: BorderSide(color: Colors.transparent),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                ),
+                              ),
+                            ])),
+
+                    /*Card(
+                        color: Colors.white,
+                        elevation: 4.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                            side: BorderSide(
+                                width: 0, color: Colors.grey.shade100)),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Stack(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                                    child: ChoiceChip(
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      backgroundColor: Colors.grey.shade100,
+                                      label: Image.asset(
+                                        'assets/chat.png',
+                                        height: 17,
+                                        width: 17,
+                                        filterQuality: FilterQuality.high,
+                                        color: selectedMainCategory != 'Chat'
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
+                                      selected: selectedMainCategory == 'Chat',
+                                      selectedColor: Colors.black,
+                                      showCheckmark: false,
+                                      onSelected: (bool selected) {
+                                        // Handle 'Others' selection
+                                        print(selectedMainCategory);
+                                        setState(() {
+                                          selectedMainCategory = 'Chat';
+                                        });
+                                        //_tabController?.animateTo(2);
+                                      },
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(50),
+                                        side: BorderSide(
+                                            color: Colors.transparent),
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    top: 0,
+                                    child: Container(
+                                      width: 20,
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(
+                                          colors: [Colors.red, Colors.amber],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '3',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ])),*/
+                  ],
+                )),
             resizeToAvoidBottomInset: true,
             backgroundColor: Colors.white,
             extendBody: selectedCategory != 'Discover' ? true : false,
@@ -904,8 +1103,8 @@ class _NavigationContainerState extends State<NavigationContainer>
                     handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                         context),
                     sliver: SliverAppBar(
-                      toolbarHeight: 0,
-                      /*leading: Builder(builder: (BuildContext context) {
+                        toolbarHeight: 0,
+                        /*leading: Builder(builder: (BuildContext context) {
                     return IconButton(
                       icon: Icon(
                         Icons.home,
@@ -915,19 +1114,17 @@ class _NavigationContainerState extends State<NavigationContainer>
                     );
                   }),*/
 
-                      surfaceTintColor: Colors.white,
-                      systemOverlayStyle: SystemUiOverlayStyle(
-                        statusBarColor: Colors.transparent,
-                        //statusBarColor: Colors.black,
-                        statusBarIconBrightness: 
-                            Brightness.dark,
-                        statusBarBrightness: Brightness.light
-                      ),
-                      pinned: true,
-                      floating: false,
-                      expandedHeight: 0,
-                      backgroundColor: Colors.white
-                      /*bottom: selectedCategory == 'Following'
+                        surfaceTintColor: Colors.white,
+                        systemOverlayStyle: SystemUiOverlayStyle(
+                            statusBarColor: Colors.transparent,
+                            //statusBarColor: Colors.black,
+                            statusBarIconBrightness: Brightness.dark,
+                            statusBarBrightness: Brightness.light),
+                        pinned: true,
+                        floating: false,
+                        expandedHeight: 0,
+                        backgroundColor: Colors.white
+                        /*bottom: selectedCategory == 'Following'
                           ? TabBar(
                               dividerColor: Colors.transparent,
                               indicatorColor: Colors.transparent,
@@ -946,9 +1143,9 @@ class _NavigationContainerState extends State<NavigationContainer>
                             )
                           : null,*/
 
-                      //centerTitle: true,
+                        //centerTitle: true,
 
-                      /*title: Container(
+                        /*title: Container(
                           height: 40,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1306,7 +1503,7 @@ class _NavigationContainerState extends State<NavigationContainer>
                       */
                           ),
                     */
-                    ),
+                        ),
                   ),
                 ];
               },
@@ -1341,8 +1538,7 @@ class _NavigationContainerState extends State<NavigationContainer>
                 onPageChanged: onchahged,
                 controller: controller,
                 children: [
-                  if (widget.userid == '') 
-                  Login(widget.cameras),
+                  if (widget.userid == '') Login(widget.cameras),
                   /*if (widget.userid != '')
                     NewPostPage(
                       username: widget.username,
@@ -1361,6 +1557,7 @@ class _NavigationContainerState extends State<NavigationContainer>
                           Navigator.push(context, _routeToDiscover());
                         } else {
                           Navigator.push(context, _routeToNewPost());
+                          //Navigator.push(context, _routeToMessages());
                         }
                       },
                       child: InterestsPage(
@@ -1369,7 +1566,8 @@ class _NavigationContainerState extends State<NavigationContainer>
                           userid: widget.userid,
                           cameras: widget.cameras,
                           selectedPageIndex: _selectedPageIndex,
-                          onIconTap: onIconTap),
+                          onIconTap: onIconTap,
+                          selectedMainCategory: selectedMainCategory),
                     ),
                   /*if (widget.userid != '')
                     DiscoverPage(widget.profilepicture, widget.username,

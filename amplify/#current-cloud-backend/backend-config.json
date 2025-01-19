@@ -1,20 +1,32 @@
 {
   "api": {
     "makulay": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "makulay95ebd6d0"
+        }
+      ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
-              "authenticationType": "AWS_IAM"
+              "apiKeyConfig": {
+                "apiKeyExpirationDate": "2025-11-14T14:18:25.651Z",
+                "apiKeyExpirationDays": 365,
+                "description": "Public API"
+              },
+              "authenticationType": "API_KEY"
             }
           ],
           "defaultAuthentication": {
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 30,
-              "description": "api key description"
-            },
-            "authenticationType": "API_KEY"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authmakulay95ebd6d0"
+            }
           }
         }
       },

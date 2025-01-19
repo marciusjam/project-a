@@ -23,13 +23,12 @@ import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
 
-/** This is an auto generated class representing the LikeLink type in your schema. */
-class LikeLink extends amplify_core.Model {
-  static const classType = const _LikeLinkModelType();
+/** This is an auto generated class representing the UsersGroups type in your schema. */
+class UsersGroups extends amplify_core.Model {
+  static const classType = const _UsersGroupsModelType();
   final String id;
   final User? _user;
-  final Post? _post;
-  final Comment? _comment;
+  final Group? _group;
   final amplify_core.TemporalDateTime? _createdAt;
   final amplify_core.TemporalDateTime? _updatedAt;
 
@@ -40,22 +39,36 @@ class LikeLink extends amplify_core.Model {
   @override
   String getId() => id;
   
-  LikeLinkModelIdentifier get modelIdentifier {
-      return LikeLinkModelIdentifier(
+  UsersGroupsModelIdentifier get modelIdentifier {
+      return UsersGroupsModelIdentifier(
         id: id
       );
   }
   
-  User? get user {
-    return _user;
+  User get user {
+    try {
+      return _user!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
-  Post? get post {
-    return _post;
-  }
-  
-  Comment? get comment {
-    return _comment;
+  Group get group {
+    try {
+      return _group!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   amplify_core.TemporalDateTime? get createdAt {
@@ -66,14 +79,13 @@ class LikeLink extends amplify_core.Model {
     return _updatedAt;
   }
   
-  const LikeLink._internal({required this.id, user, post, comment, createdAt, updatedAt}): _user = user, _post = post, _comment = comment, _createdAt = createdAt, _updatedAt = updatedAt;
+  const UsersGroups._internal({required this.id, required user, required group, createdAt, updatedAt}): _user = user, _group = group, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory LikeLink({String? id, User? user, Post? post, Comment? comment}) {
-    return LikeLink._internal(
+  factory UsersGroups({String? id, required User user, required Group group}) {
+    return UsersGroups._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
       user: user,
-      post: post,
-      comment: comment);
+      group: group);
   }
   
   bool equals(Object other) {
@@ -83,11 +95,10 @@ class LikeLink extends amplify_core.Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is LikeLink &&
+    return other is UsersGroups &&
       id == other.id &&
       _user == other._user &&
-      _post == other._post &&
-      _comment == other._comment;
+      _group == other._group;
   }
   
   @override
@@ -97,11 +108,10 @@ class LikeLink extends amplify_core.Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("LikeLink {");
+    buffer.write("UsersGroups {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("user=" + (_user != null ? _user!.toString() : "null") + ", ");
-    buffer.write("post=" + (_post != null ? _post!.toString() : "null") + ", ");
-    buffer.write("comment=" + (_comment != null ? _comment!.toString() : "null") + ", ");
+    buffer.write("group=" + (_group != null ? _group!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -109,74 +119,62 @@ class LikeLink extends amplify_core.Model {
     return buffer.toString();
   }
   
-  LikeLink copyWith({User? user, Post? post, Comment? comment}) {
-    return LikeLink._internal(
+  UsersGroups copyWith({User? user, Group? group}) {
+    return UsersGroups._internal(
       id: id,
       user: user ?? this.user,
-      post: post ?? this.post,
-      comment: comment ?? this.comment);
+      group: group ?? this.group);
   }
   
-  LikeLink copyWithModelFieldValues({
-    ModelFieldValue<User?>? user,
-    ModelFieldValue<Post?>? post,
-    ModelFieldValue<Comment?>? comment
+  UsersGroups copyWithModelFieldValues({
+    ModelFieldValue<User>? user,
+    ModelFieldValue<Group>? group
   }) {
-    return LikeLink._internal(
+    return UsersGroups._internal(
       id: id,
       user: user == null ? this.user : user.value,
-      post: post == null ? this.post : post.value,
-      comment: comment == null ? this.comment : comment.value
+      group: group == null ? this.group : group.value
     );
   }
   
-  LikeLink.fromJson(Map<String, dynamic> json)  
+  UsersGroups.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _user = json['user'] != null
         ? json['user']['serializedData'] != null
           ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
           : User.fromJson(new Map<String, dynamic>.from(json['user']))
         : null,
-      _post = json['post'] != null
-        ? json['post']['serializedData'] != null
-          ? Post.fromJson(new Map<String, dynamic>.from(json['post']['serializedData']))
-          : Post.fromJson(new Map<String, dynamic>.from(json['post']))
-        : null,
-      _comment = json['comment'] != null
-        ? json['comment']['serializedData'] != null
-          ? Comment.fromJson(new Map<String, dynamic>.from(json['comment']['serializedData']))
-          : Comment.fromJson(new Map<String, dynamic>.from(json['comment']))
+      _group = json['group'] != null
+        ? json['group']['serializedData'] != null
+          ? Group.fromJson(new Map<String, dynamic>.from(json['group']['serializedData']))
+          : Group.fromJson(new Map<String, dynamic>.from(json['group']))
         : null,
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'user': _user?.toJson(), 'post': _post?.toJson(), 'comment': _comment?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'user': _user?.toJson(), 'group': _group?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
     'id': id,
     'user': _user,
-    'post': _post,
-    'comment': _comment,
+    'group': _group,
     'createdAt': _createdAt,
     'updatedAt': _updatedAt
   };
 
-  static final amplify_core.QueryModelIdentifier<LikeLinkModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<LikeLinkModelIdentifier>();
+  static final amplify_core.QueryModelIdentifier<UsersGroupsModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<UsersGroupsModelIdentifier>();
   static final ID = amplify_core.QueryField(fieldName: "id");
   static final USER = amplify_core.QueryField(
     fieldName: "user",
     fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'User'));
-  static final POST = amplify_core.QueryField(
-    fieldName: "post",
-    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Post'));
-  static final COMMENT = amplify_core.QueryField(
-    fieldName: "comment",
-    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Comment'));
+  static final GROUP = amplify_core.QueryField(
+    fieldName: "group",
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Group'));
   static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "LikeLink";
-    modelSchemaDefinition.pluralName = "LikeLinks";
+    modelSchemaDefinition.name = "UsersGroups";
+    modelSchemaDefinition.pluralName = "UsersGroups";
     
     modelSchemaDefinition.authRules = [
       amplify_core.AuthRule(
@@ -190,32 +188,24 @@ class LikeLink extends amplify_core.Model {
     ];
     
     modelSchemaDefinition.indexes = [
-      amplify_core.ModelIndex(fields: const ["userId"], name: "byLikeLink"),
-      amplify_core.ModelIndex(fields: const ["postId"], name: "byPostLikeLink"),
-      amplify_core.ModelIndex(fields: const ["commentId"], name: "byCommentLikeLink")
+      amplify_core.ModelIndex(fields: const ["userId"], name: "byUser"),
+      amplify_core.ModelIndex(fields: const ["groupId"], name: "byGroup")
     ];
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
-      key: LikeLink.USER,
-      isRequired: false,
+      key: UsersGroups.USER,
+      isRequired: true,
       targetNames: ['userId'],
       ofModelName: 'User'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
-      key: LikeLink.POST,
-      isRequired: false,
-      targetNames: ['postId'],
-      ofModelName: 'Post'
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
-      key: LikeLink.COMMENT,
-      isRequired: false,
-      targetNames: ['commentId'],
-      ofModelName: 'Comment'
+      key: UsersGroups.GROUP,
+      isRequired: true,
+      targetNames: ['groupId'],
+      ofModelName: 'Group'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
@@ -234,29 +224,29 @@ class LikeLink extends amplify_core.Model {
   });
 }
 
-class _LikeLinkModelType extends amplify_core.ModelType<LikeLink> {
-  const _LikeLinkModelType();
+class _UsersGroupsModelType extends amplify_core.ModelType<UsersGroups> {
+  const _UsersGroupsModelType();
   
   @override
-  LikeLink fromJson(Map<String, dynamic> jsonData) {
-    return LikeLink.fromJson(jsonData);
+  UsersGroups fromJson(Map<String, dynamic> jsonData) {
+    return UsersGroups.fromJson(jsonData);
   }
   
   @override
   String modelName() {
-    return 'LikeLink';
+    return 'UsersGroups';
   }
 }
 
 /**
  * This is an auto generated class representing the model identifier
- * of [LikeLink] in your schema.
+ * of [UsersGroups] in your schema.
  */
-class LikeLinkModelIdentifier implements amplify_core.ModelIdentifier<LikeLink> {
+class UsersGroupsModelIdentifier implements amplify_core.ModelIdentifier<UsersGroups> {
   final String id;
 
-  /** Create an instance of LikeLinkModelIdentifier using [id] the primary key. */
-  const LikeLinkModelIdentifier({
+  /** Create an instance of UsersGroupsModelIdentifier using [id] the primary key. */
+  const UsersGroupsModelIdentifier({
     required this.id});
   
   @override
@@ -274,7 +264,7 @@ class LikeLinkModelIdentifier implements amplify_core.ModelIdentifier<LikeLink> 
   String serializeAsString() => serializeAsMap().values.join('#');
   
   @override
-  String toString() => 'LikeLinkModelIdentifier(id: $id)';
+  String toString() => 'UsersGroupsModelIdentifier(id: $id)';
   
   @override
   bool operator ==(Object other) {
@@ -282,7 +272,7 @@ class LikeLinkModelIdentifier implements amplify_core.ModelIdentifier<LikeLink> 
       return true;
     }
     
-    return other is LikeLinkModelIdentifier &&
+    return other is UsersGroupsModelIdentifier &&
       id == other.id;
   }
   

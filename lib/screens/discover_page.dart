@@ -145,15 +145,15 @@ class _DiscoverPageState extends State<DiscoverPage> {
         },
         child: Scaffold(
           extendBody: true,
-          extendBodyBehindAppBar: selectedIndex == 1 ? true : false,
+          extendBodyBehindAppBar: selectedIndex == 0 ? true : false,
 
-    backgroundColor:  selectedIndex == 1 ? Colors.black : Colors.white,
+    backgroundColor:  selectedIndex == 0 ? Colors.black : Colors.white,
           appBar: AppBar(
-            toolbarHeight: selectedIndex != 1 ? 0 : 50,
+            toolbarHeight: selectedIndex != 0 ? 0 : 50,
       automaticallyImplyLeading: false, // Removes the default back button
-      surfaceTintColor: selectedIndex == 1 ? Colors.transparent : Colors.white,
-      backgroundColor: selectedIndex == 1 ? Colors.transparent : Colors.white,
-      title: selectedIndex == 1 ? Padding(
+      surfaceTintColor: selectedIndex == 0 ? Colors.transparent : Colors.white,
+      backgroundColor: selectedIndex == 0 ? Colors.transparent : Colors.white,
+      title: selectedIndex == 0 ? Padding(
         padding: EdgeInsets.only(left: 20), // Adds 20 padding to the left
         child: DropdownButton<String>(
           value: dropdownValue,
@@ -177,7 +177,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
         ),
       ) : null,
       centerTitle: false, // Aligns the dropdown to the left
-      actions: [selectedIndex == 1 ?
+      actions: [selectedIndex == 0 ?
         PopupMenuButton<String>(
           icon: Icon(Icons.more_vert, color: Colors.white), // Options menu icon
           onSelected: (String choice) {
@@ -208,7 +208,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
     ),
           body:  
           
-          selectedIndex == 1 ? 
+          selectedIndex == 0 ? 
           Stack(
             children: [
               PageView(
@@ -312,10 +312,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
             ),
           )*/
             ],
-          ) : selectedIndex == 0 ? 
-          PostsPage(profilepicture: widget.profilepicture, username: widget.username, userid: widget.userid) : selectedIndex == 2 ? 
-          ShopPage() : selectedIndex == 3 ? 
-          LivePage() : selectedIndex == 4 ? 
+          ) : selectedIndex == 1 ? 
+          ShopPage() : selectedIndex == 2 ? 
+          LivePage() : selectedIndex == 3 ? 
           PodcastPage() : Container(),
           
           bottomNavigationBar: DiscoverNavigationBottomBar(

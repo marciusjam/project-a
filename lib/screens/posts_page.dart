@@ -342,7 +342,7 @@ class _PostsPageState extends State<PostsPage>
         );
       });*/
 
-      await Amplify.DataStore.clear();
+      //await Amplify.DataStore.clear();
       //var response = await searchPostSortByDate();
       var response = await descendingByUserId();
 
@@ -468,7 +468,7 @@ class _PostsPageState extends State<PostsPage>
         
       );
       final response = await Amplify.API.query(request: request).response;*/
-      await Amplify.DataStore.clear();
+      //await Amplify.DataStore.clear();
       //var response = await searchPostSortByDate();
       var response = await descendingByUserId();
 
@@ -552,7 +552,7 @@ class _PostsPageState extends State<PostsPage>
         
       );
       final response = await Amplify.API.query(request: request).response;*/
-      await Amplify.DataStore.clear();
+      //await Amplify.DataStore.clear();
       //var response = await searchPostSortByDate();
       var response = await descendingByUserId();
 
@@ -636,7 +636,7 @@ class _PostsPageState extends State<PostsPage>
         
       );
       final response = await Amplify.API.query(request: request).response;*/
-      await Amplify.DataStore.clear();
+      //await Amplify.DataStore.clear();
       //var response = await searchPostSortByDate();
       var response = await descendingByUserId();
 
@@ -1106,7 +1106,7 @@ class _PostsPageState extends State<PostsPage>
                       scrollDirection: Axis.horizontal,
                       itemCount: 10,
                       padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      itemBuilder: (BuildContext contextt, int index) {
+                      itemBuilder: (BuildContext context, int index) {
                         return Container(
                           width: 380,
                           //height: 100,
@@ -1213,7 +1213,7 @@ class _PostsPageState extends State<PostsPage>
                       scrollDirection: Axis.horizontal,
                       itemCount: 10,
                       padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      itemBuilder: (BuildContext contextt, int index) {
+                      itemBuilder: (BuildContext context, int index) {
                         return Container(
                           width: 178,
                           //height: 100,
@@ -1448,7 +1448,7 @@ class _PostsPageState extends State<PostsPage>
                       scrollDirection: Axis.horizontal,
                       itemCount: 3,
                       padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      itemBuilder: (BuildContext contextt, int index) {
+                      itemBuilder: (BuildContext context, int index) {
                         return Container(
                           width: 380,
                           //height: 100,
@@ -1559,13 +1559,7 @@ class _PostsPageState extends State<PostsPage>
       ...usersWithoutStories
     ];
 
-    return CustomScrollView(
-      controller: _scrollController2,
-      slivers: [
-        SliverToBoxAdapter(
-          child: Container(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child: Container(
+    return Container(
                 height: MediaQuery.sizeOf(context).height,
                 child: SmartRefresher(
                   scrollController: _scrollController2,
@@ -1578,388 +1572,7 @@ class _PostsPageState extends State<PostsPage>
                     onLoading: _onLoading,
                     child: _pageView(allPosts)
                     ))
-          ),
-        ),
-      ],
-    );
-
-    /*Container(
-                height: MediaQuery.sizeOf(context).height,
-                child: SmartRefresher(
-                    enablePullDown: true,
-                    enablePullUp: true,
-                    header: WaterDropHeader(),
-                  
-                    controller: _refreshController,
-                    onRefresh: _onRefresh,
-                    onLoading: _onLoading,
-                    child: _pageView(allPosts)
-                    ))*/
-
-    /*SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              if (index != 0 && index % 4 == 0) {
-                return Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    color: Colors.white,
-                    child: sharesRow(context));
-              } else {
-                return allPosts[index];
-              }
-            },
-            childCount: allPosts.length, // Example list item count
-          ),
-        ),*/
-
-    /*GestureDetector(
-        onHorizontalDragEnd: (dragEndDetails) {
-          if (dragEndDetails.primaryVelocity! < 0) {
-            Navigator.push(context, _routeToDiscover());
-          } else {
-            Navigator.push(context, _routeToNewPost());
-          }
-        },
-        child: */
-    /*ExtendedNestedScrollView(
-              pinnedHeaderSliverHeightBuilder: () => 60,
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    SliverAppBar(
-                      centerTitle: true,
-                       backgroundColor: Colors.transparent,
-                        //expandedHeight: 115.0,
-                        titleSpacing: 0,
-                        toolbarHeight: 60,
-                        floating: false,
-                        foregroundColor: Colors.transparent,
-                        surfaceTintColor: Colors.transparent,
-                        pinned: true, // Keeps the AppBar visible when scrolled up
-                        title:
-                          
-                          Container(
-                          color: Colors.transparent,
-                          height: 50,
-                          //width: MediaQuery.sizeOf(context).width,
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child:  //Row(children: [ 
-                            //Container(
-                            //padding: EdgeInsets.fromLTRB(MediaQuery.sizeOf(context), 0, 0, 0),
-                            //width: MediaQuery.sizeOf(context),
-                            //child: //Icon(Icons.add_box_rounded, color: Colors.black, size: 40,)),
-                            TabBar(
-                              splashFactory: NoSplash.splashFactory,
-                              tabAlignment: TabAlignment.center,
-                              isScrollable: true,
-                              controller: _tabController,
-                              dividerColor: Colors.transparent,
-                              indicatorColor: Colors.transparent,
-                              indicatorPadding: EdgeInsets.all(0),
-                              labelPadding: EdgeInsets.fromLTRB(7, 0, 7, 0),
-                              onTap: (value) {
-                                /*setState(() {
-                                        selectedCategory == 'Following';
-                                      });*/
-                                      _tabController?.animateTo(value);
-                              },
-                              tabs: [
-                                Tab(
-                                    height: 70,
-                                    child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(15, 0, 0, 10), child: Row(
-                                          children: [
-                                            Text(
-                                              'ma',
-                                              style: TextStyle(
-                                                color: Colors.orange,
-                                                fontSize: 30,
-                                                fontFamily: 'Gotham-Black',
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              'kulay',
-                                              style: TextStyle(
-                                                color: Colors.amber,
-                                                fontSize: 30,
-                                                fontFamily: 'Gotham-Black',
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            )
-                                          ],
-                                        ))),
-                                Tab(
-                                  child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                        child: ChoiceChip(
-                                    label: Text('Discover'),
-                                    selected: selectedCategory == 'Discover',
-                                    // Change color when selected
-                                    side: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.5,
-                                    ),
-                                    selectedColor: Colors.black,
-                                    showCheckmark: false,
-                                    backgroundColor: Colors.grey[100],
-                                    labelStyle: TextStyle(
-                                      color: selectedCategory == 'Discover'
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    onSelected: (bool selected) {
-                                      print(selectedCategory);
-                                       setState(() {
-                                        selectedCategory == 'Discover';
-                                      });
-                                      _tabController?.animateTo(1);
-                                      
-                                    },
-                                  ),
-                                )),
-                                
-                                
-                                Tab(
-                                  child: ChoiceChip(
-                                    label: Text('Shop'),
-                                    selected: selectedCategory == 'Shop',
-                                    // Change color when selected
-                                    side: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.5,
-                                    ),
-                                    selectedColor: Colors.black,
-                                    showCheckmark: false,
-                                    backgroundColor: Colors.grey[100],
-                                    labelStyle: TextStyle(
-                                      color: selectedCategory == 'Shop'
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    onSelected: (bool selected) {
-                                      print(selectedCategory);
-                                      setState(() {
-                                        selectedCategory == 'Shop';
-                                      });
-                                      _tabController?.animateTo(2);
-                                    },
-                                  ),
-                                ),
-                                Tab(
-                                  child: ChoiceChip(
-                                    label: Text('Live'),
-                                    selected: selectedCategory == 'Live',
-                                    // Change color when selected
-                                    side: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.5,
-                                    ),
-                                    selectedColor: Colors.black,
-                                    showCheckmark: false,
-                                    backgroundColor: Colors.grey[100],
-                                    labelStyle: TextStyle(
-                                      color: selectedCategory == 'Live'
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    onSelected: (bool selected) {
-                                      print(selectedCategory);
-                                      setState(() {
-                                        selectedCategory == 'Live';
-                                      });
-                                      _tabController?.animateTo(3);
-                                    },
-                                  ),
-                                ),
-                                Tab(
-                                    child: Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                  child: ChoiceChip(
-                                    label: Text('Podcasts'),
-                                    selected: selectedCategory == 'Podcasts',
-                                    // Change color when selected
-                                    side: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.5,
-                                    ),
-                                    selectedColor: Colors.black,
-                                    showCheckmark: false,
-                                    backgroundColor: Colors.grey[100],
-                                    labelStyle: TextStyle(
-                                      color: selectedCategory == 'Podcasts'
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    onSelected: (bool selected) {
-                                      print(selectedCategory);
-                                      setState(() {
-                                        selectedCategory == 'Podcasts';
-                                      });
-                                      _tabController?.animateTo(4);
-                                    },
-                                  ),
-                                )),
-                              ]),
-                               //],)
-                        )
-                        
-                       
-                        ),
-                  ];
-                },
-                body: TabBarView(controller: _tabController, children: [
-                  GestureDetector(
-                    onHorizontalDragEnd: (dragEndDetails) {
-                      if (dragEndDetails.primaryVelocity! > 0) {
-                        Navigator.push(context, _routeToNewPost());
-                      }else{
-                        _tabController?.animateTo(1);
-                      }
-                    },
-                    child:CustomScrollView(
-                    //controller: _scrollController2,
-                    slivers: [
-                      SliverToBoxAdapter(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
-              height: screenHeight / 4, // Grid height is set to 1/3 of screen height
-              child: GridView.builder(
-                physics: BouncingScrollPhysics(), // Makes the grid independently scrollable
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5, // 5 columns
-                  crossAxisSpacing: 10, // Spacing between columns
-                  mainAxisSpacing: 10, // Spacing between rows
-                  childAspectRatio: 1, // Square grid items
-                ),
-                 itemBuilder: (BuildContext context, int index) {
-                  int userIndex = sortedUsers[index]; // Get user index from the sorted list
-                  bool isAccountHolder = userIndex == accountHolderStory; // Check if this is the account holder
-                  bool hasStory = isAccountHolder || userHasStory(userIndex); // Account holder always has a story
-
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Stack to position the thought bubble on top-right of the CircleAvatar
-                      Stack(
-                        children: [
-                          // Container with a conditional border (outer layer)
-                          Container(
-                            padding: EdgeInsets.all(3), // Space for the outer border
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              // Conditional border: gradient if user has a story, grey if not
-                              gradient: hasStory
-                                  ? LinearGradient(
-                                      colors: [Colors.orange, Colors.amber],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    )
-                                  : null,
-                              color: hasStory ? null : Colors.grey[100],
-                            ),
-                            child: CircleAvatar(
-                              radius: 20, // Adjusted size of the avatar
-                              backgroundColor: Colors.blueAccent,
-                              child: Text(
-                                isAccountHolder ? 'Me' : 'S$userIndex',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          // Positioned thought bubble with a random emoji conditionally shown
-                          if (shouldShowEmojiBubble(userIndex)) // Show emoji bubble conditionally
-                            Positioned(
-                              right: -4,
-                              top: -4,
-                              child: Container(
-                                padding: EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                ),
-                                child: Text(
-                                  getRandomEmoji(), // Display random emoji
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      SizedBox(height: 2), // Spacing between avatar and text
-                      // Story label below the avatar
-                      Text(
-                        isAccountHolder ? 'marciusjam' : 'Story $userIndex',
-                        style: TextStyle(fontSize: 12),
-                        overflow: TextOverflow.ellipsis, // Handle long text
-                      ),
-                    ],
-                  );
-                },
-                itemCount: sortedUsers.length, // Number of grid items (stories)
-              ),
-            ),
-          ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            if (index != 0 && index % 4 == 0) {
-                              return Container(
-                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                  color: Colors.white,
-                                  child: sharesRow(context));
-                            } else {
-                              return allPosts[index];
-                            }
-                          },
-                          childCount:
-                              allPosts.length, // Example list item count
-                        ),
-                      ),
-
-                      
-                    ],
-                  )),
-                   CustomScrollView(
-                    controller: _scrollController1,
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Container(height: MediaQuery.sizeOf(context).height, child:  DiscoverPage(
-                          widget.profilepicture,
-                          widget.username,
-                          widget.userid,
-                          widget.cameras,
-                        ),))]),
-                  
-                  CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Container(height: screenHeight,child: ShopPage(),)
-                        
-                      )
-                    ],
-                  ),
-                  CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Container(height: screenHeight,child: LivePage(),)
-                        
-                      )
-                    ],
-                  ),
-                  CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Center(
-                          child: Text('Podcasts'),
-                        ),
-                      )
-                    ],
-                  )
-                ]))*/
-    //)
+         ;
   }
 
   @override

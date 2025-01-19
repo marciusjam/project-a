@@ -14,20 +14,32 @@
   },
   "api": {
     "makulay": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "makulay95ebd6d0",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
-              "authenticationType": "AWS_IAM"
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "apiKeyExpirationDate": "2025-11-14T14:18:25.651Z",
+                "description": "Public API"
+              }
             }
           ],
           "defaultAuthentication": {
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 30,
-              "description": "api key description"
-            },
-            "authenticationType": "API_KEY"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authmakulay95ebd6d0"
+            }
           }
         },
         "GraphQLAPIIdOutput": "5jppjlnm5bexnjqddoigj573xi",
@@ -36,12 +48,12 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2024-06-09T21:27:24.723Z",
+      "lastPushTimeStamp": "2024-11-16T01:33:41.258Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-makulay-dev-210358-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apimakulay"
       },
-      "lastPushDirHash": "CfAlSl5hj0Pl8sX87bAAPt9YmqI="
+      "lastPushDirHash": "DwRQZlTcnfQNB+lXqjYCiAr+fqc="
     }
   },
   "auth": {
@@ -80,7 +92,7 @@
         "IdentityPoolName": "makulay95ebd6d0_identitypool_95ebd6d0__dev",
         "UserPoolName": "makulay95ebd6d0_userpool_95ebd6d0"
       },
-      "lastPushTimeStamp": "2024-06-09T21:16:53.500Z",
+      "lastPushTimeStamp": "2024-11-16T01:33:40.815Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-makulay-dev-210358-deployment/amplify-cfn-templates/auth/makulay95ebd6d0-cloudformation-template.json",
         "logicalId": "authmakulay95ebd6d0"
@@ -97,7 +109,7 @@
         "BucketName": "makulay8bf74d2dc76d4f068d2db770d437b058210358-dev",
         "Region": "ap-southeast-1"
       },
-      "lastPushTimeStamp": "2024-06-09T21:16:55.896Z",
+      "lastPushTimeStamp": "2024-11-16T01:33:40.816Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-makulay-dev-210358-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storagemakulaydb1"

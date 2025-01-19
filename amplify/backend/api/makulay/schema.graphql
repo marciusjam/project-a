@@ -3,7 +3,7 @@
 # FOR TESTING ONLY! input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } 
 # @searchable for User and Post
 
-type User @model @auth(rules: [{ allow: public }]) {
+type User @model @auth(rules: [{ allow: private}]) {
   id: ID! @primaryKey
   userId: ID! @index
   username: String! @index
@@ -17,7 +17,7 @@ type User @model @auth(rules: [{ allow: public }]) {
   posts: [Post] @hasMany(indexName: "byUserPost", fields: ["userId"])
   comments: [Comment] @hasMany(indexName: "byUserComment", fields: ["userId"])
   likes: [LikeLink] @hasMany(indexName: "byLikeLink", fields: ["userId"])
-  groups: [Group] @hasMany(indexName: "byUserGroup", fields: ["userId"])
+  groups: [Group] @manyToMany(relationName: "UsersGroups")
   messages: [Message] @hasMany(indexName: "byUserMessages", fields: ["userId"])
   createdOn: AWSDateTime
   updatedOn: AWSDateTime
@@ -29,7 +29,7 @@ enum RecordStatus {
 }
 
 
-type Post @model @auth(rules: [{ allow: public }]) {
+type Post @model @auth(rules: [{ allow: private }]) {
   id: ID! @primaryKey 
   postId: ID! @index
   description: String! @index
@@ -52,7 +52,7 @@ type Post @model @auth(rules: [{ allow: public }]) {
 }
 
 
-type Comment @model @auth(rules: [{ allow: public }]) {
+type Comment @model @auth(rules: [{ allow: private }]) {
   id: ID! @primaryKey
   commentId: ID! @index
   likes: [LikeLink] @hasMany(indexName: "byCommentLikeLink", fields: ["commentId"])
@@ -65,14 +65,14 @@ type Comment @model @auth(rules: [{ allow: public }]) {
   updatedOn: AWSDateTime
 }
 
-type FollowLink @model @auth(rules: [{ allow: public }]) {
+type FollowLink @model @auth(rules: [{ allow: private }]) {
   followerId: ID! @index(name: "byFollowers")
   followingId: ID! @index(name: "byFollowing")
   follower: User @belongsTo(fields: ["followerId"])
   following: User @belongsTo(fields: ["followingId"])
 }
 
-type LikeLink @model @auth(rules: [{ allow: public }]) {
+type LikeLink @model @auth(rules: [{ allow: private }]) {
   user: User @belongsTo(fields: ["userId"])
   userId: ID! @index(name: "byLikeLink")
   post: Post @belongsTo(fields: ["postId"])
@@ -81,17 +81,21 @@ type LikeLink @model @auth(rules: [{ allow: public }]) {
   commentId: ID @index(name: "byCommentLikeLink")
 }
 
-type Group @model @auth(rules: [{ allow: public }]) {
+type Group @model @auth(rules: [{ allow: private }]) {
   id: ID! @primaryKey
+  groupdid: ID! @index
   name: String!
-  users: [User] @belongsTo(fields: ["userId"])
-  messages: [Message] @belongsTo(fields: ["userId"])
+  users: [User] @manyToMany(relationName: "UsersGroups")
+  userId: ID @index(name: "byUserGroup")
+  messages: [Message] @hasMany(fields: ["userId"])
 }
 
-type Message @model {
+type Message @model @auth(rules: [{ allow: private}]) {
   id: ID! @primaryKey
-  content: String! @index
+  messageid: ID! @index
+  content: String! 
   timestamp: AWSDateTime!
   sender: User @belongsTo(fields: ["userId"])
+  userId: ID @index(name: "byUserMessages")
   group: Group @belongsTo(fields: ["userId"])
 }

@@ -140,11 +140,11 @@ class _DiscoverNavigationBottomBarState extends State<DiscoverNavigationBottomBa
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: SizedBox.shrink(),
-            label: 'Discover',
+            label: 'Activities',
           ),
           BottomNavigationBarItem(
             icon: SizedBox.shrink(),
-            label: 'Shop',
+            label: 'Messaging',
           ),
           BottomNavigationBarItem(
             icon: SizedBox.shrink(),

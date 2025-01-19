@@ -1811,7 +1811,7 @@ class _InterestsPageState extends State<InterestsPage>
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              StoriesAndMessagesPage()),
+                                              StoriesAndMessagesPage(profilepicture: widget.profilepicture, username: widget.username, userid: widget.userid)),
                                     );
                                   },
                                   child: CircleAvatar(

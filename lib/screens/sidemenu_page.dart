@@ -595,18 +595,14 @@ Route _routeToNewPost() {
     return //==Padding(padding: EdgeInsets.fromLTRB(30,0,30,30), child:
  GestureDetector(
       onHorizontalDragEnd: (dragEndDetails) {
-    if (dragEndDetails.primaryVelocity! > 0 ) {
-      Navigator.push(
-                            context,
-      _routeToNewPost()
-      );
-    }else{
-      _onRightSwipe(1);
-    } },
+    if (dragEndDetails.primaryVelocity! < 0 ) {
+     Navigator.pop(context);
+    }},
       child: 
     
-    
-        SingleChildScrollView(
+        Scaffold(
+          appBar: AppBar(),
+          body:SingleChildScrollView(
       //physics: const NeverScrollableScrollPhysics(),
       //controller: _scrollController,
       child: Column(
@@ -1832,7 +1828,10 @@ Spacer(),
                 
             )),*/
           ]),
-    ));
+    )
+    
+        )
+        );
   }
 
   @override

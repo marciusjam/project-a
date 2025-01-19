@@ -11,9 +11,11 @@ import 'package:Makulay/screens/activities_page.dart';
 import 'package:Makulay/screens/discover_page.dart';
 import 'package:Makulay/screens/live_page.dart';
 import 'package:Makulay/screens/new_post_page.dart';
+import 'package:Makulay/screens/posts_page.dart';
 import 'package:Makulay/screens/search_page.dart';
 import 'package:Makulay/screens/shop_page.dart';
 import 'package:Makulay/screens/storiesandmessage_page.dart';
+import 'package:Makulay/screens/viewchannel_page.dart';
 import 'package:Makulay/widgets/home_bar.dart';
 import 'package:Makulay/widgets/post_card.dart';
 import 'package:Makulay/widgets/post_widgets/series.dart';
@@ -30,7 +32,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:Makulay/models/ModelProvider.dart';
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:marquee/marquee.dart';
 import 'package:pull_to_refresh_plus/pull_to_refresh_plus.dart';
+import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class Stories {
   List<String> users;
@@ -46,6 +51,7 @@ class InterestsPage extends StatefulWidget {
   final String username;
   final String userid;
   final int selectedPageIndex;
+  final String selectedMainCategory;
   const InterestsPage(
       {Key? key,
       required this.onIconTap,
@@ -53,7 +59,8 @@ class InterestsPage extends StatefulWidget {
       required this.profilepicture,
       required this.username,
       required this.userid,
-      required this.selectedPageIndex})
+      required this.selectedPageIndex,
+      required this.selectedMainCategory})
       : super(key: key);
 
   @override
@@ -66,13 +73,17 @@ class _InterestsPageState extends State<InterestsPage>
         SingleTickerProviderStateMixin {
   TabController? _tabController;
 
+  FocusNode _focus = FocusNode();
+
   final List<String> categories = ['Discover', 'Shop', 'Live', 'Podcasts'];
 
-  String selectedCategory = 'Home';
+  String dropdownValue = 'Explore';
+
+  String selectedCategory = 'Subscribed';
 
   String selectedMessageTab = 'Messages';
 
-  String selectedSubCategory = 'Interests';
+  String selectedMainCategory = 'Interests';
 
   final List<String> messages = List.generate(20, (index) => "Message $index");
 
@@ -96,6 +107,8 @@ class _InterestsPageState extends State<InterestsPage>
   ];
   // Account holder's story (index -1 to represent the account holder)
   int accountHolderStory = 0;
+
+  String filterValue = 'Stories';
 
   // Function to get a random emoji
   String getRandomEmoji() {
@@ -135,6 +148,10 @@ class _InterestsPageState extends State<InterestsPage>
     maxNrOfCacheObjects: 100,
   ));
 
+  void _onFocusChange() {
+    debugPrint("Focus: ${_focus.hasFocus.toString()}");
+  }
+
   String? _selectedItem1 = 'Following';
   final list = ['Following', 'Trends', 'Streams', 'Podcasts'];
   List<DropdownMenuItem<String>> _createList() {
@@ -152,6 +169,36 @@ class _InterestsPageState extends State<InterestsPage>
           ),
         )
         .toList();
+  }
+
+  void _showDropdown(BuildContext context, Offset position) {
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        position.dx,
+        position.dy,
+        position.dx + 1,
+        position.dy + 1,
+      ),
+      items: [
+        PopupMenuItem(
+          value: 'Option 1',
+          child: Text('Option 1'),
+        ),
+        PopupMenuItem(
+          value: 'Option 2',
+          child: Text('Option 2'),
+        ),
+        PopupMenuItem(
+          value: 'Option 3',
+          child: Text('Option 3'),
+        ),
+      ],
+    ).then((value) {
+      if (value != null) {
+        print('Selected: $value');
+      }
+    });
   }
 
   Future<String> getFileUrl(String fileKey) async {
@@ -227,7 +274,7 @@ class _InterestsPageState extends State<InterestsPage>
         );
       });*/
 
-      await Amplify.DataStore.clear();
+      //await Amplify.DataStore.clear();
       //var response = await searchPostSortByDate();
       var response = await descendingByUserId();
 
@@ -353,7 +400,7 @@ class _InterestsPageState extends State<InterestsPage>
         
       );
       final response = await Amplify.API.query(request: request).response;*/
-      await Amplify.DataStore.clear();
+      //await Amplify.DataStore.clear();
       //var response = await searchPostSortByDate();
       var response = await descendingByUserId();
 
@@ -422,174 +469,6 @@ class _InterestsPageState extends State<InterestsPage>
       }
 
       return allTrend;
-    } on ApiException catch (e) {
-      safePrint('Query failed: $e');
-      return const [];
-    }
-  }
-
-  Future<List<Widget>> fetchPodcasts() async {
-    try {
-      var loopOnly = 10;
-      var currLoop = 0;
-      /*final request = ModelQueries.list<Post>(
-        Post.classType,
-        
-      );
-      final response = await Amplify.API.query(request: request).response;*/
-      await Amplify.DataStore.clear();
-      //var response = await searchPostSortByDate();
-      var response = await descendingByUserId();
-
-      //debugPrint('response,data');
-      //debugPrint(response.data.toString());
-      PaginatedResult<Post>? gatheredPosts = response.data;
-      //String? gatheredPosts = response.data?.items.toString().replaceAll("\n","");
-      //debugPrint('Posts: $gatheredPosts');
-
-      if (gatheredPosts == null) {
-        safePrint('errors: ${response.errors}');
-        return const [];
-      }
-      for (var eachPosts in gatheredPosts.items) {
-        //debugPrint('eachPosts');
-        //debugPrint(eachPosts.toString());
-        currLoop++;
-        String description = eachPosts!.description;
-        String? orientation = eachPosts.orientation;
-
-        TemporalDateTime? createddate = eachPosts!.createdAt;
-        final datecreated = DateTime.parse(createddate.toString());
-        final datenow = DateTime.now();
-        int postage = daysBetween(datecreated, datenow); // Works!
-        //debugPrint('postage '+ postage.toString());
-
-        String? contenttype = eachPosts.contenttype;
-        String? username = eachPosts.user!.username;
-
-        String? content = eachPosts.content;
-        Map<String, String> contentList = {};
-        await getFileUrl(eachPosts.user!.profilePicture.toString())
-            .then((value) => {
-                  if (content != '' && content != "null" && content != null)
-                    {
-                      getFileUrl(content.toString()).then((contentvalue) {
-                        //_precacheImage(value, content);
-                        contentList[content] = contentvalue;
-                        setState(() {
-                          allPodcasts.add(PostCard(
-                              'podcasts',
-                              description,
-                              contentList,
-                              username,
-                              value,
-                              postage,
-                              false,
-                              null,
-                              null));
-                        });
-                      })
-                    }
-                  else
-                    {
-                      //if S3 data == null == Text Post
-                      setState(() {
-                        allPodcasts.add(PostCard('podcasts', description, {},
-                            username, value, postage, false, null, null));
-                      })
-                    }
-                });
-
-        if (currLoop == loopOnly) {
-          continue;
-        }
-      }
-
-      return allPodcasts;
-    } on ApiException catch (e) {
-      safePrint('Query failed: $e');
-      return const [];
-    }
-  }
-
-  Future<List<Widget>> fetchLiveHoriz() async {
-    try {
-      var loopOnly = 10;
-      var currLoop = 0;
-      /*final request = ModelQueries.list<Post>(
-        Post.classType,
-        
-      );
-      final response = await Amplify.API.query(request: request).response;*/
-      await Amplify.DataStore.clear();
-      //var response = await searchPostSortByDate();
-      var response = await descendingByUserId();
-
-      //debugPrint('response,data');
-      //debugPrint(response.data.toString());
-      PaginatedResult<Post>? gatheredPosts = response.data;
-      //String? gatheredPosts = response.data?.items.toString().replaceAll("\n","");
-      //debugPrint('Posts: $gatheredPosts');
-
-      if (gatheredPosts == null) {
-        safePrint('errors: ${response.errors}');
-        return const [];
-      }
-      for (var eachPosts in gatheredPosts.items) {
-        //debugPrint('eachPosts');
-        //debugPrint(eachPosts.toString());
-        currLoop++;
-        String description = eachPosts!.description;
-        String? orientation = eachPosts.orientation;
-
-        TemporalDateTime? createddate = eachPosts!.createdAt;
-        final datecreated = DateTime.parse(createddate.toString());
-        final datenow = DateTime.now();
-        int postage = daysBetween(datecreated, datenow); // Works!
-        //debugPrint('postage '+ postage.toString());
-
-        String? contenttype = eachPosts.contenttype;
-        String? username = eachPosts.user!.username;
-
-        String? content = eachPosts.content;
-        Map<String, String> contentList = {};
-        await getFileUrl(eachPosts.user!.profilePicture.toString())
-            .then((value) => {
-                  if (content != '' && content != "null" && content != null)
-                    {
-                      getFileUrl(content.toString()).then((contentvalue) {
-                        //_precacheImage(value, content);
-                        contentList[content] = contentvalue;
-                        setState(() {
-                          allLiveHoriz.add(PostCard(
-                              'live-horiz',
-                              description,
-                              contentList,
-                              username,
-                              value,
-                              postage,
-                              false,
-                              null,
-                              null));
-                        });
-                      })
-                    }
-                  else
-                    {
-                      //if S3 data == null == Text Post
-                      setState(() {
-                        allPodcasts.add(PostCard('live-horiz', description, {},
-                            username, value, postage, false, null, null));
-                      })
-                    }
-                });
-
-        if (currLoop == loopOnly) {
-          continue;
-        }
-      }
-
-      return allLiveHoriz;
     } on ApiException catch (e) {
       safePrint('Query failed: $e');
       return const [];
@@ -701,6 +580,7 @@ class _InterestsPageState extends State<InterestsPage>
 
   @override
   void initState() {
+    _focus.addListener(_onFocusChange);
     _scrollController1 = ScrollController();
     _scrollController2 = ScrollController();
     //_tabController = TabController(vsync: this, length: 5);
@@ -714,7 +594,7 @@ class _InterestsPageState extends State<InterestsPage>
           }
         });*/
     setState(() {
-      selectedCategory = 'Home';
+      selectedCategory = 'Subscribed';
       selectedMessageTab = 'Messages';
     });
 
@@ -729,8 +609,6 @@ class _InterestsPageState extends State<InterestsPage>
     //Working
 
     fetchTrendingPosts();
-    fetchPodcasts();
-    fetchLiveHoriz();
     fetchAllPosts();
     //Deprecated
     //getAllPosts();
@@ -743,6 +621,8 @@ class _InterestsPageState extends State<InterestsPage>
 
   @override
   void dispose() {
+    _focus.removeListener(_onFocusChange);
+    _focus.dispose();
     _tabController?.dispose();
     super.dispose();
   }
@@ -991,7 +871,7 @@ class _InterestsPageState extends State<InterestsPage>
                       scrollDirection: Axis.horizontal,
                       itemCount: 10,
                       padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      itemBuilder: (BuildContext contextt, int index) {
+                      itemBuilder: (BuildContext context, int index) {
                         return Container(
                           width: 380,
                           //height: 100,
@@ -1098,7 +978,7 @@ class _InterestsPageState extends State<InterestsPage>
                       scrollDirection: Axis.horizontal,
                       itemCount: 10,
                       padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      itemBuilder: (BuildContext contextt, int index) {
+                      itemBuilder: (BuildContext context, int index) {
                         return Container(
                           width: 178,
                           //height: 100,
@@ -1205,7 +1085,7 @@ class _InterestsPageState extends State<InterestsPage>
                       scrollDirection: Axis.horizontal,
                       itemCount: 10,
                       padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      itemBuilder: (BuildContext contextt, int index) {
+                      itemBuilder: (BuildContext context, int index) {
                         return Container(
                           width: 338,
                           //height: 100,
@@ -1333,7 +1213,7 @@ class _InterestsPageState extends State<InterestsPage>
                       scrollDirection: Axis.horizontal,
                       itemCount: 3,
                       padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      itemBuilder: (BuildContext contextt, int index) {
+                      itemBuilder: (BuildContext context, int index) {
                         return Container(
                           width: 380,
                           //height: 100,
@@ -1393,7 +1273,6 @@ class _InterestsPageState extends State<InterestsPage>
       ],
     );
   }
-
   /*void _onLeftSwipe(int index) {
     int finalIndex = index;
     widget.onIconTap(finalIndex);
@@ -1470,6 +1349,7 @@ class _InterestsPageState extends State<InterestsPage>
   double calculateGridHeight(int itemCount, double itemHeight, double spacing) {
     // Calculate the number of rows required
     var itemCountToUse = itemCount;
+
     if (itemCountToUse < 4) {
       itemCountToUse = 4;
     }
@@ -1484,18 +1364,29 @@ class _InterestsPageState extends State<InterestsPage>
   }
 
   Widget _buildSearchBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(50),
-      ),
+    return SizedBox(
+      //width: MediaQuery.sizeOf(context).width - 210,
+      width: _focus.hasFocus.toString() != 'true'
+          ? MediaQuery.sizeOf(context).width - 125
+          : MediaQuery.sizeOf(context).width - 45,
+      height: 35,
       child: TextField(
+        focusNode: _focus,
+        maxLines: 1,
+        style: TextStyle(fontSize: 17),
         decoration: InputDecoration(
-          hintText: 'Search...',
-          prefixIcon: Icon(Icons.search),
+          hintStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w300),
+          hintText: "Search...",
+          //hintStyle: TextStyle(color: Colors.black),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.all(12),
+          contentPadding: EdgeInsets.fromLTRB(20, 0, 0, 10),
+          iconColor: Colors.black,
+          suffixIconColor: Colors.black,
+          prefixIconColor: Colors.black,
+          prefixIcon: Icon(Icons.search),
+          //suffixIcon: Icon(Icons.qr_code_2_rounded)
         ),
+        cursorHeight: 15,
       ),
     );
   }
@@ -1523,7 +1414,7 @@ class _InterestsPageState extends State<InterestsPage>
       }
     }
 
-    for (int index = 0; index < 31; index++) {
+    for (int index = 0; index < 15; index++) {
       if (userHasStory(index)) {
         othersWithStories.add(index);
       } else {
@@ -1553,477 +1444,1072 @@ class _InterestsPageState extends State<InterestsPage>
 
     debugPrint('pinnedGridHeight = ' + pinnedGridHeight.toString());
 
+    int otherCountToUse;
+    if (selectedCategory == 'Group') {
+      otherCountToUse = 10;
+    } else if (selectedCategory == 'Subscribed') {
+      otherCountToUse = otherUsers.length;
+    } else {
+      otherCountToUse = otherUsers.length;
+    }
+
     double otherPinnedGridHeight = calculateGridHeight(
-      otherUsers.length,
+      otherCountToUse,
       gridItemHeight,
       gridSpacing,
     );
 
     return CustomScrollView(controller: _scrollController2, slivers: [
+      //if (selectedMainCategory == 'Interests')
+
       SliverToBoxAdapter(
-        child: Container(
-            padding: EdgeInsets.fromLTRB(20, 70, 20, 15),
-            child: //_buildSearchBar(),
-                Row(
-              children: [
-                Padding(
-                    padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Ma',
-                          style: TextStyle(
-                            color: //selectedCategory == 'Makulay' ?
-                                Colors.orange
-                            //: Colors.grey[400]
-                            ,
-                            fontSize: 35,
-                            fontFamily: 'Gotham-Black',
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'kulay',
-                          style: TextStyle(
-                            color: //selectedCategory == 'Makulay' ?
-                                Colors.amber
-                            //: Colors.grey[400]
-                            ,
-                            fontSize: 35,
-                            fontFamily: 'Gotham-Black',
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ],
-                    )),
-                Spacer(),
-                Container(
-                  //width: 50,
-                  child: Stack(
-                    alignment: Alignment.center,
+          child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 70, 0, 20),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width - 40,
+                child: ScrollLoopAutoScroll(
+                  delay: Duration.zero,
+                  enableScrollInput: false,
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
                     children: [
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                          child: GestureDetector(
-                            onTap: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ActivitiesPage()),
-                              )
-                            },
-                            child: Icon(Icons.notifications_none_rounded,
-                                size: 33.0, color: Colors.black),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StoriesAndMessagesPage(
+                                      profilepicture: widget.profilepicture,
+                                      username: widget.username,
+                                      userid: widget.userid)),
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                '@lebronjames ',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'GAME TIME!! Up 2-0! Lets get this dub!! 💯🏀',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ],
                           )),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(15, 0, 0, 20),
-                        child: Stack(
-                          children: <Widget>[
-                            Icon(Icons.brightness_1,
-                                size: 20.0, color: Colors.amber),
-                            Positioned(
-                                top: 3.0,
-                                left: 7.0,
-                                child: Center(
-                                  child: Text(
-                                    '4',
-                                    style: new TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 11.0,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                )),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StoriesAndMessagesPage(
+                                    profilepicture: widget.profilepicture,
+                                    username: widget.username,
+                                    userid: widget.userid)),
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              '@marciusjam ',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Kapit lang, may liwanag pagkatapos ng unos. Ginhawa ang kasunod ng hirap 🌟',
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ],
                         ),
-                      )
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StoriesAndMessagesPage(
+                                      profilepicture: widget.profilepicture,
+                                      username: widget.username,
+                                      userid: widget.userid)),
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                '@shayecrispo ',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Hindi pa huli ang lahat, kaya mo yan! Magtiwala at huwag kang susuko. 💪',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ],
+                          )),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StoriesAndMessagesPage(
+                                      profilepicture: widget.profilepicture,
+                                      username: widget.username,
+                                      userid: widget.userid)),
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                '@abscbn ',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Breaking News! Bigas nagmahal ng 100 php per kilo!! 💥',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ],
+                          )),
                     ],
                   ),
                 ),
-              ],
-            )),
-      ),
+              ))),
+
       SliverToBoxAdapter(
           child: Container(
-        padding: EdgeInsets.fromLTRB(25, 0, 25, 20),
-        child: _buildSearchBar(),
-      )),
-      /*SliverToBoxAdapter(
-        child: Container(
-          padding: EdgeInsets.fromLTRB(35, 5, 0, 20),
-          width: MediaQuery.sizeOf(context).width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedSubCategory = 'Interests';
-                  });
-                },
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Interests',
-                        style: TextStyle(
-                          fontSize:
-                              selectedSubCategory == 'Interests' ? 17 : 15,
-                          fontWeight: selectedSubCategory == 'Interests'
-                              ? FontWeight.bold
-                              : null,
+              width: MediaQuery.sizeOf(context).width,
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildSearchBar(),
+
+                    /*_focus.hasFocus.toString() != 'true' ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: ChoiceChip(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        backgroundColor: Colors.grey.shade100,
+                        label: Icon(
+                          //Icons.content_copy_rounded,
+                          Icons.short_text,
+                          size: 18,
+                          color: selectedMainCategory == 'Status'
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                      ),
-                      /*if (selectedSubCategory == 'Interests')
-                        Container(
-                          margin: EdgeInsets.only(
-                              top: 2), // Space between text and line
-                          height: 1, // Height of the underline
-                          width: 40, // Width of the underline
-                          color: Colors.black, // Color of the underline
-                        ),*/
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedSubCategory = 'Posts';
-                  });
-                },
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Posts',
-                        style: TextStyle(
-                          fontSize: selectedSubCategory == 'Posts' ? 17 : 15,
-                          fontWeight: selectedSubCategory == 'Posts'
-                              ? FontWeight.bold
-                              : null,
+                        selected: selectedMainCategory == 'Status',
+                        selectedColor: Colors.black,
+                        showCheckmark: false,
+                        onSelected: (bool selected) {
+                          // Handle 'Others' selection
+                          print(selectedMainCategory);
+                          setState(() {
+                            selectedMainCategory = 'Status';
+                          });
+                          //_tabController?.animateTo(2);
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          side: BorderSide(color: Colors.transparent),
                         ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       ),
-                      /*if (selectedSubCategory == 'Posts')
-                        Container(
-                          margin: EdgeInsets.only(top: 2),
-                          height: 1,
-                          width: 40,
-                          color: Colors.black,
-                        ),*/
-                    ],
-                  ),
-                ),
-              ),
-              Spacer(),
-              if (selectedSubCategory == 'Interests')
-                GestureDetector(
-                  onTap: () {
-                    /*setState(() {
-              selectedSubCategory = 'Requests';
-            });*/
-                  },
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
-                    alignment: Alignment.centerRight,
-                    child: Icon(
-                      Icons.filter_list,
-                      size: 25,
-                      color: selectedSubCategory == 'Requests'
-                          ? Colors.black
-                          : Colors.grey.shade400,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
+                    ) : Container(),
+                    */
+                    _focus.hasFocus.toString() != 'true'
+                        ? Stack(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: ChoiceChip(
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  backgroundColor: Colors.grey.shade100,
+                                  label: Icon(
+                                    Icons.notifications_active_rounded,
+                                    size: 18,
+                                    color: selectedMainCategory != 'Activities'
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ),
+                                  selected:
+                                      selectedMainCategory == 'Activities',
+                                  selectedColor: Colors.black,
+                                  showCheckmark: false,
+                                  onSelected: (bool selected) {
+                                    // Handle 'Others' selection
+                                    print(selectedMainCategory);
+                                    setState(() {
+                                      selectedMainCategory = 'Activities';
+                                    });
+                                    //_tabController?.animateTo(2);
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    side: BorderSide(color: Colors.transparent),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                ),
+                              ),
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      colors: [Colors.red, Colors.amber],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '10',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(),
+                  ]))),
+      
+      /*if (widget.selectedMainCategory == 'Interests' &&
+          _focus.hasFocus.toString() != 'true')
+        SliverToBoxAdapter(
+            child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(25, 5, 20, 15),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(padding: EdgeInsets.only(right: 15), child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.all(
+                                      3), // Space for the outer border
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    // Conditional border: gradient if user has a story, grey if not
+                                    gradient:  LinearGradient(
+                                            colors: [Colors.red, Colors.amber],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          )
+                                        ,
+                                    color:  null,
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.all(
+                                        3), // Space for the outer border
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      // Conditional border: gradient if user has a story, grey if not
+                                      gradient: LinearGradient(
+                                              colors: [
+                                                Colors.white,
+                                                Colors.white
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            )
+                                         ,
+                                      color:  null,
+                                    ),
+                                    child: GestureDetector(
+                                      onLongPressStart: (details) {
+                                        _showDropdown(
+                                            context, details.globalPosition);
+                                      },
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  StoriesAndMessagesPage(
+                                                      profilepicture:
+                                                          widget.profilepicture,
+                                                      username: widget.username,
+                                                      userid: widget.userid)),
+                                        );
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        backgroundColor: Colors.black,
+                                        backgroundImage:  CachedNetworkImageProvider(
+                                                widget.profilepicture)
+                                            
+                                      ),
+                                    ),
+                                  )),
+                              
+                            ],
+                          ),
+                          SizedBox(height: 2),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 3),
+                                child: Text( 'marciusjam',
+                                  style: TextStyle(fontSize: 12),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Container(
+                                  padding: EdgeInsets.only(left: 3),
+                                  child: ShaderMask(
+                                    blendMode: BlendMode.srcIn,
+                                    shaderCallback: (Rect bounds) =>
+                                        LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Colors.red,
+                                        Colors.orange,
+                                        Colors.amber
+                                      ], // Gradient colors for the icon
+                                    ).createShader(bounds),
+                                    child: Icon(
+                                      Icons.verified,
+                                      color: Colors.red,
+                                      size: 12,
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+                      ),
+                        Padding(padding: EdgeInsets.only(right: 15), child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.all(
+                                      3), // Space for the outer border
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    // Conditional border: gradient if user has a story, grey if not
+                                    gradient:  LinearGradient(
+                                            colors: [Colors.red, Colors.amber],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          )
+                                        ,
+                                    color:  null,
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.all(
+                                        3), // Space for the outer border
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      // Conditional border: gradient if user has a story, grey if not
+                                      gradient: LinearGradient(
+                                              colors: [
+                                                Colors.white,
+                                                Colors.white
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            )
+                                         ,
+                                      color:  null,
+                                    ),
+                                    child: GestureDetector(
+                                      onLongPressStart: (details) {
+                                        _showDropdown(
+                                            context, details.globalPosition);
+                                      },
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  StoriesAndMessagesPage(
+                                                      profilepicture:
+                                                          widget.profilepicture,
+                                                      username: widget.username,
+                                                      userid: widget.userid)),
+                                        );
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        backgroundColor: Colors.black,
+                                        backgroundImage:  CachedNetworkImageProvider(
+                                                widget.profilepicture)
+                                            
+                                      ),
+                                    ),
+                                  )),
+                              
+                            ],
+                          ),
+                          SizedBox(height: 2),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 3),
+                                child: Text( 'John Mar...',
+                                  style: TextStyle(fontSize: 12),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Container(
+                                  padding: EdgeInsets.only(left: 3),
+                                  child: ShaderMask(
+                                    blendMode: BlendMode.srcIn,
+                                    shaderCallback: (Rect bounds) =>
+                                        LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Colors.red,
+                                        Colors.orange,
+                                        Colors.amber
+                                      ], // Gradient colors for the icon
+                                    ).createShader(bounds),
+                                    child: Icon(
+                                      Icons.verified,
+                                      color: Colors.red,
+                                      size: 12,
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ],
+                      )
+                        )
+                      ])))),
       */
-      if (selectedSubCategory == 'Interests')
+
+      if (widget.selectedMainCategory == 'Interests' &&
+          _focus.hasFocus.toString() != 'true')
         SliverToBoxAdapter(
           child: MediaQuery.removePadding(
             removeTop: true,
             context: context,
             child: Container(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              height: pinnedGridHeight >= 320 ? 320 : pinnedGridHeight, // Adjust height as needed
+              height: pinnedGridHeight >= 320
+                  ? 320
+                  : pinnedGridHeight, // Adjust height as needed
               child: PageView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: (favoriteUsers.length / 12).ceil() > 1 ? 1 * (favoriteUsers.length / 12).ceil() : 1, // Total pages + 2 extra pages
+                itemCount: (favoriteUsers.length / 12).ceil() > 1
+                    ? 1 * (favoriteUsers.length / 12).ceil()
+                    : 1, // Total pages + 2 extra pages
                 itemBuilder: (context, pageIndex) {
-                  
-                    // Render the normal user grid for the main pages
-                    return GridView.builder(
-                      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                      physics:
-                          NeverScrollableScrollPhysics(), // Prevent inner grid scrolling
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4, // 4 columns
-                        crossAxisSpacing: 0,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 1,
-                      ),
-                      itemCount: 12, // Each page displays a 4x3 grid (12 items)
-                      itemBuilder: (BuildContext context, int gridIndex) {
-                        int userIndex = pageIndex * 12 + gridIndex;
-                        
-                        if(userIndex >= favoriteUsers.length){
-                          return Container();
-                        }
+                  // Render the normal user grid for the main pages
+                  return GridView.builder(
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    physics:
+                        NeverScrollableScrollPhysics(), // Prevent inner grid scrolling
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4, // 4 columns
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 1,
+                    ),
+                    itemCount: 12, // Each page displays a 4x3 grid (12 items)
+                    itemBuilder: (BuildContext context, int gridIndex) {
+                      int userIndex = pageIndex * 12 + gridIndex;
 
-                        // Proceed with your user grid item rendering
-                        bool isAccountHolder = userIndex == accountHolderStory;
-                        bool hasStory = isAccountHolder ||
-                            userHasStory(favoriteUsers[userIndex]);
-                        final gender = userIndex % 2 == 0 ? 'men' : 'women';
-                        final int randomNumber = Random().nextInt(100);
+                      if (userIndex >= favoriteUsers.length) {
+                        return Container();
+                      }
 
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Stack(
-                              children: [
-                                Container(
-                            padding:
-                                EdgeInsets.all(3), // Space for the outer border
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              // Conditional border: gradient if user has a story, grey if not
-                              gradient: hasStory
-                                  ? LinearGradient(
-                                      colors: [Colors.orange, Colors.amber],
+                      // Proceed with your user grid item rendering
+                      bool isAccountHolder = userIndex == accountHolderStory;
+                      bool hasStory = isAccountHolder ||
+                          userHasStory(favoriteUsers[userIndex]);
+                      final gender = userIndex % 2 == 0 ? 'men' : 'women';
+                      final int randomNumber = Random().nextInt(100);
+
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.all(
+                                      3), // Space for the outer border
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    // Conditional border: gradient if user has a story, grey if not
+                                    gradient: hasStory
+                                        ? LinearGradient(
+                                            colors: [Colors.red, Colors.amber],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          )
+                                        : null,
+                                    color: hasStory ? null : Colors.grey[100],
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.all(
+                                        3), // Space for the outer border
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      // Conditional border: gradient if user has a story, grey if not
+                                      gradient: hasStory
+                                          ? LinearGradient(
+                                              colors: [
+                                                Colors.white,
+                                                Colors.white
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            )
+                                          : null,
+                                      color: hasStory ? null : Colors.grey[100],
+                                    ),
+                                    child: GestureDetector(
+                                      onLongPressStart: (details) {
+                                        _showDropdown(
+                                            context, details.globalPosition);
+                                      },
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  StoriesAndMessagesPage(
+                                                      profilepicture:
+                                                          widget.profilepicture,
+                                                      username: widget.username,
+                                                      userid: widget.userid)),
+                                        );
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        backgroundColor: Colors.black,
+                                        backgroundImage: isAccountHolder
+                                            ? CachedNetworkImageProvider(
+                                                widget.profilepicture)
+                                            : CachedNetworkImageProvider(
+                                                'https://randomuser.me/api/portraits/$gender/$randomNumber.jpg'),
+                                      ),
+                                    ),
+                                  )),
+                              if (gridIndex < 8 && !isAccountHolder)
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: Container(
+                                    width: 25,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                        colors: [Colors.red, Colors.amber],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '$randomNumber',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          SizedBox(height: 2),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 3),
+                                child: Text(
+                                  isAccountHolder
+                                      ? 'marciusjam'
+                                      : 'Story $userIndex',
+                                  style: TextStyle(fontSize: 12),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Container(
+                                  padding: EdgeInsets.only(left: 3),
+                                  child: ShaderMask(
+                                    blendMode: BlendMode.srcIn,
+                                    shaderCallback: (Rect bounds) =>
+                                        LinearGradient(
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
-                                    )
-                                  : null,
-                              color: hasStory ? null : Colors.grey[100],
-                            ),
-                            child: Container(
-                                padding: EdgeInsets.all(
-                                    3), // Space for the outer border
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  // Conditional border: gradient if user has a story, grey if not
-                                  gradient: hasStory
-                                      ? LinearGradient(
-                                          colors: [Colors.white, Colors.white],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        )
-                                      : null,
-                                  color: hasStory ? null : Colors.grey[100],
-                                ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                StoriesAndMessagesPage()),
-                                      );
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 30,
-                                      backgroundColor: Colors.black,
-                                      backgroundImage: isAccountHolder
-                                          ? CachedNetworkImageProvider(
-                                              widget.profilepicture)
-                                          : CachedNetworkImageProvider(
-                                              'https://randomuser.me/api/portraits/$gender/$randomNumber.jpg'),
+                                      colors: [
+                                        Colors.red,
+                                        Colors.orange,
+                                        Colors.amber
+                                      ], // Gradient colors for the icon
+                                    ).createShader(bounds),
+                                    child: Icon(
+                                      Icons.verified,
+                                      color: Colors.red,
+                                      size: 12,
                                     ),
-                                  ),
-                                )
-                                ),
-                                if (gridIndex < 8 && !isAccountHolder)
-                                  Positioned(
-                                    right: 0,
-                                    top: 0,
-                                    child: Container(
-                                      width: 25,
-                                      height: 25,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        gradient: LinearGradient(
-                                          colors: [Colors.orange, Colors.amber],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          '$randomNumber',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            SizedBox(height: 2),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    isAccountHolder
-                                        ? 'marciusjam'
-                                        : 'Story $userIndex',
-                                    style: TextStyle(fontSize: 12),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 3),
-                                  child: Icon(
-                                    Icons.verified,
-                                    color: Colors.amber,
-                                    size: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                 
+                                  )),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
               ),
             ),
           ),
         ),
-      if (selectedSubCategory == 'Interests')
+      
+      
+      if (widget.selectedMainCategory == 'Interests' &&
+          _focus.hasFocus.toString() != 'true')
         SliverToBoxAdapter(
-            child: Padding(
-          padding: EdgeInsets.fromLTRB(35, 0, 35, 0),
-          child: Divider(
-            color: Colors.grey.shade200,
-          ),
-        )),
-      if (selectedSubCategory == 'Interests')
-        SliverToBoxAdapter(
-          child: Container(
-            padding: EdgeInsets.fromLTRB(35, 10, 0, 0),
-            width: MediaQuery.sizeOf(context).width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(25, 10, 20, 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: ChoiceChip(
+                            backgroundColor: Colors.grey.shade100,
+                            label: Text(
+                              'All',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: selectedCategory == 'Subscribed'
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                            selected: selectedCategory == 'Subscribed',
+                            selectedColor: Colors.black,
+                            showCheckmark: false,
+                            onSelected: (bool selected) {
+                              // Handle 'Others' selection
+                              print(selectedCategory);
+                              setState(() {
+                                selectedCategory = 'Subscribed';
+                              });
+                              //_tabController?.animateTo(2);
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(color: Colors.transparent),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: ChoiceChip(
+                            backgroundColor: Colors.grey.shade100,
+                            label: Text(
+                              '🐷 Team',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: selectedCategory == 'Category1'
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                            selected: selectedCategory == 'Category1',
+                            selectedColor: Colors.black,
+                            showCheckmark: false,
+                            onSelected: (bool selected) {
+                              // Handle 'Others' selection
+                              print(selectedCategory);
+                              setState(() {
+                                selectedCategory = 'Category1';
+                              });
+                              //_tabController?.animateTo(2);
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(color: Colors.transparent),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: ChoiceChip(
+                            backgroundColor: Colors.grey.shade100,
+                            label: Text(
+                              '🎮 Gaming',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: selectedCategory == 'Category2'
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                            selected: selectedCategory == 'Category2',
+                            selectedColor: Colors.black,
+                            showCheckmark: false,
+                            onSelected: (bool selected) {
+                              // Handle 'Others' selection
+                              print(selectedCategory);
+                              setState(() {
+                                selectedCategory = 'Category2';
+                              });
+                              //_tabController?.animateTo(2);
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(color: Colors.transparent),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: ChoiceChip(
+                            backgroundColor: Colors.grey.shade100,
+                            label: Text(
+                              'Basketballlll 🏀',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: selectedCategory == 'Category3'
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                            selected: selectedCategory == 'Category3',
+                            selectedColor: Colors.black,
+                            showCheckmark: false,
+                            onSelected: (bool selected) {
+                              // Handle 'Others' selection
+                              print(selectedCategory);
+                              setState(() {
+                                selectedCategory = 'Category3';
+                              });
+                              //_tabController?.animateTo(2);
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(color: Colors.transparent),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: ChoiceChip(
+                            backgroundColor: Colors.grey.shade100,
+                            label: Text(
+                              'Family',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: selectedCategory == 'Category4'
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                            selected: selectedCategory == 'Category4',
+                            selectedColor: Colors.black,
+                            showCheckmark: false,
+                            onSelected: (bool selected) {
+                              // Handle 'Others' selection
+                              print(selectedCategory);
+                              setState(() {
+                                selectedCategory = 'Category4';
+                              });
+                              //_tabController?.animateTo(2);
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(color: Colors.transparent),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                          ),
+                        ),
+
+                        /*Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ChoiceChip(
+                backgroundColor: Colors.grey.shade100,
+                label: Icon(
+                  Icons.person,
+                  size: 18,
+                  color: selectedCategory == 'Individual'
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                selected: selectedCategory == 'Individual',
+                selectedColor: Colors.black,
+                showCheckmark: false,
+                onSelected: (bool selected) {
+                  // Handle 'Others' selection
+                  print(selectedCategory);
+                  setState(() {
+                    selectedCategory = 'Individual';
+                  });
+                  //_tabController?.animateTo(2);
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  side: BorderSide(color: Colors.transparent),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ChoiceChip(
+                backgroundColor: Colors.grey.shade100,
+                label: Icon(
+                  Icons.group,
+                  size: 18,
+                  color:
+                      selectedCategory == 'Group' ? Colors.white : Colors.black,
+                ),
+                selected: selectedCategory == 'Group',
+                selectedColor: Colors.black,
+                showCheckmark: false,
+                onSelected: (bool selected) {
+                  // Handle 'Others' selection
+                  print(selectedCategory);
+                  setState(() {
+                    selectedCategory = 'Group';
+                  });
+                  //_tabController?.animateTo(2);
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  side: BorderSide(color: Colors.transparent),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+            ),*/
+                      ]),
+                ))), //),
+
+
+      //if(_focus.hasFocus.toString() != 'true')
+      /*SliverToBoxAdapter(
+          child: Padding(
+        padding: EdgeInsets.fromLTRB(25, 5, 20, 20),
+        child: /*SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: */
+            Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ChoiceChip(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                backgroundColor: Colors.grey.shade100,
+                label: Image.asset(
+                  //'assets/agila-logo.png',
+                  'assets/makulay.png',
+                  height: 20, //widget._tabController.index == 1 ? 16 : 12,
+                  width: 20, //widget._tabController.index == 1 ? 16 : 12,
+                  filterQuality: FilterQuality.medium,
+                ),
+                /*Icon(
+                  Icons.play_circle_rounded,
+                  size: 18,
+                  color: selectedMainCategory == 'Interests'
+                      ? Colors.white
+                      : Colors.black,
+                ),*/
+                selected: selectedMainCategory == 'Interests',
+                selectedColor: Colors.black,
+                showCheckmark: false,
+                onSelected: (bool selected) {
+                  // Handle 'Others' selection
+                  print(selectedMainCategory);
+                  setState(() {
+                    selectedMainCategory = 'Interests';
+                  });
+                  //_tabController?.animateTo(2);
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  side: BorderSide(color: Colors.transparent),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+            ),
+            Stack(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedSubCategory = 'Interests';
-                    });
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ChoiceChip(
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    backgroundColor: Colors.grey.shade100,
+                    label: Image.asset(
+                      'assets/chat.png',
+                      height: 17,
+                      width: 17,
+                      filterQuality: FilterQuality.high,
+                      color: selectedMainCategory != 'Chat'
+                          ? Colors.black
+                          : Colors.white,
+                    ),
+                    selected: selectedMainCategory == 'Chat',
+                    selectedColor: Colors.black,
+                    showCheckmark: false,
+                    onSelected: (bool selected) {
+                      // Handle 'Others' selection
+                      print(selectedMainCategory);
+                      setState(() {
+                        selectedMainCategory = 'Chat';
+                      });
+                      //_tabController?.animateTo(2);
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      side: BorderSide(color: Colors.transparent),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  top: 0,
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Others',
-                          style: TextStyle(
-                            fontSize:
-                                selectedSubCategory == 'Interests' ? 17 : 15,
-                            fontWeight: selectedSubCategory == 'Interests'
-                                ? FontWeight.bold
-                                : null,
-                          ),
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [Colors.red, Colors.amber],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '3',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
                         ),
-                        /*if (selectedSubCategory == 'Interests')
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: 2), // Space between text and underline
-                            height: 1, // Height of the underline
-                            width: 40, // Width of the underline
-                            color: Colors.black, // Color of the underline
-                          ),*/
-                      ],
+                      ),
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedSubCategory = 'Posts';
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'The Beauty Shop',
-                          style: TextStyle(
-                            fontSize: selectedSubCategory == 'Posts' ? 17 : 15,
-                            fontWeight: selectedSubCategory == 'Posts'
-                                ? FontWeight.bold
-                                : null,
-                          ),
-                        ),
-                        /*if (selectedSubCategory == 'Posts')
-                          Container(
-                            margin: EdgeInsets.only(top: 2),
-                            height: 1,
-                            width: 40,
-                            color: Colors.black,
-                          ),*/
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedSubCategory = 'Posts';
-                    });
-                  },
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Requests',
-                          style: TextStyle(
-                            fontSize: selectedSubCategory == 'Posts' ? 17 : 15,
-                            fontWeight: selectedSubCategory == 'Posts'
-                                ? FontWeight.bold
-                                : null,
-                          ),
-                        ),
-                        /*if (selectedSubCategory == 'Posts')
-                          Container(
-                            margin: EdgeInsets.only(top: 2),
-                            height: 1,
-                            width: 40,
-                            color: Colors.black,
-                          ),*/
-                      ],
-                    ),
-                  ),
-                ),
-                Spacer(),
               ],
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ChoiceChip(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                backgroundColor: Colors.grey.shade100,
+                label: Icon(
+                  //Icons.content_copy_rounded,
+                  Icons.star_rate_outlined,
+                  size: 18,
+                  color: selectedMainCategory == 'Posts'
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                selected: selectedMainCategory == 'Posts',
+                selectedColor: Colors.black,
+                showCheckmark: false,
+                onSelected: (bool selected) {
+                  // Handle 'Others' selection
+                  print(selectedMainCategory);
+                  setState(() {
+                    selectedMainCategory = 'Posts';
+                  });
+                  //_tabController?.animateTo(2);
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  side: BorderSide(color: Colors.transparent),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+            ),
+          ],
         ),
-      if (selectedSubCategory == 'Posts')
+      )
+          //)
+          ),
+*/
+      
+      
+      
+
+      /*if (widget.selectedMainCategory == 'Interests')
+        SliverToBoxAdapter(
+            child: Padding(
+          padding: EdgeInsets.fromLTRB(35, 10, 35, 15),
+          child: SizedBox(
+            height: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                colors: [Colors.red, Colors.amber],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )),
+            ),
+          ),
+        )),*/
+
+      
+      if (widget.selectedMainCategory == 'Posts' &&
+          _focus.hasFocus.toString() != 'true')
+        /*SliverToBoxAdapter(
+        child:
+        Container(
+            height: otherPinnedGridHeight + 100,
+          child: PostsPage(profilepicture: widget.profilepicture, username: widget.username, userid: widget.userid))),*/
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
@@ -2043,10 +2529,12 @@ class _InterestsPageState extends State<InterestsPage>
             childCount: allPosts.length, // Example list item count
           ),
         ),
-      if (selectedSubCategory == 'Interests')
+      if (widget.selectedMainCategory == 'Interests' &&
+          selectedCategory == 'Individual' &&
+          _focus.hasFocus.toString() != 'true')
         SliverToBoxAdapter(
           child: Container(
-            height: otherPinnedGridHeight + 100,
+            height: otherPinnedGridHeight + 125,
             padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: GridView.builder(
               physics: NeverScrollableScrollPhysics(),
@@ -2082,7 +2570,7 @@ class _InterestsPageState extends State<InterestsPage>
                             // Conditional border: gradient if user has a story, grey if not
                             gradient: hasStory
                                 ? LinearGradient(
-                                    colors: [Colors.orange, Colors.amber],
+                                    colors: [Colors.red, Colors.amber],
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   )
@@ -2133,21 +2621,7 @@ class _InterestsPageState extends State<InterestsPage>
                               ),
                             ),
                           ),*/
-                        if (index < 3)
-                          /*Positioned(
-                            right: -4,
-                            top: -4,
-                            child: Container(
-                              padding: EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: Text(
-                                getRandomEmoji(), // Display random emoji
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),*/
+                        /*if (index < 3)
                           Positioned(
                             right: 0,
                             top: 0,
@@ -2163,7 +2637,11 @@ class _InterestsPageState extends State<InterestsPage>
                                     color: Colors.white,
                                     width: 2),*/
                                 gradient: LinearGradient(
-                                  colors: [Colors.orange, Colors.amber],
+                                  colors: [
+                                    Colors.red,
+                                    Colors.orange,
+                                    Colors.amber
+                                  ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ), // Border color and width
@@ -2179,7 +2657,186 @@ class _InterestsPageState extends State<InterestsPage>
                                 ),
                               ),
                             ),
+                          ),*/
+                      ],
+                    ),
+                    SizedBox(height: 2), // Spacing between avatar and text
+                    // Story label below the avatar
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          //padding: EdgeInsets.all(3), // Space for the border
+                          //color: Colors.white,
+                          padding: EdgeInsets.only(left: 3),
+                          child: Text(
+                            'Story $userIndex',
+                            style: TextStyle(fontSize: 12),
+                            overflow: TextOverflow.ellipsis, // Handle long text
                           ),
+                        ),
+                        Container(
+                            padding: EdgeInsets.only(left: 3),
+                            child: ShaderMask(
+                              blendMode: BlendMode.srcIn,
+                              shaderCallback: (Rect bounds) => LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.red,
+                                  Colors.orange,
+                                  Colors.amber
+                                ], // Gradient colors for the icon
+                              ).createShader(bounds),
+                              child: Icon(
+                                Icons.verified,
+                                color: Colors.red,
+                                size: 12,
+                              ),
+                            )),
+                      ],
+                    )
+                  ],
+                );
+              },
+              itemCount: otherUsers.length, // Number of grid items (stories)
+            ),
+          ),
+        ),
+
+      if (widget.selectedMainCategory == 'Interests' &&
+          selectedCategory == 'Group' &&
+          _focus.hasFocus.toString() != 'true')
+        SliverToBoxAdapter(
+          child: Container(
+            height: otherPinnedGridHeight + 125,
+            padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              //physics: BouncingScrollPhysics(), // Makes the grid independently scrollable
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4, // 5 columns
+                crossAxisSpacing: 0, // Spacing between columns
+                mainAxisSpacing: 10, // Spacing between rows
+                childAspectRatio: 1, // Square grid items
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                int userIndex =
+                    otherUsers[index]; // Get user index from the sorted list
+                /*bool isAccountHolder = userIndex ==
+                accountHolderStory;*/ // Check if this is the account holder
+                bool hasStory = userHasStory(
+                    userIndex); // Account holder always has a story
+                final int randomNumber = Random().nextInt(100);
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Stack to position the thought bubble on top-right of the CircleAvatar
+                    Stack(
+                      children: [
+                        // Container with a conditional border (outer layer)
+                        Container(
+                          padding:
+                              EdgeInsets.all(3), // Space for the outer border
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            // Conditional border: gradient if user has a story, grey if not
+                            gradient: hasStory
+                                ? LinearGradient(
+                                    colors: [
+                                      Colors.red,
+                                      Colors.orange,
+                                      Colors.amber
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : null,
+                            color: hasStory ? null : Colors.grey[100],
+                          ),
+                          child: Container(
+                            padding:
+                                EdgeInsets.all(3), // Space for the outer border
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              // Conditional border: gradient if user has a story, grey if not
+                              gradient: hasStory
+                                  ? LinearGradient(
+                                      colors: [Colors.white, Colors.white],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    )
+                                  : null,
+                              color: hasStory ? null : Colors.grey[100],
+                            ),
+                            child: CircleAvatar(
+                              radius: 30, // Adjusted size of the avatar
+                              backgroundColor: Colors.black,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  'https://picsum.photos/seed/group$index/150'),
+                              /*child: Text(
+                              'S$userIndex',
+                              style: TextStyle(color: Colors.white),
+                            ),*/
+                            ),
+                          ),
+                        ),
+                        // Positioned thought bubble with a random emoji conditionally shown
+                        /*if (shouldShowEmojiBubble(userIndex)) // Show emoji bubble conditionally
+                          Positioned(
+                            right: -4,
+                            top: -4,
+                            child: Container(
+                              padding: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: Text(
+                                getRandomEmoji(), // Display random emoji
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ),*/
+                        /*if (index < 3)
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Container(
+                              //padding: EdgeInsets.all(3), // Space for the border
+                              //color: Colors.white,
+                              width: 25,
+                              height: 25,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                //color: Colors.orange,
+                                /*border: Border.all(
+                                    color: Colors.white,
+                                    width: 2),*/
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.red,
+                                    Colors.orange,
+                                    Colors.amber
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ), // Border color and width
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '$randomNumber',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),*/
                       ],
                     ),
                     SizedBox(height: 2), // Spacing between avatar and text
@@ -2212,411 +2869,204 @@ class _InterestsPageState extends State<InterestsPage>
                   ],
                 );
               },
-              itemCount: otherUsers.length, // Number of grid items (stories)
+              itemCount: 10, // Number of grid items (stories)
             ),
           ),
         ),
-    ]);
-    //),
-    //),
-    /*SliverToBoxAdapter(
+
+      if (widget.selectedMainCategory == 'Interests' &&
+          selectedCategory == 'Subscribed' &&
+          _focus.hasFocus.toString() != 'true')
+        SliverToBoxAdapter(
           child: Container(
-            height: screenHeight / 2,
-            child: Container(
-                height: MediaQuery.sizeOf(context).height,
-                child: SmartRefresher(
-                  scrollController: _scrollController2,
-                  scrollDirection: Axis.horizontal,
-                    enablePullDown: true,
-                    enablePullUp: true,
-                    header: WaterDropHeader(),
-                  
-                    controller: _refreshController,
-                    onRefresh: _onRefresh,
-                    onLoading: _onLoading,
-                    child: _pageView(allPosts)
-                    ))
-          ),
-        ),*/
-    //],
-
-    /*Container(
-                height: MediaQuery.sizeOf(context).height,
-                child: SmartRefresher(
-                    enablePullDown: true,
-                    enablePullUp: true,
-                    header: WaterDropHeader(),
-                  
-                    controller: _refreshController,
-                    onRefresh: _onRefresh,
-                    onLoading: _onLoading,
-                    child: _pageView(allPosts)
-                    ))*/
-
-    /*SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              if (index != 0 && index % 4 == 0) {
-                return Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    color: Colors.white,
-                    child: sharesRow(context));
-              } else {
-                return allPosts[index];
-              }
-            },
-            childCount: allPosts.length, // Example list item count
-          ),
-        ),*/
-
-    /*GestureDetector(
-        onHorizontalDragEnd: (dragEndDetails) {
-          if (dragEndDetails.primaryVelocity! < 0) {
-            Navigator.push(context, _routeToDiscover());
-          } else {
-            Navigator.push(context, _routeToNewPost());
-          }
-        },
-        child: */
-    /*ExtendedNestedScrollView(
-              pinnedHeaderSliverHeightBuilder: () => 60,
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    SliverAppBar(
-                      centerTitle: true,
-                       backgroundColor: Colors.transparent,
-                        //expandedHeight: 115.0,
-                        titleSpacing: 0,
-                        toolbarHeight: 60,
-                        floating: false,
-                        foregroundColor: Colors.transparent,
-                        surfaceTintColor: Colors.transparent,
-                        pinned: true, // Keeps the AppBar visible when scrolled up
-                        title:
-                          
-                          Container(
-                          color: Colors.transparent,
-                          height: 50,
-                          //width: MediaQuery.sizeOf(context).width,
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child:  //Row(children: [ 
-                            //Container(
-                            //padding: EdgeInsets.fromLTRB(MediaQuery.sizeOf(context), 0, 0, 0),
-                            //width: MediaQuery.sizeOf(context),
-                            //child: //Icon(Icons.add_box_rounded, color: Colors.black, size: 40,)),
-                            TabBar(
-                              splashFactory: NoSplash.splashFactory,
-                              tabAlignment: TabAlignment.center,
-                              isScrollable: true,
-                              controller: _tabController,
-                              dividerColor: Colors.transparent,
-                              indicatorColor: Colors.transparent,
-                              indicatorPadding: EdgeInsets.all(0),
-                              labelPadding: EdgeInsets.fromLTRB(7, 0, 7, 0),
-                              onTap: (value) {
-                                /*setState(() {
-                                        selectedCategory == 'Following';
-                                      });*/
-                                      _tabController?.animateTo(value);
-                              },
-                              tabs: [
-                                Tab(
-                                    height: 70,
-                                    child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(15, 0, 0, 10), child: Row(
-                                          children: [
-                                            Text(
-                                              'ma',
-                                              style: TextStyle(
-                                                color: Colors.orange,
-                                                fontSize: 30,
-                                                fontFamily: 'Gotham-Black',
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              'kulay',
-                                              style: TextStyle(
-                                                color: Colors.amber,
-                                                fontSize: 30,
-                                                fontFamily: 'Gotham-Black',
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            )
-                                          ],
-                                        ))),
-                                Tab(
-                                  child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                        child: ChoiceChip(
-                                    label: Text('Discover'),
-                                    selected: selectedCategory == 'Discover',
-                                    // Change color when selected
-                                    side: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.5,
-                                    ),
-                                    selectedColor: Colors.black,
-                                    showCheckmark: false,
-                                    backgroundColor: Colors.grey[100],
-                                    labelStyle: TextStyle(
-                                      color: selectedCategory == 'Discover'
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    onSelected: (bool selected) {
-                                      print(selectedCategory);
-                                       setState(() {
-                                        selectedCategory == 'Discover';
-                                      });
-                                      _tabController?.animateTo(1);
-                                      
-                                    },
-                                  ),
-                                )),
-                                
-                                
-                                Tab(
-                                  child: ChoiceChip(
-                                    label: Text('Shop'),
-                                    selected: selectedCategory == 'Shop',
-                                    // Change color when selected
-                                    side: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.5,
-                                    ),
-                                    selectedColor: Colors.black,
-                                    showCheckmark: false,
-                                    backgroundColor: Colors.grey[100],
-                                    labelStyle: TextStyle(
-                                      color: selectedCategory == 'Shop'
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    onSelected: (bool selected) {
-                                      print(selectedCategory);
-                                      setState(() {
-                                        selectedCategory == 'Shop';
-                                      });
-                                      _tabController?.animateTo(2);
-                                    },
-                                  ),
-                                ),
-                                Tab(
-                                  child: ChoiceChip(
-                                    label: Text('Live'),
-                                    selected: selectedCategory == 'Live',
-                                    // Change color when selected
-                                    side: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.5,
-                                    ),
-                                    selectedColor: Colors.black,
-                                    showCheckmark: false,
-                                    backgroundColor: Colors.grey[100],
-                                    labelStyle: TextStyle(
-                                      color: selectedCategory == 'Live'
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    onSelected: (bool selected) {
-                                      print(selectedCategory);
-                                      setState(() {
-                                        selectedCategory == 'Live';
-                                      });
-                                      _tabController?.animateTo(3);
-                                    },
-                                  ),
-                                ),
-                                Tab(
-                                    child: Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                  child: ChoiceChip(
-                                    label: Text('Podcasts'),
-                                    selected: selectedCategory == 'Podcasts',
-                                    // Change color when selected
-                                    side: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.5,
-                                    ),
-                                    selectedColor: Colors.black,
-                                    showCheckmark: false,
-                                    backgroundColor: Colors.grey[100],
-                                    labelStyle: TextStyle(
-                                      color: selectedCategory == 'Podcasts'
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    onSelected: (bool selected) {
-                                      print(selectedCategory);
-                                      setState(() {
-                                        selectedCategory == 'Podcasts';
-                                      });
-                                      _tabController?.animateTo(4);
-                                    },
-                                  ),
-                                )),
-                              ]),
-                               //],)
-                        )
-                        
-                       
-                        ),
-                  ];
-                },
-                body: TabBarView(controller: _tabController, children: [
-                  GestureDetector(
-                    onHorizontalDragEnd: (dragEndDetails) {
-                      if (dragEndDetails.primaryVelocity! > 0) {
-                        Navigator.push(context, _routeToNewPost());
-                      }else{
-                        _tabController?.animateTo(1);
-                      }
-                    },
-                    child:CustomScrollView(
-                    //controller: _scrollController2,
-                    slivers: [
-                      SliverToBoxAdapter(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
-              height: screenHeight / 4, // Grid height is set to 1/3 of screen height
-              child: GridView.builder(
-                physics: BouncingScrollPhysics(), // Makes the grid independently scrollable
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5, // 5 columns
-                  crossAxisSpacing: 10, // Spacing between columns
-                  mainAxisSpacing: 10, // Spacing between rows
-                  childAspectRatio: 1, // Square grid items
-                ),
-                 itemBuilder: (BuildContext context, int index) {
-                  int userIndex = favoriteUsers[index]; // Get user index from the sorted list
-                  bool isAccountHolder = userIndex == accountHolderStory; // Check if this is the account holder
-                  bool hasStory = isAccountHolder || userHasStory(userIndex); // Account holder always has a story
-
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Stack to position the thought bubble on top-right of the CircleAvatar
-                      Stack(
-                        children: [
-                          // Container with a conditional border (outer layer)
-                          Container(
-                            padding: EdgeInsets.all(3), // Space for the outer border
+            height: otherPinnedGridHeight + 125,
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              //physics: BouncingScrollPhysics(), // Makes the grid independently scrollable
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4, // 5 columns
+                crossAxisSpacing: 0, // Spacing between columns
+                mainAxisSpacing: 10, // Spacing between rows
+                childAspectRatio: 1, // Square grid items
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                int userIndex =
+                    otherUsers[index]; // Get user index from the sorted list
+                /*bool isAccountHolder = userIndex ==
+                accountHolderStory;*/ // Check if this is the account holder
+                bool hasStory = userHasStory(
+                    userIndex); // Account holder always has a story
+                final int randomNumber = Random().nextInt(100);
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Stack to position the thought bubble on top-right of the CircleAvatar
+                    Stack(
+                      children: [
+                        // Container with a conditional border (outer layer)
+                        Container(
+                          padding:
+                              EdgeInsets.all(3), // Space for the outer border
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            // Conditional border: gradient if user has a story, grey if not
+                            gradient: hasStory
+                                ? LinearGradient(
+                                    colors: [Colors.red, Colors.amber],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : null,
+                            color: hasStory ? null : Colors.grey[100],
+                          ),
+                          child: Container(
+                            padding:
+                                EdgeInsets.all(3), // Space for the outer border
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               // Conditional border: gradient if user has a story, grey if not
                               gradient: hasStory
                                   ? LinearGradient(
-                                      colors: [Colors.orange, Colors.amber],
+                                      colors: [Colors.white, Colors.white],
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                     )
                                   : null,
                               color: hasStory ? null : Colors.grey[100],
                             ),
-                            child: CircleAvatar(
-                              radius: 20, // Adjusted size of the avatar
-                              backgroundColor: Colors.blueAccent,
-                              child: Text(
-                                isAccountHolder ? 'Me' : 'S$userIndex',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            child: GestureDetector(
+                                      onLongPressStart: (details) {
+                                        _showDropdown(
+                                            context, details.globalPosition);
+                                      },
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ViewChannelPage(
+                                                      profilepicture:
+                                                          widget.profilepicture,
+                                                      username: widget.username,
+                                                      userid: widget.userid)),
+                                        );
+                                      },
+                                      child: CircleAvatar(
+                              radius: 30, // Adjusted size of the avatar
+                              backgroundColor: Colors.black,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  'https://picsum.photos/seed/group$randomNumber/150'),
+                              /*child: Text(
+                              'S$userIndex',
+                              style: TextStyle(color: Colors.white),
+                            ),*/
                             ),
                           ),
-                          // Positioned thought bubble with a random emoji conditionally shown
-                          if (shouldShowEmojiBubble(userIndex)) // Show emoji bubble conditionally
-                            Positioned(
-                              right: -4,
-                              top: -4,
-                              child: Container(
-                                padding: EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                ),
+                        ),
+                        )
+                        // Positioned thought bubble with a random emoji conditionally shown
+                        /*if (shouldShowEmojiBubble(userIndex)) // Show emoji bubble conditionally
+                          Positioned(
+                            right: -4,
+                            top: -4,
+                            child: Container(
+                              padding: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: Text(
+                                getRandomEmoji(), // Display random emoji
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ),*/
+                        /*if (index < 3)
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Container(
+                              //padding: EdgeInsets.all(3), // Space for the border
+                              //color: Colors.white,
+                              width: 25,
+                              height: 25,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                //color: Colors.orange,
+                                /*border: Border.all(
+                                    color: Colors.white,
+                                    width: 2),*/
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.red,
+                                    Colors.orange,
+                                    Colors.amber
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ), // Border color and width
+                              ),
+                              child: Center(
                                 child: Text(
-                                  getRandomEmoji(), // Display random emoji
-                                  style: TextStyle(fontSize: 16),
+                                  '$randomNumber',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                        ],
-                      ),
-                      SizedBox(height: 2), // Spacing between avatar and text
-                      // Story label below the avatar
-                      Text(
-                        isAccountHolder ? 'marciusjam' : 'Story $userIndex',
-                        style: TextStyle(fontSize: 12),
-                        overflow: TextOverflow.ellipsis, // Handle long text
-                      ),
-                    ],
-                  );
-                },
-                itemCount: favoriteUsers.length, // Number of grid items (stories)
-              ),
+                          ),*/
+                      ],
+                    ),
+                    SizedBox(height: 2), // Spacing between avatar and text
+                    // Story label below the avatar
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          //padding: EdgeInsets.all(3), // Space for the border
+                          //color: Colors.white,
+                          padding: EdgeInsets.only(left: 3),
+                          child: Text(
+                            'Story $userIndex',
+                            style: TextStyle(fontSize: 12),
+                            overflow: TextOverflow.ellipsis, // Handle long text
+                          ),
+                        ),
+                        Container(
+                            padding: EdgeInsets.only(left: 3),
+                            child: ShaderMask(
+                              blendMode: BlendMode.srcIn,
+                              shaderCallback: (Rect bounds) => LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.red,
+                                  Colors.orange,
+                                  Colors.amber
+                                ], // Gradient colors for the icon
+                              ).createShader(bounds),
+                              child: Icon(
+                                Icons.verified,
+                                color: Colors.red,
+                                size: 12,
+                              ),
+                            )),
+                      ],
+                    )
+                  ],
+                );
+              },
+              itemCount: 15, // Number of grid items (stories)
             ),
           ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            if (index != 0 && index % 4 == 0) {
-                              return Container(
-                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                  color: Colors.white,
-                                  child: sharesRow(context));
-                            } else {
-                              return allPosts[index];
-                            }
-                          },
-                          childCount:
-                              allPosts.length, // Example list item count
-                        ),
-                      ),
-
-                      
-                    ],
-                  )),
-                   CustomScrollView(
-                    controller: _scrollController1,
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Container(height: MediaQuery.sizeOf(context).height, child:  DiscoverPage(
-                          widget.profilepicture,
-                          widget.username,
-                          widget.userid,
-                          widget.cameras,
-                        ),))]),
-                  
-                  CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Container(height: screenHeight,child: ShopPage(),)
-                        
-                      )
-                    ],
-                  ),
-                  CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Container(height: screenHeight,child: LivePage(),)
-                        
-                      )
-                    ],
-                  ),
-                  CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Center(
-                          child: Text('Podcasts'),
-                        ),
-                      )
-                    ],
-                  )
-                ]))*/
-    //)
+        ),
+    ]);
   }
 
   @override

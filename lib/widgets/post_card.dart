@@ -133,9 +133,9 @@ Future<void> getFileUrl(String fileKey) async {
 
   Container _mainContainer(BuildContext context, double widthToUse, String description, Map<String, String> content, String username, String? profilepicture, int postage, bool preview, AssetEntity? previewcontent, String? previewvideopath) {
     return Container(
-        padding: EdgeInsets.fromLTRB(20, 5, 20, 15),
+        padding: widget.type != 'trends' ? EdgeInsets.fromLTRB(20, 5, 20, 15) :  EdgeInsets.fromLTRB(20, 5, 0, 15),
         //height: 250,
-        color: Colors.white,
+        color: Colors.white, //widget.type != 'trends' ? Colors.white : Colors.black,
         width: widthToUse,
         //color: Colors.black,
         /*child: Dismissible(

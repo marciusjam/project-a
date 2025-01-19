@@ -40,6 +40,8 @@ class User extends amplify_core.Model {
   final List<Post>? _posts;
   final List<Comment>? _comments;
   final List<LikeLink>? _likes;
+  final List<UsersGroups>? _groups;
+  final List<Message>? _messages;
   final amplify_core.TemporalDateTime? _createdOn;
   final amplify_core.TemporalDateTime? _updatedOn;
   final amplify_core.TemporalDateTime? _createdAt;
@@ -124,6 +126,14 @@ class User extends amplify_core.Model {
     return _likes;
   }
   
+  List<UsersGroups>? get groups {
+    return _groups;
+  }
+  
+  List<Message>? get messages {
+    return _messages;
+  }
+  
   amplify_core.TemporalDateTime? get createdOn {
     return _createdOn;
   }
@@ -140,9 +150,9 @@ class User extends amplify_core.Model {
     return _updatedAt;
   }
   
-  const User._internal({required this.id, required userId, required username, email, phoneNumber, bio, profilePicture, backgroundContent, followers, following, posts, comments, likes, createdOn, updatedOn, createdAt, updatedAt}): _userId = userId, _username = username, _email = email, _phoneNumber = phoneNumber, _bio = bio, _profilePicture = profilePicture, _backgroundContent = backgroundContent, _followers = followers, _following = following, _posts = posts, _comments = comments, _likes = likes, _createdOn = createdOn, _updatedOn = updatedOn, _createdAt = createdAt, _updatedAt = updatedAt;
+  const User._internal({required this.id, required userId, required username, email, phoneNumber, bio, profilePicture, backgroundContent, followers, following, posts, comments, likes, groups, messages, createdOn, updatedOn, createdAt, updatedAt}): _userId = userId, _username = username, _email = email, _phoneNumber = phoneNumber, _bio = bio, _profilePicture = profilePicture, _backgroundContent = backgroundContent, _followers = followers, _following = following, _posts = posts, _comments = comments, _likes = likes, _groups = groups, _messages = messages, _createdOn = createdOn, _updatedOn = updatedOn, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory User({String? id, required String userId, required String username, String? email, String? phoneNumber, String? bio, String? profilePicture, String? backgroundContent, List<FollowLink>? followers, List<FollowLink>? following, List<Post>? posts, List<Comment>? comments, List<LikeLink>? likes, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
+  factory User({String? id, required String userId, required String username, String? email, String? phoneNumber, String? bio, String? profilePicture, String? backgroundContent, List<FollowLink>? followers, List<FollowLink>? following, List<Post>? posts, List<Comment>? comments, List<LikeLink>? likes, List<UsersGroups>? groups, List<Message>? messages, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
     return User._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
       userId: userId,
@@ -157,6 +167,8 @@ class User extends amplify_core.Model {
       posts: posts != null ? List<Post>.unmodifiable(posts) : posts,
       comments: comments != null ? List<Comment>.unmodifiable(comments) : comments,
       likes: likes != null ? List<LikeLink>.unmodifiable(likes) : likes,
+      groups: groups != null ? List<UsersGroups>.unmodifiable(groups) : groups,
+      messages: messages != null ? List<Message>.unmodifiable(messages) : messages,
       createdOn: createdOn,
       updatedOn: updatedOn);
   }
@@ -182,6 +194,8 @@ class User extends amplify_core.Model {
       DeepCollectionEquality().equals(_posts, other._posts) &&
       DeepCollectionEquality().equals(_comments, other._comments) &&
       DeepCollectionEquality().equals(_likes, other._likes) &&
+      DeepCollectionEquality().equals(_groups, other._groups) &&
+      DeepCollectionEquality().equals(_messages, other._messages) &&
       _createdOn == other._createdOn &&
       _updatedOn == other._updatedOn;
   }
@@ -211,7 +225,7 @@ class User extends amplify_core.Model {
     return buffer.toString();
   }
   
-  User copyWith({String? userId, String? username, String? email, String? phoneNumber, String? bio, String? profilePicture, String? backgroundContent, List<FollowLink>? followers, List<FollowLink>? following, List<Post>? posts, List<Comment>? comments, List<LikeLink>? likes, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
+  User copyWith({String? userId, String? username, String? email, String? phoneNumber, String? bio, String? profilePicture, String? backgroundContent, List<FollowLink>? followers, List<FollowLink>? following, List<Post>? posts, List<Comment>? comments, List<LikeLink>? likes, List<UsersGroups>? groups, List<Message>? messages, amplify_core.TemporalDateTime? createdOn, amplify_core.TemporalDateTime? updatedOn}) {
     return User._internal(
       id: id,
       userId: userId ?? this.userId,
@@ -226,6 +240,8 @@ class User extends amplify_core.Model {
       posts: posts ?? this.posts,
       comments: comments ?? this.comments,
       likes: likes ?? this.likes,
+      groups: groups ?? this.groups,
+      messages: messages ?? this.messages,
       createdOn: createdOn ?? this.createdOn,
       updatedOn: updatedOn ?? this.updatedOn);
   }
@@ -243,6 +259,8 @@ class User extends amplify_core.Model {
     ModelFieldValue<List<Post>?>? posts,
     ModelFieldValue<List<Comment>?>? comments,
     ModelFieldValue<List<LikeLink>?>? likes,
+    ModelFieldValue<List<UsersGroups>?>? groups,
+    ModelFieldValue<List<Message>?>? messages,
     ModelFieldValue<amplify_core.TemporalDateTime?>? createdOn,
     ModelFieldValue<amplify_core.TemporalDateTime?>? updatedOn
   }) {
@@ -260,6 +278,8 @@ class User extends amplify_core.Model {
       posts: posts == null ? this.posts : posts.value,
       comments: comments == null ? this.comments : comments.value,
       likes: likes == null ? this.likes : likes.value,
+      groups: groups == null ? this.groups : groups.value,
+      messages: messages == null ? this.messages : messages.value,
       createdOn: createdOn == null ? this.createdOn : createdOn.value,
       updatedOn: updatedOn == null ? this.updatedOn : updatedOn.value
     );
@@ -339,13 +359,39 @@ class User extends amplify_core.Model {
               .map((e) => LikeLink.fromJson(new Map<String, dynamic>.from(e?['serializedData'])))
               .toList()
           : null),
+      _groups = json['groups']  is Map
+        ? (json['groups']['items'] is List
+          ? (json['groups']['items'] as List)
+              .where((e) => e != null)
+              .map((e) => UsersGroups.fromJson(new Map<String, dynamic>.from(e)))
+              .toList()
+          : null)
+        : (json['groups'] is List
+          ? (json['groups'] as List)
+              .where((e) => e?['serializedData'] != null)
+              .map((e) => UsersGroups.fromJson(new Map<String, dynamic>.from(e?['serializedData'])))
+              .toList()
+          : null),
+      _messages = json['messages']  is Map
+        ? (json['messages']['items'] is List
+          ? (json['messages']['items'] as List)
+              .where((e) => e != null)
+              .map((e) => Message.fromJson(new Map<String, dynamic>.from(e)))
+              .toList()
+          : null)
+        : (json['messages'] is List
+          ? (json['messages'] as List)
+              .where((e) => e?['serializedData'] != null)
+              .map((e) => Message.fromJson(new Map<String, dynamic>.from(e?['serializedData'])))
+              .toList()
+          : null),
       _createdOn = json['createdOn'] != null ? amplify_core.TemporalDateTime.fromString(json['createdOn']) : null,
       _updatedOn = json['updatedOn'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedOn']) : null,
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'userId': _userId, 'username': _username, 'email': _email, 'phoneNumber': _phoneNumber, 'bio': _bio, 'profilePicture': _profilePicture, 'backgroundContent': _backgroundContent, 'followers': _followers?.map((FollowLink? e) => e?.toJson()).toList(), 'following': _following?.map((FollowLink? e) => e?.toJson()).toList(), 'posts': _posts?.map((Post? e) => e?.toJson()).toList(), 'comments': _comments?.map((Comment? e) => e?.toJson()).toList(), 'likes': _likes?.map((LikeLink? e) => e?.toJson()).toList(), 'createdOn': _createdOn?.format(), 'updatedOn': _updatedOn?.format(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'userId': _userId, 'username': _username, 'email': _email, 'phoneNumber': _phoneNumber, 'bio': _bio, 'profilePicture': _profilePicture, 'backgroundContent': _backgroundContent, 'followers': _followers?.map((FollowLink? e) => e?.toJson()).toList(), 'following': _following?.map((FollowLink? e) => e?.toJson()).toList(), 'posts': _posts?.map((Post? e) => e?.toJson()).toList(), 'comments': _comments?.map((Comment? e) => e?.toJson()).toList(), 'likes': _likes?.map((LikeLink? e) => e?.toJson()).toList(), 'groups': _groups?.map((UsersGroups? e) => e?.toJson()).toList(), 'messages': _messages?.map((Message? e) => e?.toJson()).toList(), 'createdOn': _createdOn?.format(), 'updatedOn': _updatedOn?.format(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
@@ -362,6 +408,8 @@ class User extends amplify_core.Model {
     'posts': _posts,
     'comments': _comments,
     'likes': _likes,
+    'groups': _groups,
+    'messages': _messages,
     'createdOn': _createdOn,
     'updatedOn': _updatedOn,
     'createdAt': _createdAt,
@@ -392,6 +440,12 @@ class User extends amplify_core.Model {
   static final LIKES = amplify_core.QueryField(
     fieldName: "likes",
     fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'LikeLink'));
+  static final GROUPS = amplify_core.QueryField(
+    fieldName: "groups",
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'UsersGroups'));
+  static final MESSAGES = amplify_core.QueryField(
+    fieldName: "messages",
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Message'));
   static final CREATEDON = amplify_core.QueryField(fieldName: "createdOn");
   static final UPDATEDON = amplify_core.QueryField(fieldName: "updatedOn");
   static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
@@ -400,7 +454,7 @@ class User extends amplify_core.Model {
     
     modelSchemaDefinition.authRules = [
       amplify_core.AuthRule(
-        authStrategy: amplify_core.AuthStrategy.PUBLIC,
+        authStrategy: amplify_core.AuthStrategy.PRIVATE,
         operations: const [
           amplify_core.ModelOperation.CREATE,
           amplify_core.ModelOperation.UPDATE,
@@ -492,6 +546,20 @@ class User extends amplify_core.Model {
       isRequired: false,
       ofModelName: 'LikeLink',
       associatedKey: LikeLink.USER
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
+      key: User.GROUPS,
+      isRequired: false,
+      ofModelName: 'UsersGroups',
+      associatedKey: UsersGroups.USER
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
+      key: User.MESSAGES,
+      isRequired: false,
+      ofModelName: 'Message',
+      associatedKey: Message.SENDER
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(

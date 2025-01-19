@@ -23,10 +23,10 @@ class TrendingCard extends StatelessWidget {
         child: Column(children: [
       Card(
           surfaceTintColor: Colors.white, //IOS
-          elevation: elavationVal,
+          elevation: 0,
           color: Colors.white,
           shape: new RoundedRectangleBorder(
-            side: new BorderSide(color: Colors.white12, width: .3),
+            side: new BorderSide(color: Colors.grey.shade300, width: 1),
             borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
           ),
           child: Padding(
@@ -42,9 +42,9 @@ class TrendingCard extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: CircleAvatar(
-                                        radius: 25,
-                                        backgroundImage: CachedNetworkImageProvider(profilepicture!)),
-                                   
+                                radius: 25,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    profilepicture!)),
                           ),
 
                           Padding(
@@ -68,8 +68,7 @@ class TrendingCard extends StatelessWidget {
                                       text: TextSpan(
                                         children: <TextSpan>[
                                           TextSpan(
-                                            text:
-                                                description,
+                                            text: description,
                                             style: TextStyle(
                                                 //color: Colors.black,
                                                 color: Colors.black,
@@ -100,120 +99,56 @@ class TrendingCard extends StatelessWidget {
                             child: SizedBox(
                               width: 70,
                               height: 70,
-                              child: ClipRRect(borderRadius: BorderRadius.circular(5.0),
-child:CachedNetworkImage(
-         //key: globalImageKey,
-       imageUrl: content.entries.first.value,
-       progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Container(
-                            height: double.infinity,
-                            //height: 600,
-                            width: double.infinity,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Colors.white,
-                        ),
-                      ),
-       errorWidget: (context, url, error) => Icon(Icons.error),height: double.infinity,
-                            //height: 600,
-                            width: double.infinity,
-                            fit: BoxFit.cover
-    )
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: CachedNetworkImage(
+                                      //key: globalImageKey,
+                                      imageUrl: content.entries.first.value,
+                                      progressIndicatorBuilder:
+                                          (context, url, downloadProgress) =>
+                                              Container(
+                                                height: double.infinity,
+                                                //height: 600,
+                                                width: double.infinity,
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.rectangle,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                      height: double.infinity,
+                                      //height: 600,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover)),
                             ),
-                          ),)
-
-                        
+                          )
                         ]),
-                    preview == false ?
-                    Container(
-                        height: 40,
+                    preview == false
+                        ? Container(
+                            height: 40,
+                            //color: Colors.black.withOpacity(0.5),
+                            //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
 
-                        //color: Colors.black.withOpacity(0.5),
-                        //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              /**/
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(10, 10, 0, 0),
-                                          child: SizedBox(
-                                            width: 70,
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      0, 0, 0, 0),
-                                                  child: Icon(
-                                                    Icons.chat_bubble_outline,
-                                                    //color: Colors.black12,
-                                                    color: Colors.black12,
-                                                  ),
-                                                ),
-                                                Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            5, 0, 0, 0),
-                                                    child: Text('300',
-                                                        style: TextStyle(
-                                                            //color: Colors.grey,
-                                                            color: Colors.grey,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal,
-                                                            fontSize: 15))),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(10, 10, 0, 0),
-                                          child: SizedBox(
-                                            width: 70,
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      0, 0, 0, 0),
-                                                  child: Icon(
-                                                    Icons.favorite_outline,
-                                                    //color: Colors.black12,
-                                                    color: Colors.black12,
-                                                  ),
-                                                ),
-                                                Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            5, 0, 0, 0),
-                                                    child: Text('1.2m',
-                                                        style: TextStyle(
-                                                            //color: Colors.grey,
-                                                            color: Colors.grey,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal,
-                                                            fontSize: 15))),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                10, 10, 0, 0),
-                                            child: SizedBox(
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  /**/
+                                  Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 0, 0, 0),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  0, 10, 0, 0),
+                                              child: SizedBox(
                                                 width: 70,
                                                 child: Row(
                                                   children: [
@@ -223,27 +158,99 @@ child:CachedNetworkImage(
                                                               0, 0, 0, 0),
                                                       child: Icon(
                                                         Icons
-                                                            .swap_horiz_outlined,
+                                                            .chat_bubble_outline,
                                                         //color: Colors.black12,
                                                         color: Colors.black12,
                                                       ),
                                                     ),
-                                                    Padding(
+                                                    /*Padding(
                                                         padding:
                                                             EdgeInsets.fromLTRB(
                                                                 5, 0, 0, 0),
-                                                        child: Text('25',
+                                                        child: Text('300',
                                                             style: TextStyle(
                                                                 //color: Colors.grey,
-                                                                color: Colors.grey,
+                                                                color:
+                                                                    Colors.grey,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,
-                                                                fontSize: 15))),
+                                                                fontSize: 15))),*/
                                                   ],
-                                                ))),
-                                      ]))
-                            ])): Container()
+                                                ),
+                                              ),
+                                            ),
+                                            
+                                            Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  0, 10, 0, 0),
+                                              child: SizedBox(
+                                                width: 70,
+                                                child: Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.fromLTRB(
+                                                              0, 0, 0, 0),
+                                                      child: Icon(
+                                                        Icons.favorite_outline,
+                                                        //color: Colors.black12,
+                                                        color: Colors.black12,
+                                                      ),
+                                                    ),
+                                                    /*Padding(
+                                                        padding:
+                                                            EdgeInsets.fromLTRB(
+                                                                5, 0, 0, 0),
+                                                        child: Text('1.2m',
+                                                            style: TextStyle(
+                                                                //color: Colors.grey,
+                                                                color:
+                                                                    Colors.grey,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
+                                                                fontSize: 15))),*/
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                           
+                                            Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0, 10, 0, 0),
+                                                child: SizedBox(
+                                                    width: 70,
+                                                    child: Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .fromLTRB(
+                                                                  0, 0, 0, 0),
+                                                          child: Icon(
+                                                            Icons
+                                                                .swap_horiz_outlined,
+                                                            //color: Colors.black12,
+                                                            color:
+                                                                Colors.black12,
+                                                          ),
+                                                        ),
+                                                        /*Padding(
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(
+                                                                    5, 0, 0, 0),
+                                                            child: Text('25',
+                                                                style: TextStyle(
+                                                                    //color: Colors.grey,
+                                                                    color: Colors.grey,
+                                                                    fontWeight: FontWeight.normal,
+                                                                    fontSize: 15))),*/
+                                                      ],
+                                                    ))),
+                                           
+                                          ]))
+                                ]))
+                        : Container()
                   ],
                 )
               ]))),

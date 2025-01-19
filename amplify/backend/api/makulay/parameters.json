@@ -2,5 +2,11 @@
   "AppSyncApiName": "makulay",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
-  "AuthModeLastUpdated": "2024-01-22T17:56:19.507Z"
+  "AuthModeLastUpdated": "2024-11-15T23:17:41.626Z",
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authmakulay95ebd6d0",
+      "Outputs.UserPoolId"
+    ]
+  }
 }

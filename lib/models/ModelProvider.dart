@@ -22,22 +22,28 @@
 import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'Comment.dart';
 import 'FollowLink.dart';
+import 'Group.dart';
 import 'LikeLink.dart';
+import 'Message.dart';
 import 'Post.dart';
 import 'User.dart';
+import 'UsersGroups.dart';
 
 export 'Comment.dart';
 export 'FollowLink.dart';
+export 'Group.dart';
 export 'LikeLink.dart';
+export 'Message.dart';
 export 'Post.dart';
 export 'RecordStatus.dart';
 export 'User.dart';
+export 'UsersGroups.dart';
 
 class ModelProvider implements amplify_core.ModelProviderInterface {
   @override
-  String version = "079060502de455d441b6b32df2a62905";
+  String version = "5f95211dc981c69c18af10d2f66829fb";
   @override
-  List<amplify_core.ModelSchema> modelSchemas = [Comment.schema, FollowLink.schema, LikeLink.schema, Post.schema, User.schema];
+  List<amplify_core.ModelSchema> modelSchemas = [Comment.schema, FollowLink.schema, Group.schema, LikeLink.schema, Message.schema, Post.schema, User.schema, UsersGroups.schema];
   @override
   List<amplify_core.ModelSchema> customTypeSchemas = [];
   static final ModelProvider _instance = ModelProvider();
@@ -50,12 +56,18 @@ class ModelProvider implements amplify_core.ModelProviderInterface {
         return Comment.classType;
       case "FollowLink":
         return FollowLink.classType;
+      case "Group":
+        return Group.classType;
       case "LikeLink":
         return LikeLink.classType;
+      case "Message":
+        return Message.classType;
       case "Post":
         return Post.classType;
       case "User":
         return User.classType;
+      case "UsersGroups":
+        return UsersGroups.classType;
       default:
         throw Exception("Failed to find model in model provider for model name: " + modelName);
     }

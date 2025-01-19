@@ -8,7 +8,7 @@ const amplifyconfig = '''{
                     "endpointType": "GraphQL",
                     "endpoint": "https://gecwqjzi3zghbluzi7k7qbdjsq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
                     "region": "ap-southeast-1",
-                    "authorizationType": "API_KEY",
+                    "authorizationType": "AMAZON_COGNITO_USER_POOLS",
                     "apiKey": "da2-vshfb42rbjaepcznb3c4l5qrfe"
                 }
             }
@@ -26,15 +26,15 @@ const amplifyconfig = '''{
                     "Default": {
                         "ApiUrl": "https://gecwqjzi3zghbluzi7k7qbdjsq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
                         "Region": "ap-southeast-1",
+                        "AuthMode": "AMAZON_COGNITO_USER_POOLS",
+                        "ClientDatabasePrefix": "makulay_AMAZON_COGNITO_USER_POOLS"
+                    },
+                    "makulay_API_KEY": {
+                        "ApiUrl": "https://gecwqjzi3zghbluzi7k7qbdjsq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+                        "Region": "ap-southeast-1",
                         "AuthMode": "API_KEY",
                         "ApiKey": "da2-vshfb42rbjaepcznb3c4l5qrfe",
                         "ClientDatabasePrefix": "makulay_API_KEY"
-                    },
-                    "makulay_AWS_IAM": {
-                        "ApiUrl": "https://gecwqjzi3zghbluzi7k7qbdjsq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
-                        "Region": "ap-southeast-1",
-                        "AuthMode": "AWS_IAM",
-                        "ClientDatabasePrefix": "makulay_AWS_IAM"
                     }
                 },
                 "CredentialsProvider": {
